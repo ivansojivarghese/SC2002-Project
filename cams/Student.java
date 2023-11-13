@@ -51,6 +51,10 @@ public class Student extends User { // student class
     public void viewAllCamps(){
 
     }
+
+    public void removePost(Post post){
+        this.myEnquiries.remove(post);
+    }
 }
 /*
 class NewPasswordStudent extends Student {
