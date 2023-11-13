@@ -1,12 +1,18 @@
 package cams;
 
 import java.util.ArrayList;
+import java.util.List;
+import cams.PostTypes.*;
+import cams.Camp;
+import cams.UnifiedCampRepository;
 
-public class Student extends App { // student class
+public class Student extends User { // student class
+    //add these attributes must be private****
     public String name;
     public String userID;
     public String faculty;
     protected String password;
+    private List<Post> myEnquiries;
     
     public boolean isCommittee = false;
     
@@ -15,7 +21,8 @@ public class Student extends App { // student class
     public String getPassword() {
         return password;
     }
-    
+
+    /*
     public void setPassword(int identity, String password) {
     	studentArr[identity].password = password;
     }
@@ -31,9 +38,21 @@ public class Student extends App { // student class
         } else {        	
         	setPassword(identity, password);
         }
+    }*/
+
+    public List<Post> getMyEnquiries(){
+        return this.myEnquiries;
+    }
+
+    public void addEnquiry(Post newEnquiry){
+        this.myEnquiries.add(newEnquiry);
+    }
+
+    public void viewAllCamps(){
+
     }
 }
-
+/*
 class NewPasswordStudent extends Student {
     NewPasswordStudent(String name, String userID, String faculty, String password, int identity) {
 		super(name, userID, faculty, password, identity);
@@ -43,4 +62,4 @@ class NewPasswordStudent extends Student {
 	public void setPassword(String password) {
     	this.password = password;
     }
-}
+}*/

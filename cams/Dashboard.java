@@ -44,14 +44,10 @@ public class Dashboard extends App {
 				String newPassword;
 				System.out.println("Enter new password:");
 				newPassword = sc.next();
-				
-				if (type == "Student") {
-					studentArr[identity] = new NewPasswordStudent(name, userID, faculty, newPassword, identity);
-					studentArr[identity].setPassword(identity, newPassword);
-				} else if (type == "Staff") {
-					staffArr[identity] = new NewPasswordStaff(name, userID, faculty, newPassword, identity);
-					staffArr[identity].setPassword(identity, newPassword);
-				}
+
+				UnifiedUserRepository repo = UnifiedUserRepository.getInstance();
+				User user = repo.retrieveUser(userID);
+				user.setPassword(newPassword);
 				
 				System.out.println("Password successfully changed!");
 				
