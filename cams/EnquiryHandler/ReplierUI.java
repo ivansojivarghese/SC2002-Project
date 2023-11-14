@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Scanner;
 
 public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI {
+    public ReplierUI() {
+    }
+
     public void displayMenu(User user){
         Post currentPost;
         Scanner userInput = new Scanner(System.in);

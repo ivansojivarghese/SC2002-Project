@@ -4,6 +4,9 @@ import cams.PostTypes.*;
 import cams.User;
 
 public class Enquirer extends EnquirerUI{
+    public Enquirer() {
+    }
+
     public int submit(String campName, String userID, String text){
         Post newPost = PostFactory.createPost(PostType.ENQUIRY);
         Enquiry newEnquiry = (Enquiry) newPost.getFirstMessage();

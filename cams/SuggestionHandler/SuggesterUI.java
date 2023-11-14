@@ -1,16 +1,12 @@
-package cams.EnquiryHandler;
+package cams.SuggestionHandler;
 
-import cams.PostHandler.PosterUI;
+import cams.PostHandler.PostViewerUI;
 import cams.PostTypes.Post;
 import cams.User;
 
-import java.util.Locale;
 import java.util.Scanner;
 
-public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
-    public EnquirerUI() {
-    }
-
+public abstract class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
     public void displayMenu(User user){
         Post currentPost;
         Scanner userInput = new Scanner(System.in);
