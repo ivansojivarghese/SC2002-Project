@@ -16,6 +16,7 @@ public abstract class User {
     }
 
     public abstract void viewAllCamps();
+    public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();
 
     public List<String> getMyCamps() {

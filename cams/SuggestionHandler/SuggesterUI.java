@@ -14,8 +14,8 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
         int postIndex;
         do {
             System.out.println("Select an action: ");
-            System.out.println("1. View/edit/delete my enquiries");
-            System.out.println("2. Submit a new enquiry");
+            System.out.println("1. View/edit/delete my suggestions");
+            System.out.println("2. Submit a new suggestion");
             System.out.println("-1. Back");
             choice = userInput.nextInt();
 
@@ -24,15 +24,15 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
                     //displays user's enquiries
                     if(view(user) == 1){
                         System.out.println("Select an action: ");
-                        System.out.println("1. Edit an enquiry");
-                        System.out.println("2. Delete an Enquiry");
+                        System.out.println("1. Edit a suggestion");
+                        System.out.println("2. Delete a suggestion");
                         System.out.println("-1. Back");
                         choice = userInput.nextInt();
 
                         switch (choice) {
                             case -1: choice = 0; break;
                             case 1:
-                                System.out.println("Enter index of enquiry to edit: ");
+                                System.out.println("Enter index of suggestion to edit: ");
                                 choice = userInput.nextInt();
                                 postIndex = choice;
                                 System.out.println("Input new content: ");
@@ -41,7 +41,7 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
                                     System.out.println("Success!");
                                 break;
                             case 2:
-                                System.out.println("Enter index of enquiry to delete: ");
+                                System.out.println("Enter index of suggestion to delete: ");
                                 choice = userInput.nextInt();
                                 postIndex = choice;
                                 if(delete(user, postIndex) == 1)

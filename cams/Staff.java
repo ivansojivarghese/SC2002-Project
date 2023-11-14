@@ -22,6 +22,17 @@ public class Staff extends User {
     public void viewAllCamps() {
 
     }
+
+    @Override
+    public List<Post> getSuggestions() {
+        List<Post> mySuggestions = null;
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        for (String campName : this.getMyCamps()) {
+            Camp camp = repo.retrieveCamp(campName);
+            mySuggestions.addAll(camp.getSuggestions());
+        }
+        return mySuggestions;
+    }
 }
     // Student class constructor
     /*

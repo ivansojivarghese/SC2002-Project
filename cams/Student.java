@@ -48,6 +48,21 @@ public class Student extends User { // student class
     public void viewAllCamps(){
 
     }
+
+    @Override
+    public List<Post> getSuggestions() {
+        List <Post> mySuggestions = null;
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        for(String campName : this.getMyCamps()){
+            Camp camp = repo.retrieveCamp(campName);
+            for(Post post: camp.getSuggestions()){
+                if(Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
+                    mySuggestions.add(post);
+                }
+            }
+        }
+        return mySuggestions;
+    }
 }
 /*
 class NewPasswordStudent extends Student {

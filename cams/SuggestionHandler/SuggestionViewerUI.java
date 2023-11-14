@@ -13,7 +13,7 @@ public class SuggestionViewerUI {
         int choice;
         do {
             System.out.println("Select an action: ");
-            System.out.println("1. View my enquiries");
+            System.out.println("1. View my suggestions");
             System.out.println("-1. Back");
             choice = userInput.nextInt();
 
@@ -29,10 +29,10 @@ public class SuggestionViewerUI {
 
     public int view(User user){
         Post currentPost;
-        System.out.println("My Camp Enquiries: ");
-        List<Post> myEnquiries = user.getEnquiries();
-        for (int i = 0; i < myEnquiries.size(); i++) {
-            currentPost = myEnquiries.get(i);
+        System.out.println("Camp Suggestions: ");
+        List<Post> mySuggestions = user.getSuggestions();
+        for (int i = 0; i < mySuggestions.size(); i++) {
+            currentPost = mySuggestions.get(i);
             System.out.println(i + ": ");
             currentPost.displayContent();
             System.out.println("__________________________");
