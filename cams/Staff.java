@@ -1,20 +1,30 @@
 package cams;
 
-public class Staff extends App {
-	public String name;
-    public String userID;
-    public String faculty;
-    protected String password;
-    
-    public String getPassword() {
-        return password;
+import cams.PostTypes.Post;
+
+import java.util.List;
+import java.util.Objects;
+
+public class Staff extends User {
+    //shld all be private!
+
+    public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff
+        List<Post> myEnquiries = null;
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        for (String campName : this.getMyCamps()) {
+            Camp camp = repo.retrieveCamp(campName);
+            myEnquiries.addAll(camp.getEnquiries());
+        }
+        return myEnquiries;
     }
-    
-    public void setPassword(int identity, String password) {
-    	staffArr[identity].password = password;
+
+    @Override
+    public void viewAllCamps() {
+
     }
- 
+}
     // Student class constructor
+    /*
     Staff(String name, String userID, String faculty, String password, int identity)
     {
         this.name = name;
@@ -37,4 +47,4 @@ class NewPasswordStaff extends Staff {
 	public void setPassword(String password) {
     	this.password = password;
     }
-}
+}*/

@@ -5,24 +5,9 @@ import java.util.List;
 import java.util.Objects;
 
 import cams.PostTypes.*;
-import cams.Camp;
-import cams.UnifiedCampRepository;
 
 public class Student extends User { // student class
-    //add these attributes must be private****
-    public String name;
-    public String userID;
-    public String faculty;
-    protected String password;
-    private List<Post> myEnquiries;
-    
-    public boolean isCommittee = false;
-    
-    public ArrayList<Integer> joinedCamps = new ArrayList<>();
-    
-    public String getPassword() {
-        return password;
-    }
+    private boolean isCommittee = false;
 
     /*
     public void setPassword(int identity, String password) {
@@ -46,14 +31,13 @@ public class Student extends User { // student class
         return this.myEnquiries;
     }*/
 
-    public List<Post> getMyEnquiries(){
+    public List<Post> getEnquiries(){
         List <Post> myEnquiries = null;
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         for(String campName : this.getMyCamps()){
             Camp camp = repo.retrieveCamp(campName);
-
             for(Post post: camp.getEnquiries()){
-                if(Objects.equals(post.getPostedBy(), this.userID)) {
+                if(Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
                     myEnquiries.add(post);
                 }
             }
@@ -61,16 +45,8 @@ public class Student extends User { // student class
         return myEnquiries;
     }
 
-    public void addEnquiry(Post newEnquiry){
-        this.myEnquiries.add(newEnquiry);
-    }
-
     public void viewAllCamps(){
 
-    }
-
-    public void removePost(Post post){
-        this.myEnquiries.remove(post);
     }
 }
 /*

@@ -3,20 +3,19 @@ package cams.PostTypes;
 import cams.Camp;
 import cams.UnifiedCampRepository;
 
-public class Enquiry extends Post{
-    private String reply;
-
-    public void removeFromCamp(Camp camp) {
-        if(this.getCamp() != null) { //if already has a camp, remove the current post from the camp
-            camp.getEnquiries().remove(this);
-        }
+public class Enquiry extends Message{
+    private String content;
+    public String getContent() {
+        return content;
+    }
+    public Boolean setContent(String content){
+        this.content = content;
+        return true;
     }
 
-    public String getReply() {
-        return reply;
-    }
-
-    public void setReply(String reply) {
-        this.reply = reply;
+    @Override
+    public void displayContent() {
+        System.out.println("User " + this.getPostedBy() + " Enquired: ");
+        System.out.println(content);
     }
 }

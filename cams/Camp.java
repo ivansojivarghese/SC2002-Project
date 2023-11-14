@@ -23,7 +23,8 @@ public class Camp extends App {
 
 	//always have an empty constructor! otherwise
 	public Camp(){}
-	
+
+	//USE A BUILDER INSTEAD
 	public Camp(String campName, int[] startDate, int[] endDate, int[] closingDate, String userGroup,
 			String location, int slots, Student[] studentsList, Student[] committee, String description, String inCharge, boolean visibility) {
 		// TODO Auto-generated constructor stub
@@ -41,6 +42,18 @@ public class Camp extends App {
 		this.inCharge = inCharge;
 		this.visibility = visibility;
 	}
+
+	public void removePost(PostType postType, Post post){
+		switch (postType) {
+			case ENQUIRY:
+				this.getEnquiries().remove(post);
+				break;
+			case SUGGESTION:
+				this.getSuggestions().remove(post);
+				break;
+		}
+	}
+
 
 	public void addEnquiry(Post post){
 		this.Enquiries.add(post);

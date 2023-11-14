@@ -1,5 +1,6 @@
 package cams;
 import cams.Faculty;
+import cams.PostTypes.Post;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,9 +16,10 @@ public abstract class User {
     }
 
     public abstract void viewAllCamps();
+    public abstract List<Post> getEnquiries();
 
     public List<String> getMyCamps() {
-        return myCamps;
+        return this.myCamps;
     }
 
     public void addCamp(Camp camp) {

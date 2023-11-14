@@ -3,16 +3,48 @@ package cams.PostTypes;
 import cams.Camp;
 import cams.UnifiedCampRepository;
 
-public abstract class Post {
+import java.util.List;
+
+public class Post {
     //Attributes
     private Camp camp;
-    private String postedBy;
-    private String content;
+    private PostType postType;
+    private List<Message> content;
 
     public Post(){
         this.camp = null;
-        this.postedBy = null;
         this.content = null;
+    }
+
+    public void addContent(Message message){
+        this.content.add(message);
+    }
+
+    public List<Message> getContent(){
+        return this.content;
+    }
+
+    public Message getFirstMessage(){
+        return this.content.get(0);
+    }
+
+    public void displayContent(){
+        for(Message message : this.content){
+            message.displayContent();
+        }
+    }
+
+    public Boolean isReplied() {
+        if(content.size() > 1)
+            return true;
+        return false;
+    }
+
+    public void removeFromCamp() {
+        //if post is already in a camp, remove the current post from the camp
+        if(this.getCamp() != null) {
+            this.camp.removePost(this.postType, this);
+        }
     }
 
     //Getters and Setters
@@ -27,30 +59,11 @@ public abstract class Post {
             return false;
 
         if(this.camp != null) { //if post already has a camp, remove the current post from the camp
-            removeFromCamp(camp);
+            removeFromCamp();
         }
         this.camp = camp; //set new camp
+        camp.addEnquiry(this);
 
-        return true;
-    }
-
-    public abstract void removeFromCamp(Camp camp);
-
-    public String getPostedBy() {
-        return postedBy;
-    }
-
-    public Boolean setPostedBy(String userID) {
-        this.postedBy = userID;
-        return true;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public Boolean setContent(String content) {
-        this.content = content;
         return true;
     }
 }

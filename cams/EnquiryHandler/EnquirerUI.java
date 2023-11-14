@@ -12,6 +12,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
         Post currentPost;
         Scanner userInput = new Scanner(System.in);
         int choice;
+        int postIndex;
         do {
             System.out.println("Select an action: ");
             System.out.println("1. View/edit/delete my enquiries");
@@ -34,7 +35,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
                             case 1:
                                 System.out.println("Enter index of enquiry to edit: ");
                                 choice = userInput.nextInt();
-                                int postIndex = choice;
+                                postIndex = choice;
                                 System.out.println("Input new content: ");
                                 String content = userInput.nextLine();
                                 if (edit(user, postIndex, content)==1)
@@ -54,7 +55,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
                     break;
                 case 2: //submit a new enquiry
                     System.out.println("Name of camp you are enquiring about: ");
-                    String campName = userInput.nextLine().toLowerCase(Locale.ROOT);
+                    String campName = userInput.nextLine();
 
                     System.out.println("Input new content: ");
                     String content = userInput.nextLine();

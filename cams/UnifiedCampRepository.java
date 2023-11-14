@@ -1,6 +1,7 @@
 package cams;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class UnifiedCampRepository {
     //Use of Singleton design pattern to ensure only one instance exists
@@ -15,6 +16,7 @@ public class UnifiedCampRepository {
         this.Camps.put(camp.campName, camp);
     }
     public Camp retrieveCamp(String campName){
+        campName = campName.toLowerCase(Locale.ROOT).strip();
         return Camps.get(campName);
     }
 

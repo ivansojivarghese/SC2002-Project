@@ -1,11 +1,9 @@
 package cams.PostTypes;
 
-import cams.Camp;
-
-public class Suggestion extends Message{
+public class Reply extends Message {
     private String content;
     public void displayContent() {
-        System.out.println("User " + this.getPostedBy() + " Suggested: ");
+        System.out.println("User " + this.getPostedBy() + " Replied: ");
         System.out.println(content);
     }
 
@@ -18,3 +16,4 @@ public class Suggestion extends Message{
         return true;
     }
 }
+
