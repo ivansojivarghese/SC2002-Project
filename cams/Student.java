@@ -2,6 +2,8 @@ package cams;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 import cams.PostTypes.*;
 import cams.Camp;
 import cams.UnifiedCampRepository;
@@ -38,10 +40,25 @@ public class Student extends User { // student class
         } else {        	
         	setPassword(identity, password);
         }
-    }*/
+    }
 
     public List<Post> getMyEnquiries(){
         return this.myEnquiries;
+    }*/
+
+    public List<Post> getMyEnquiries(){
+        List <Post> myEnquiries = null;
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        for(String campName : this.getMyCamps()){
+            Camp camp = repo.retrieveCamp(campName);
+
+            for(Post post: camp.getEnquiries()){
+                if(Objects.equals(post.getPostedBy(), this.userID)) {
+                    myEnquiries.add(post);
+                }
+            }
+        }
+        return myEnquiries;
     }
 
     public void addEnquiry(Post newEnquiry){

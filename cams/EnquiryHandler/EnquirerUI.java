@@ -1,9 +1,7 @@
 package cams.EnquiryHandler;
 
-import cams.Camp;
 import cams.PostHandler.PosterUI;
 import cams.PostTypes.Post;
-import cams.UnifiedCampRepository;
 import cams.User;
 
 import java.util.Locale;
@@ -57,12 +55,11 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
                 case 2: //submit a new enquiry
                     System.out.println("Name of camp you are enquiring about: ");
                     String campName = userInput.nextLine().toLowerCase(Locale.ROOT);
-                    UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-                    Camp camp = repo.retrieveCamp(campName);
+
                     System.out.println("Input new content: ");
                     String content = userInput.nextLine();
 
-                    if(submit(camp, user.getUserID(), content) == 1)
+                    if(submit(campName, user.getUserID(), content) == 1)
                         System.out.println("Success!");
                     break;
                 case -1: //return
@@ -70,15 +67,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
             }
         } while(choice != -1);
     }
-    public abstract int submit(Camp camp, String userID, String text);
+    public abstract int submit(String camp, String userID, String text);
     public abstract int edit(User user, int postIndex, String content);
     public abstract int delete(User user, int postIndex);
-        /*
-    if(currentPost instanceof Enquiry){
-        Enquiry enquiry = (Enquiry) currentPost;
-        if(enquiry.getReply() == null)
-            delete(currentPost);
-        else
-            System.out.println("Unable to delete enquiry with responses.");
-    }*/
 }

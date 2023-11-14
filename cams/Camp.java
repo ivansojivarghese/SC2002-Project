@@ -1,6 +1,8 @@
 package cams;
 
 import java.util.ArrayList;
+import java.util.List;
+import cams.PostTypes.*;
 
 public class Camp extends App {
 	public String campName;
@@ -14,9 +16,13 @@ public class Camp extends App {
 	public String description;
 	public String inCharge;
 	public boolean visibility;
-
+	private List<Post> Enquiries;
+	private List<Post> Suggestions;
 	public Student[] studentsList;
 	public Student[] committee;
+
+	//always have an empty constructor! otherwise
+	public Camp(){}
 	
 	public Camp(String campName, int[] startDate, int[] endDate, int[] closingDate, String userGroup,
 			String location, int slots, Student[] studentsList, Student[] committee, String description, String inCharge, boolean visibility) {
@@ -34,6 +40,18 @@ public class Camp extends App {
 		this.description = description; 
 		this.inCharge = inCharge;
 		this.visibility = visibility;
+	}
+
+	public void addEnquiry(Post post){
+		this.Enquiries.add(post);
+	}
+
+	public List<Post> getEnquiries(){
+		return this.Enquiries;
+	}
+
+	public List<Post> getSuggestions(){
+		return this.Suggestions;
 	}
 	
 	public boolean findClashes(ArrayList<Integer> otherCamps) {
