@@ -1,7 +1,6 @@
 package cams;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import cams.PostTypes.*;
 
@@ -17,10 +16,124 @@ public class Camp extends App {
 	private String description;
 	private String inCharge;
 	private Faculty visibility;
-	private List<Post> Enquiries;
-	private List<Post> Suggestions;
-	private List<User> Attendees;
-	private List<User> Committee;
+	private List<Post> enquiries;
+	private List<Post> suggestions;
+	private List<User> attendees;
+	private List<User> committee;
+
+	private Camp(Builder builder) {
+		this.campName = builder.campName;
+		this.startDate = builder.startDate;
+		this.endDate = builder.endDate;
+		this.closingDate = builder.closingDate;
+		this.location = builder.location;
+		this.totalSlots = builder.totalSlots;
+		this.remainingSlots = builder.remainingSlots;
+		this.description = builder.description;
+		this.inCharge = builder.inCharge;
+		this.visibility = builder.visibility;
+		this.enquiries = builder.enquiries;
+		this.suggestions = builder.suggestions;
+		this.attendees = builder.attendees;
+		this.committee = builder.committee;
+	}
+
+	// Getters and setters
+	public static class Builder {
+		private String campName;
+		private LocalDate startDate;
+		private LocalDate endDate;
+		private LocalDate closingDate;
+		private String location;
+		private int totalSlots;
+		private int remainingSlots;
+		private String description;
+		private String inCharge;
+		private Faculty visibility;
+		private List<Post> enquiries;
+		private List<Post> suggestions;
+		private List<User> attendees;
+		private List<User> committee;
+
+		public Builder() {
+			// Default values can be set here
+		}
+
+		public Builder campName(String campName) {
+			this.campName = campName;
+			return this;
+		}
+
+		public Builder startDate(LocalDate startDate) {
+			this.startDate = startDate;
+			return this;
+		}
+
+		public Builder endDate(LocalDate endDate) {
+			this.endDate = endDate;
+			return this;
+		}
+
+		public Builder closingDate(LocalDate closingDate) {
+			this.closingDate = closingDate;
+			return this;
+		}
+
+		public Builder location(String location) {
+			this.location = location;
+			return this;
+		}
+
+		public Builder totalSlots(int totalSlots) {
+			this.totalSlots = totalSlots;
+			return this;
+		}
+
+		public Builder remainingSlots(int remainingSlots) {
+			this.remainingSlots = remainingSlots;
+			return this;
+		}
+
+		public Builder description(String description) {
+			this.description = description;
+			return this;
+		}
+
+		public Builder inCharge(String inCharge) {
+			this.inCharge = inCharge;
+			return this;
+		}
+
+		public Builder visibility(Faculty visibility) {
+			this.visibility = visibility;
+			return this;
+		}
+
+		public Builder enquiries(List<Post> enquiries) {
+			this.enquiries = enquiries;
+			return this;
+		}
+
+		public Builder suggestions(List<Post> suggestions) {
+			this.suggestions = suggestions;
+			return this;
+		}
+
+		public Builder attendees(List<User> attendees) {
+			this.attendees = attendees;
+			return this;
+		}
+
+		public Builder committee(List<User> committee) {
+			this.committee = committee;
+			return this;
+		}
+
+		public Camp build() {
+			return new Camp(this);
+		}
+	}
+
 	public String getCampName() {
 		return campName;
 	}
@@ -102,34 +215,34 @@ public class Camp extends App {
 	}
 
 	public void setEnquiries(List<Post> enquiries) {
-		Enquiries = enquiries;
+		this.enquiries = enquiries;
 	}
 
 	public void setSuggestions(List<Post> suggestions) {
-		Suggestions = suggestions;
+		this.suggestions = suggestions;
 	}
 
 	public List<User> getAttendees() {
-		return Attendees;
+		return attendees;
 	}
 
 	public void setAttendees(List<User> attendees) {
-		Attendees = attendees;
+		this.attendees = attendees;
 	}
 
 	public void addAttendee(User attendee) {
-		this.Attendees.add(attendee);
+		this.attendees.add(attendee);
 	}
 	public void removeAttendee(User user){
-		this.Attendees.remove(user);
+		this.attendees.remove(user);
 	}
 
 	public List<User> getCommittee() {
-		return Committee;
+		return committee;
 	}
 
 	public void setCommittee(List<User> committee) {
-		Committee = committee;
+		this.committee = committee;
 	}
 
 
@@ -147,8 +260,8 @@ public class Camp extends App {
 		this.location = location;
 		this.totalSlots = slots;
 		this.remainingSlots = slots;
-		this.Attendees = Attendees;
-		this.Committee = Committee;
+		this.attendees = Attendees;
+		this.committee = Committee;
 		this.description = description; 
 		this.inCharge = inCharge;
 		this.visibility = visibility;
@@ -166,15 +279,15 @@ public class Camp extends App {
 	}
 
 	public void addEnquiry(Post post){
-		this.Enquiries.add(post);
+		this.enquiries.add(post);
 	}
 
 	public List<Post> getEnquiries(){
-		return this.Enquiries;
+		return this.enquiries;
 	}
 
 	public List<Post> getSuggestions(){
-		return this.Suggestions;
+		return this.suggestions;
 	}
 	
 

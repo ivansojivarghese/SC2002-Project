@@ -60,7 +60,7 @@ public class Student extends User implements Participant { // student class
             System.out.println("______________");
         }
     }
-
+    //TODO implement this method to return all camps available to user
     public List<Camp> viewAllCamps() {
         List<Camp> collection = null;
         return collection;
@@ -102,10 +102,7 @@ public class Student extends User implements Participant { // student class
             System.out.println("No camps exist.");
             return;
         }
-
-        List<Camp> availableCamps = this.viewAllCamps();
-
-        Camp selectedCamp = availableCamps.get(campName);
+        Camp selectedCamp = repo.retrieveCamp(campName);
 
         boolean Registered = this.getMyCamps().contains(selectedCamp.getCampName()); // check if user has registered for camp already
         boolean datesClash = Date.checkClashes(this, selectedCamp);

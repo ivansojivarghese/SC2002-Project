@@ -46,7 +46,8 @@ public class Dashboard {
 		setState(new LogoutState());
 		request();
 	}
-
+}
+/*
 	Scanner sc = new Scanner(System.in);
 	int option;
 	int dStatus = 0;
@@ -304,4 +305,4 @@ public class Dashboard {
 			
 		} while (dStatus == 0);
 	}
-}
+}*/

@@ -13,7 +13,7 @@ public class UnifiedCampRepository {
     private UnifiedCampRepository(){}
 
     public void addCamp(Camp camp){
-        this.Camps.put(camp.campName, camp);
+        this.Camps.put(camp.getCampName(), camp);
     }
     public Camp retrieveCamp(String campName){
         campName = campName.toLowerCase(Locale.ROOT).strip();

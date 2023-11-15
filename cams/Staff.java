@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class Staff extends User {
-    //shld all be private!
 
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff
         List<Post> myEnquiries = null;
@@ -18,9 +17,11 @@ public class Staff extends User {
         return myEnquiries;
     }
 
+    //TODO implement this method to return all camps
     @Override
     public List<Camp> viewAllCamps() {
-
+        List<Camp> collection = null;
+        return collection;
     }
 
     @Override
@@ -33,7 +34,15 @@ public class Staff extends User {
         }
         return mySuggestions;
     }
-    public void displayMyCamps(){}
+    public void displayMyCamps(){
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        for(String c: this.getMyCamps()){
+            Camp camp = repo.retrieveCamp(c);
+            camp.display();
+            System.out.println("______________");
+        }
+    }
+
 }
     // Student class constructor
     /*
