@@ -1,12 +1,19 @@
 package cams;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import cams.PostTypes.*;
 
-public class Student extends User { // student class
+public class Student extends User implements Participant { // student class
+    public boolean isCommittee() {
+        return isCommittee;
+    }
+
+    public void setCommittee(boolean committee) {
+        isCommittee = committee;
+    }
+
     private boolean isCommittee = false;
 
     /*
@@ -31,13 +38,13 @@ public class Student extends User { // student class
         return this.myEnquiries;
     }*/
 
-    public List<Post> getEnquiries(){
-        List <Post> myEnquiries = null;
+    public List<Post> getEnquiries() {
+        List<Post> myEnquiries = null;
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        for(String campName : this.getMyCamps()){
+        for (String campName : this.getMyCamps()) {
             Camp camp = repo.retrieveCamp(campName);
-            for(Post post: camp.getEnquiries()){
-                if(Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
+            for (Post post : camp.getEnquiries()) {
+                if (Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
                     myEnquiries.add(post);
                 }
             }
@@ -45,33 +52,83 @@ public class Student extends User { // student class
         return myEnquiries;
     }
 
-    public void viewAllCamps(){
+    public void displayMyCamps(){
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        for(String c: this.getMyCamps()){
+            Camp camp = repo.retrieveCamp(c);
+            camp.display();
+            System.out.println("______________");
+        }
+    }
 
+    public List<Camp> viewAllCamps() {
+        List<Camp> collection = null;
+        return collection;
     }
 
     @Override
     public List<Post> getSuggestions() {
-        List <Post> mySuggestions = null;
+        List<Post> mySuggestions = null;
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        for(String campName : this.getMyCamps()){
+        for (String campName : this.getMyCamps()) {
             Camp camp = repo.retrieveCamp(campName);
-            for(Post post: camp.getSuggestions()){
-                if(Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
+            for (Post post : camp.getSuggestions()) {
+                if (Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
                     mySuggestions.add(post);
                 }
             }
         }
         return mySuggestions;
     }
-}
-/*
-class NewPasswordStudent extends Student {
-    NewPasswordStudent(String name, String userID, String faculty, String password, int identity) {
-		super(name, userID, faculty, password, identity);
-		// TODO Auto-generated constructor stub
-	}
 
-	public void setPassword(String password) {
-    	this.password = password;
+
+    //IMPLEMENT Participant
+    @Override
+    public void Deregister(String campName) {
+        if(this.getMyCamps().contains(campName)){
+            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+            Camp camp = repo.retrieveCamp(campName);
+            camp.removeAttendee(this);
+            this.removeCamp(campName);
+            System.out.println("Successfully deregistered.");
+        }
+        else
+            System.out.println("Unable to deregister for a camp you did not register for.");
     }
-}*/
+    @Override
+    public void Register(String campName) { //campIndex is the index of the camp in the list of camps available to the student user
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        if (repo.getSize() == 0) {
+            System.out.println("No camps exist.");
+            return;
+        }
+
+        List<Camp> availableCamps = this.viewAllCamps();
+
+        Camp selectedCamp = availableCamps.get(campName);
+
+        boolean Registered = this.getMyCamps().contains(selectedCamp.getCampName()); // check if user has registered for camp already
+        boolean datesClash = Date.checkClashes(this, selectedCamp);
+        ; // check for clashes in dates with other camps
+        boolean availableSlot = selectedCamp.getRemainingSlots() > 0;
+
+        //FAILURE outcomes
+        if (Registered) {
+            System.out.println("Camp is already registered.");
+            return;
+        }
+        if (datesClash) {
+            System.out.println("Unable to register due to clashes.");
+            return;
+        }
+        if (!availableSlot) {
+            System.out.println("No available slots.");
+            return;
+        }
+
+        //SUCCESS outcome
+        selectedCamp.addAttendee(this); //add attendee to camp
+        this.addCamp(selectedCamp); //add camp to attendee
+        System.out.println("Successfully registered.");
+    }
+}

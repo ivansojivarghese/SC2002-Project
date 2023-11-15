@@ -15,7 +15,8 @@ public abstract class User {
         return Objects.equals(password, this.password);
     }
 
-    public abstract void viewAllCamps();
+    public abstract List<Camp> viewAllCamps();
+    public abstract void displayMyCamps();
     public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();
 
@@ -24,7 +25,10 @@ public abstract class User {
     }
 
     public void addCamp(Camp camp) {
-        this.myCamps.add(camp.campName);
+        this.myCamps.add(camp.getCampName());
+    }
+    public void removeCamp(String campName){
+        this.myCamps.remove(campName);
     }
 
     public String getUserID() {

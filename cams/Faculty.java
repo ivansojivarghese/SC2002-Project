@@ -17,6 +17,7 @@ public enum Faculty {
     ASE,
     LKC,
     NIE,
-    Graduate,
-    NULL
+    GRAD, //Graduate
+    ALL,
+    NULL,
 }

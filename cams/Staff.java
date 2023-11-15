@@ -19,7 +19,7 @@ public class Staff extends User {
     }
 
     @Override
-    public void viewAllCamps() {
+    public List<Camp> viewAllCamps() {
 
     }
 
@@ -33,6 +33,7 @@ public class Staff extends User {
         }
         return mySuggestions;
     }
+    public void displayMyCamps(){}
 }
     // Student class constructor
     /*

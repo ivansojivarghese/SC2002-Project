@@ -20,6 +20,10 @@ public class UnifiedCampRepository {
         return Camps.get(campName);
     }
 
+    public int getSize(){
+        return this.Camps.size();
+    }
+
     public static UnifiedCampRepository getInstance() {
         // If the instance is null, create a new one
         if (instance == null) {

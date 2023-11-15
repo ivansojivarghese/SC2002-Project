@@ -7,11 +7,46 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Dashboard extends App {
+public class Dashboard {
 	//> FACULTY INFO.
 	//> CHANGE PASSWORD
 	//> LOGOUT (BACK TO LOG IN PAGE)
-	
+	private DashboardState currentState;
+	private User authenticatedUser;
+
+	public Dashboard() {
+		// Initially, the dashboard might be in the options state
+		this.currentState = new LogoutState();
+	}
+
+	public User getAuthenticatedUser() {
+		return authenticatedUser;
+	}
+
+	public void setAuthenticatedUser(User authenticatedUser) {
+		this.authenticatedUser = authenticatedUser;
+	}
+
+	public void setState(DashboardState state) {
+		this.currentState = state;
+	}
+
+	public void request() {
+		currentState.display(this);
+	}
+
+	// Method to simulate logout
+	public void logout() {
+		System.out.println("Logging out...");
+		setState(new LogoutState());
+		request();
+	}
+	//Method to start main menu
+	public void startMain() {
+		setState(new LogoutState());
+		request();
+	}
+
 	Scanner sc = new Scanner(System.in);
 	int option;
 	int dStatus = 0;
@@ -26,17 +61,17 @@ public class Dashboard extends App {
 			} else if (type == "Student") {
 				System.out.println("Name: " + name + ", Faculty: " + faculty + ", Type: " + type + ", Committee Member: " + studentArr[identity].isCommittee);
 			}
-			System.out.println("--++ OPTIONS ++--");
-			System.out.println("(1) Change your password.");
-			System.out.println("(2) Logout.");
+			System.out.println("-- OPTIONS --");
+			System.out.println("(1) Change your password");
+			System.out.println("(2) Logout");
 			if (type == "Staff") {
-				System.out.println("(3) View all Camps.");
-				System.out.println("(4) Create a new Camp.");
-				System.out.println("(5) Edit your Camp(s).");
+				System.out.println("(3) View all Camps");
+				System.out.println("(4) Edit your Camp(s)");
+				System.out.println("(5) Create a new Camp");
 			} else if (type == "Student") {
-				System.out.println("(3) Register for a Camp.");
-				System.out.println("(4) View your registered Camps.");
-				System.out.println("(5) Withdraw from a Camp.");
+				System.out.println("(3) Register for a Camp");
+				System.out.println("(4) View your registered Camps");
+				System.out.println("(5) Withdraw from a Camp");
 			}
 			option = sc.nextInt();
 			
@@ -219,55 +254,7 @@ public class Dashboard extends App {
 				if (option == 3) { // REGISTER
 					
 					// FILTERING
-					
-					if (campsArr.size() != 0) {
-						int i = 1;
-						int list = 1;
-						int optionAr[];
-						int option;
-						
-						optionAr = new int[campsArr.size()];
-						
-						System.out.println("You are registering for a Camp.");
-						System.out.println("Here is a list of all existing Camps.");
-						System.out.println("Select a Camp to register.");
-						
-						for (Object b: campsArr) {
-							String campGroup = ((Camp) campsArr.get(i - 1)).getUserGroup(); // group that camp is open to
-							boolean campVis = ((Camp) campsArr.get(i - 1)).getVisibility(); // vis.
-							int campSlots = ((Camp) campsArr.get(i - 1)).getSlots(); // slots
-							boolean campStatus = ((Camp) campsArr.get(i - 1)).checkForMember(userID); // check if user has registered
-							boolean datesClash = ((Camp) campsArr.get(i - 1)).findClashes(studentArr[identity].joinedCamps); // check for clashes in dates with other camps
-							
-							if ((campGroup == "NTU" || campGroup == faculty) && campVis && (campSlots > 0) && !campStatus && !datesClash) {
-								System.out.println(list + " : " + "Remaining Slots: " + campSlots + ", " + b.toString() + "\n");
-								optionAr[list - 1] = i;
-								list++;
-							}
-							
-							i++;
-						}
-						
-						if (list == 1) {
-							System.out.println("Sorry. No Camps are available for registration.");
-						} else {
-							
-							do {
-								System.out.println("Choose an index:");
-								option = sc.nextInt();
-								
-							} while(option == 0 || (option - 1) >= optionAr.length || optionAr[option - 1] == 0);
-							
-							// Student s = new Student(name, userID, faculty, null, identity);
-							
-							((Camp) campsArr.get(optionAr[option - 1] - 1)).addMember(studentArr[identity]); // add to camp
-							
-							studentArr[identity].joinedCamps.add(optionAr[option - 1] - 1); // add to student
-						}
-						
-					} else {
-						System.out.println("No camps exist.");
-					}
+
 					
 				} else if (option == 4) { // view registered camps
 					
