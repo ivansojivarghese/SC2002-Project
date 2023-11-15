@@ -53,10 +53,10 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
                     } //else failed to display
                     break;
                 case 2: //submit a new enquiry
-                    System.out.println("Name of camp you are enquiring about: ");
+                    System.out.println("Name of camp you are suggesting to: ");
                     String campName = userInput.nextLine();
 
-                    System.out.println("Input new content: ");
+                    System.out.println("Input content: ");
                     String content = userInput.nextLine();
 
                     if(submit(campName, user.getUserID(), content) == 1)

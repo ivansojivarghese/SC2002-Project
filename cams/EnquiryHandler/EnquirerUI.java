@@ -71,7 +71,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
             }
         } while(choice != -1);
     }
-    public abstract int submit(String camp, String userID, String text);
+    public abstract int submit(String campName, String userID, String text);
     public abstract int edit(User user, int postIndex, String content);
     public abstract int delete(User user, int postIndex);
 }
