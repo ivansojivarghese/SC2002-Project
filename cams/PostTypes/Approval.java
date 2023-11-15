@@ -1,18 +1,14 @@
 package cams.PostTypes;
 
 public class Approval extends Message{
-    private String content;
+    private Boolean content;
 
     public Approval(){}
-    public Approval(String isApproved){
-        if(this.setContent(isApproved)){
-            return;
-        }
-        else
-            this.setContent(null);
+    public Approval(Boolean isApproved){
+        this.content = isApproved;
     }
     public Boolean getApproved() {
-        return Boolean.valueOf(content);
+        return this.content;
     }
 
     public String validateInput(String approved){
@@ -28,14 +24,12 @@ public class Approval extends Message{
             return "error";
     }
 
-    public Boolean setContent(String approved) {
-        if (!(this.validateInput(approved).equalsIgnoreCase("error"))) {
-            content = this.validateInput(approved);
-            return true;
-        }
-        else
-            return false;
+    public Boolean setContent(Boolean approved){
+        this.content = approved;
+        return true;
     }
+
+    public Boolean setContent(String approved) {return true;}
 
     @Override
     public void displayContent() {
