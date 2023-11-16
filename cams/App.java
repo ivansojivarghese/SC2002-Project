@@ -1,25 +1,22 @@
 package cams;
 
+import cams.dashboards.Dashboard;
+import cams.database.UnifiedCampRepository;
+import cams.database.UnifiedUserRepository;
+import cams.users.User;
+
 import java.util.Scanner;
 
 public class App {
-
 	public static Boolean initialiseUserData(){
 		//IMPLEMENT
         return false;
     }
-	static int qStatus = 0;
 
 	public static void main(String[] args) {
 		//DECLARE databases
 		UnifiedCampRepository unifiedCampRepository = UnifiedCampRepository.getInstance();
 		UnifiedUserRepository unifiedUserRepository = UnifiedUserRepository.getInstance();
-		// msc.
-		Scanner sc = new Scanner(System.in);
-		int choice = -1;
-		String loginID;
-		String loginPassword;
-		User authenticatedUser = null;
 
 		// declaring user (staff and students) information from Excel file
 		if (unifiedUserRepository == null) { // DECLARE ONCE

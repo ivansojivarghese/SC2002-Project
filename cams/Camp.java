@@ -2,7 +2,8 @@ package cams;
 
 import java.time.LocalDate;
 import java.util.List;
-import cams.PostTypes.*;
+import cams.post_types.*;
+import cams.util.Faculty;
 
 public class Camp extends App {
 	private String campName;
