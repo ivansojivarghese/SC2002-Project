@@ -1,22 +1,30 @@
 package cams;
 
+import cams.EnquiryHandler.*;
+import cams.SuggestionHandler.*;
 import java.util.Scanner;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class Dashboard {
-	//> FACULTY INFO.
-	//> CHANGE PASSWORD
-	//> LOGOUT (BACK TO LOG IN PAGE)
+
 	private DashboardState currentState;
+	private boolean quit = false;
 	private User authenticatedUser;
 
 	public Dashboard() {
 		// Initially, the dashboard might be in the options state
 		this.currentState = new LogoutState();
+	}
+
+	public boolean isQuit() {
+		return quit;
+	}
+
+	public void setQuit(boolean quit) {
+		this.quit = quit;
 	}
 
 	public User getAuthenticatedUser() {
@@ -39,12 +47,42 @@ public class Dashboard {
 	public void logout() {
 		System.out.println("Logging out...");
 		setState(new LogoutState());
-		request();
 	}
 	//Method to start main menu
 	public void startMain() {
 		setState(new LogoutState());
-		request();
+	}
+
+	public void enquirerMenu(){
+		setState(new Enquirer());
+	}
+
+	public void replierMenu(){
+		setState(new Replier());
+	}
+
+	public void approverMenu(){
+		setState(new Approver());
+	}
+
+	public void suggesterMenu(){
+		setState(new Suggester());
+	}
+
+	//Sets the loggedIn menu depending on user role
+	public void loggedIn(){
+		if(authenticatedUser instanceof Student)
+			this.studentMenu();
+		if(authenticatedUser instanceof Staff)
+			this.staffMenu();
+	}
+
+	public void studentMenu(){
+		setState(new StudentMenuState());
+	}
+
+	public void staffMenu(){
+		setState(new StaffMenuState());
 	}
 }
 /*

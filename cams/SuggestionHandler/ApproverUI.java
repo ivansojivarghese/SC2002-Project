@@ -1,5 +1,7 @@
 package cams.SuggestionHandler;
 
+import cams.Dashboard;
+import cams.DashboardState;
 import cams.PostHandler.PostApproverUI;
 import cams.PostHandler.PostViewerUI;
 import cams.PostTypes.Post;
@@ -7,10 +9,11 @@ import cams.User;
 
 import java.util.Scanner;
 
-public abstract class ApproverUI extends SuggestionViewerUI implements PostApproverUI {
-    public void displayMenu(User user){
+public abstract class ApproverUI extends SuggestionViewerUI implements PostApproverUI, DashboardState {
+    public void display(Dashboard dashboard){
         Post currentPost;
         Scanner userInput = new Scanner(System.in);
+        User user = dashboard.getAuthenticatedUser();
         int choice;
         int postIndex;
         do {

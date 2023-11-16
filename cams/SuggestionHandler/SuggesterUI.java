@@ -1,15 +1,18 @@
 package cams.SuggestionHandler;
 
+import cams.Dashboard;
+import cams.DashboardState;
 import cams.PostHandler.PostViewerUI;
 import cams.PostTypes.Post;
 import cams.User;
 
 import java.util.Scanner;
 
-public abstract class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
-    public void displayMenu(User user){
+public abstract class SuggesterUI extends SuggestionViewerUI implements PostViewerUI, DashboardState {
+    public void display(Dashboard dashboard){
         Post currentPost;
         Scanner userInput = new Scanner(System.in);
+        User user = dashboard.getAuthenticatedUser();
         int choice;
         int postIndex;
         do {

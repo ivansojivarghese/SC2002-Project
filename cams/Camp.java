@@ -5,30 +5,33 @@ import java.util.List;
 import cams.PostTypes.*;
 
 public class Camp extends App {
-
 	private String campName;
 	private LocalDate startDate;
 	private LocalDate endDate;
 	private LocalDate closingDate;
 	private String location;
-	private int totalSlots = 0;
-	private int remainingSlots = 0;
+	private int attendeeSlots = 0;
+	private int committeeSlots = 10;
 	private String description;
 	private String inCharge;
 	private Faculty visibility;
 	private List<Post> enquiries;
 	private List<Post> suggestions;
-	private List<User> attendees;
-	private List<User> committee;
+	private List<String> attendees;
+	private List<String> committee;
 
+	//Best practice to always have an empty constructor
+	public Camp(){}
+
+	//Camp class has complex construction so using a builder provides better readability
 	private Camp(Builder builder) {
 		this.campName = builder.campName;
 		this.startDate = builder.startDate;
 		this.endDate = builder.endDate;
 		this.closingDate = builder.closingDate;
 		this.location = builder.location;
-		this.totalSlots = builder.totalSlots;
-		this.remainingSlots = builder.remainingSlots;
+		this.attendeeSlots = builder.attendeeSlots;
+		this.committeeSlots = builder.committeeSlots;
 		this.description = builder.description;
 		this.inCharge = builder.inCharge;
 		this.visibility = builder.visibility;
@@ -38,25 +41,28 @@ public class Camp extends App {
 		this.committee = builder.committee;
 	}
 
-	// Getters and setters
 	public static class Builder {
 		private String campName;
 		private LocalDate startDate;
 		private LocalDate endDate;
 		private LocalDate closingDate;
 		private String location;
-		private int totalSlots;
-		private int remainingSlots;
+		private int attendeeSlots;
+		private int committeeSlots;
 		private String description;
 		private String inCharge;
 		private Faculty visibility;
 		private List<Post> enquiries;
 		private List<Post> suggestions;
-		private List<User> attendees;
-		private List<User> committee;
+		private List<String> attendees;
+		private List<String> committee;
 
 		public Builder() {
 			// Default values can be set here
+			this.suggestions = null;
+			this.enquiries = null;
+			this.attendees = null;
+			this.committee = null;
 		}
 
 		public Builder campName(String campName) {
@@ -84,13 +90,13 @@ public class Camp extends App {
 			return this;
 		}
 
-		public Builder totalSlots(int totalSlots) {
-			this.totalSlots = totalSlots;
+		public Builder attendeeSlots(int attendeeSlots) {
+			this.attendeeSlots = attendeeSlots;
 			return this;
 		}
 
-		public Builder remainingSlots(int remainingSlots) {
-			this.remainingSlots = remainingSlots;
+		public Builder committeeSlots(int slots) {
+			this.committeeSlots = slots;
 			return this;
 		}
 
@@ -119,12 +125,12 @@ public class Camp extends App {
 			return this;
 		}
 
-		public Builder attendees(List<User> attendees) {
+		public Builder attendees(List<String> attendees) {
 			this.attendees = attendees;
 			return this;
 		}
 
-		public Builder committee(List<User> committee) {
+		public Builder committee(List<String> committee) {
 			this.committee = committee;
 			return this;
 		}
@@ -134,10 +140,10 @@ public class Camp extends App {
 		}
 	}
 
+	//Getters and Setters
 	public String getCampName() {
 		return campName;
 	}
-
 	public void setCampName(String campName) {
 		this.campName = campName;
 	}
@@ -145,7 +151,6 @@ public class Camp extends App {
 	public LocalDate getStartDate() {
 		return startDate;
 	}
-
 	public void setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
 	}
@@ -153,7 +158,6 @@ public class Camp extends App {
 	public LocalDate getEndDate() {
 		return endDate;
 	}
-
 	public void setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
 	}
@@ -161,7 +165,6 @@ public class Camp extends App {
 	public LocalDate getClosingDate() {
 		return closingDate;
 	}
-
 	public void setClosingDate(LocalDate closingDate) {
 		this.closingDate = closingDate;
 	}
@@ -169,31 +172,95 @@ public class Camp extends App {
 	public String getLocation() {
 		return location;
 	}
-
 	public void setLocation(String location) {
 		this.location = location;
 	}
 
-	public int getTotalSlots() {
-		return totalSlots;
+	public int getAttendeeSlots() {
+		return this.attendeeSlots;
+	}
+	public void setAttendeeSlots(int attendeeSlots) {
+		this.attendeeSlots = attendeeSlots;
 	}
 
-	public void setTotalSlots(int totalSlots) {
-		this.totalSlots = totalSlots;
+	/* don't need this just use the get remaining functions
+	public void decreaseSlots() {
+		int cur = this.getAttendeeSlots();
+		cur--;
+		this.remainingSlots = cur;
 	}
 
-	public int getRemainingSlots() {
-		return remainingSlots;
+	public void increaseSlots() {
+		this.attendeeSlots++;
+	}*/
+
+	public List<String> getAttendees() {
+		return attendees;
+	}
+	public void setAttendees(List<String> attendees) {
+		this.attendees = attendees;
+	}
+	public void addAttendee(String userID) {
+		this.attendees.add(userID);
+	}
+	public void removeAttendee(String userID){this.attendees.remove(userID);}
+
+	public List<String> getCommittee() {
+		return committee;
+	}
+	public void setCommittee(List<String> committee) {
+		this.committee = committee;
 	}
 
-	public void setRemainingSlots(int remainingSlots) {
-		this.remainingSlots = remainingSlots;
+	public int getCommitteeSlots() {
+		return committeeSlots;
+	}
+
+	public void setCommitteeSlots(int committeeSlots) {
+		this.committeeSlots = committeeSlots;
+	}
+
+	public void addCommittee(String userID) {
+		if(this.getRemainingCommitteeSlots() > 0){
+			System.out.println("User has been added to the camp committee!");
+			this.committee.add(userID);
+		}
+		else
+			System.out.println("Camp Committee is full.");
+	}
+	public void removeCommittee(String userID){
+		if(checkForMember(userID)){
+			System.out.println("User has been removed from the camp committee!");
+			this.committee.remove(userID);
+		}
+		else
+			System.out.println("User is in the camp committee.");
+	}
+
+	//if specified user has already joined the camp as an attendee or committee, returns true
+	public boolean checkForMember(String userID) {
+		return this.committee.contains(userID) || this.attendees.contains(userID);
+	}
+
+	public int getNumAttendees() {
+		return this.attendees.size();
+	}
+
+	public int getRemainingCommitteeSlots() {
+		return this.committeeSlots - this.committee.size();
+	}
+
+	public int getNumCommitteeMembers() {
+		return this.committee.size();
+	}
+
+	public int getRemainingAttendeeSlots(){
+		return this.attendeeSlots - this.getNumAttendees();
 	}
 
 	public String getDescription() {
 		return description;
 	}
-
 	public void setDescription(String description) {
 		this.description = description;
 	}
@@ -201,7 +268,6 @@ public class Camp extends App {
 	public String getInCharge() {
 		return inCharge;
 	}
-
 	public void setInCharge(String inCharge) {
 		this.inCharge = inCharge;
 	}
@@ -209,7 +275,6 @@ public class Camp extends App {
 	public Faculty getVisibility() {
 		return visibility;
 	}
-
 	public void setVisibility(Faculty visibility) {
 		this.visibility = visibility;
 	}
@@ -217,55 +282,11 @@ public class Camp extends App {
 	public void setEnquiries(List<Post> enquiries) {
 		this.enquiries = enquiries;
 	}
+	public void addEnquiry(Post post){ this.enquiries.add(post); }
+	public List<Post> getEnquiries(){ return this.enquiries; }
 
-	public void setSuggestions(List<Post> suggestions) {
-		this.suggestions = suggestions;
-	}
-
-	public List<User> getAttendees() {
-		return attendees;
-	}
-
-	public void setAttendees(List<User> attendees) {
-		this.attendees = attendees;
-	}
-
-	public void addAttendee(User attendee) {
-		this.attendees.add(attendee);
-	}
-	public void removeAttendee(User user){
-		this.attendees.remove(user);
-	}
-
-	public List<User> getCommittee() {
-		return committee;
-	}
-
-	public void setCommittee(List<User> committee) {
-		this.committee = committee;
-	}
-
-
-	//always have an empty constructor! otherwise
-	public Camp(){}
-
-	//USE A BUILDER INSTEAD
-	public Camp(String campName, LocalDate startDate, LocalDate endDate, LocalDate closingDate,
-			String location, int slots, List<User> Attendees, List<User> Committee, String description, String inCharge, Faculty visibility) {
-		// TODO Auto-generated constructor stub
-		this.campName = campName;
-		this.startDate = startDate;
-		this.endDate = endDate;
-		this.closingDate = closingDate;
-		this.location = location;
-		this.totalSlots = slots;
-		this.remainingSlots = slots;
-		this.attendees = Attendees;
-		this.committee = Committee;
-		this.description = description; 
-		this.inCharge = inCharge;
-		this.visibility = visibility;
-	}
+	public void setSuggestions(List<Post> suggestions) { this.suggestions = suggestions; }
+	public List<Post> getSuggestions(){ return this.suggestions; }
 
 	public void removePost(PostType postType, Post post){
 		switch (postType) {
@@ -278,111 +299,16 @@ public class Camp extends App {
 		}
 	}
 
-	public void addEnquiry(Post post){
-		this.enquiries.add(post);
-	}
 
-	public List<Post> getEnquiries(){
-		return this.enquiries;
-	}
-
-	public List<Post> getSuggestions(){
-		return this.suggestions;
-	}
-	
-
-	
-	public void decrSlots() {
-		int cur = this.getTotalSlots();
-		cur--;
-		this.remainingSlots = cur;
-	}
-	
-	public void incrSlots() {
-		int cur = this.getTotalSlots();
-		cur++;
-		this.remainingSlots = cur;
-	}
-
-	public boolean checkForMember(String userID) {
-		boolean status = false;
-		int f = this.getNumMembers();
-		for (int i = 0; i < f; i++) {
-			if (studentsList[i].userID == userID) {
-				status = true;
-				break;
-			}
-		}
-		return status;
-	}
-	
-	public int getNumMembers() {
-		int count = 0;
-		if (this.studentsList != null) {
-			int i = 0;
-			while (this.studentsList[i] != null) {
-				count++;
-				i++;
-			}
-		}
-		return count;
-	}
-	
-	public void addMember(Student s) {
-		if (this.studentsList == null) {
-			this.studentsList = new Student[11]; // make 11 spaces automatically
-		}
-		if (this.committee == null) {
-			this.committee = new Student[10]; // MAX 10
-		}
-		
-		int memNum = this.getNumMembers();
-		
-		this.studentsList[memNum] = s; // add student in
-		System.out.println("You have successfully registered!");
-		if (memNum < 10 && !s.isCommittee) {
-			this.committee[memNum] = s; // add to committee also
-			s.isCommittee = true;
-			System.out.println("Due to vacancy, you have been added to the Committee as well.");
-		} else {
-			System.out.println("You would just be an attendee.");
-		}
-		
-		decrSlots(); // decrement slots
-	}
-	
-	public String checkRole(String userID) {
-		String res = "Attendee";
-		for (int i = 0; i < this.committee.length; i++) {
-			if (userID == committee[i].userID) {
-				res = "Committee Member";
-				break;
-			}
-		}
-		return res;
-	}
-	
-	public String getMembers(Student[] ar) {
-		String res = "";
-		if (ar != null) {
-			for (int i = 0; i < ar.length; i++) {
-				if (ar[i] != null) {
-					res += ar[i].userID + ", ";
-				}
-			}
-		} else {
-			res = null;
-		}
-		return res;
-	}
+	//Prints formatted camp information to user
 	public void display() {
 		System.out.println("Name: " + this.campName);
 		System.out.println("Dates: " + this.startDate.toString() + " - " + this.endDate.toString());
 		System.out.println("Registration closes on: " + this.closingDate.toString());
 		System.out.println("Open to: " + this.visibility);
 		System.out.println("Location: " + this.location);
-		System.out.println("Available Slots: " + this.remainingSlots + " / " + this.totalSlots);
-		System.out.println("Committee Size: " + this.getCommittee().size() + " / "); //FIX THIS: need to get size of commitee and remainig slots
+		System.out.println("Available Attendee Slots: " + this.getRemainingAttendeeSlots() + " / " + this.attendeeSlots);
+		System.out.println("Committee Size: " + this.getCommittee().size() + " / " + this.committeeSlots);
 		System.out.println("Description: " + this.description);
 		System.out.println("Staff-in-Charge: " + this.inCharge);
 	}
@@ -390,7 +316,7 @@ public class Camp extends App {
 	public String toString() {
 	    return "Name: " + this.campName + ", Starting Date: " + this.startDate + ", Ending Date: "
 	+ this.endDate + ", Closing Date: " + this.closingDate + ", Open to: "
-	    		+ this.visibility + ", Location: " + this.location + ", Total Slots: " + this.totalSlots + ", Remaining Slots: " + this.remainingSlots + ", Committee Members: "
-	    		+ this.getCommittee() + ", Student Members: " + this.getAttendees() + ", Description: " + this.description + ", Staff-in-Charge: " + this.inCharge;
+	    		+ this.visibility + ", Location: " + this.location + ", Attendee Slots: " + this.attendeeSlots + ", Committee Slots: " + this.committeeSlots + ", Committee Members: "
+	    		+ this.getCommittee().toString() + ", Student Members: " + this.getAttendees() + ", Description: " + this.description + ", Staff-in-Charge: " + this.inCharge;
 	}
 }

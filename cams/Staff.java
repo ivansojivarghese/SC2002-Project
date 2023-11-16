@@ -45,6 +45,7 @@ public class Staff extends User {
 
 }
     // Student class constructor
+//Dont need this. new password can be set using user.setPassword().
     /*
     Staff(String name, String userID, String faculty, String password, int identity)
     {

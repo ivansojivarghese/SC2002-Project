@@ -27,8 +27,15 @@ public class App {
 				return;
 		}
 
+		//Proceed to login page
 		Dashboard dashboard = new Dashboard();
 		dashboard.startMain();
+
+		while(!dashboard.isQuit()) {
+			dashboard.request();
+		}
+
+		System.out.println("APP TERMINATED");
 /*
 		if (authenticatedUser instanceof Student) { // student
 			// GO TO DASHBOARD

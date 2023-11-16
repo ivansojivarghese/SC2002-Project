@@ -2,9 +2,13 @@ package cams;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StaffMenuState implements DashboardState {
+    //> FACULTY INFO.
+    //> CHANGE PASSWORD
+    //> LOGOUT (BACK TO LOG IN PAGE)
     @Override
     public void display(Dashboard dashboard) {
         int option;
@@ -44,6 +48,9 @@ public class StaffMenuState implements DashboardState {
                 user.displayMyCamps();
 
             case 4:
+                //TODO maybe put this method for viewing available camps in camp repo instead? for better encapsulation
+                //Users should be able to see all camps available to their faculty, irregardless of timing clashes
+                //so they can choose to withdraw to attend other camps
                 user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
                 break;
             //TODO implement camp editing (case 5)
@@ -58,68 +65,123 @@ public class StaffMenuState implements DashboardState {
                 LocalDate endDate = null;
                 LocalDate closingDate = null;
                 String location;
-                int slots = 0;
-                Student[] studentsList = null;
-                Student[] committee = null;
+                int attendeeSlots;
+                int committeeSlots;
                 String description;
                 String inCharge = user.getUserID();
                 Faculty visibility = Faculty.ALL;
 
-                System.out.println("You are creating a new Camp.");
-                System.out.println("What is its name?");
-                campName = sc.next();
+                //Use TRY-CATCH block with WHILE loop for getting valid input
+                //GET Camp Name
+                while(true){
+                    System.out.println("You are creating a new Camp.");
+                    System.out.println("What is its name?");
+                    campName = sc.nextLine();
+                    UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
 
-                try {
-                    //INPUT START DATE
-                    System.out.println("Enter start date (format: yyyy-MM-dd): ");
-                    input = sc.nextLine();
-                    startDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    System.out.println("Date entered: " + startDate);
-
-                    while (true) {
-                        //INPUT end date
-                        System.out.println("Enter end date (format: yyyy-MM-dd): ");
+                    if (repo.retrieveCamp(campName) != null) {
+                        break; // Break the loop if the name doesn't exist in the map
+                    }
+                    System.out.println("This name already exists. Please enter a different name.");
+                }
+                //Get start and end dates
+                while(true) {
+                    try {
+                        //INPUT START DATE
+                        System.out.println("Enter start date (format: yyyy-MM-dd): ");
                         input = sc.nextLine();
+                        startDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        System.out.println("Start Date: " + startDate);
 
-                        endDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                        System.out.println("Date entered: " + endDate);
+                        while (true) {
+                            //INPUT end date
+                            System.out.println("Enter end date (format: yyyy-MM-dd): ");
+                            input = sc.nextLine();
 
-                        if (startDate.isEqual(endDate) || endDate.isAfter(startDate)) {
+                            endDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                            System.out.println("End Date: " + endDate);
+
+                            if (startDate.isEqual(endDate) || endDate.isAfter(startDate)) {
+                                break;
+                            } else {
+                                System.out.println("End Date is before Start Date. Please re-enter End Date.");
+                            }
+                        }
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid date format!");
+                    }
+                }
+                //Get closing date of registration
+                while(true) {
+                    try {
+                        System.out.println("Enter registration closing date (format: yyyy-MM-dd): ");
+                        input = sc.nextLine();
+                        closingDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                        if(closingDate.isBefore(startDate)){
+                            System.out.println("Closing Date: " + closingDate);
                             break;
-                        } else {
-                            System.out.println("End Date is before Start Date. Please re-enter End Date.");
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Invalid date format!");
+                    }
+                }
+
+                //Get visibility
+                while (true) {
+                    System.out.println("Is this open to the whole of NTU (1), or just only to your faculty? (2)");
+                    input = sc.nextLine(); //Use nextLine instead of nextInt to prevent integer mismatch exception
+                    if ("1".equals(input) || "2".equals(input)) {
+                        value = Integer.parseInt(input); // Convert to integer
+
+                        if (value == 1 || value == 2) {
+                            if(value == 2)
+                                visibility = user.getFaculty();
+                            break;
+                        }
+
+                        else {
+                            System.out.println("Invalid input. Please enter 1 or 2.");
                         }
                     }
-                } catch (Exception e) {
-                    System.out.println("Invalid date format!");
                 }
 
-                try {
-                    System.out.println("Enter registration closing date (format: yyyy-MM-dd): ");
-                    input = sc.nextLine();
-                    LocalDate date = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    System.out.println("Date entered: " + date);
-                } catch (Exception e) {
-                    System.out.println("Invalid date format!");
-                }
+                //GET location
+                System.out.println("Where is its location?");
+                location = sc.nextLine();
 
-                do {
-                    System.out.println("Is this open to the whole of NTU (1), or just only to your faculty? (2)");
-                    value = sc.nextInt();
-                    if (value == 2) {
-                        visibility = user.getFaculty();
+                //GET number of slots for attendees
+                while (true) {
+                    try{
+                    System.out.println("How many attendee slots are available?");
+                    attendeeSlots = sc.nextInt();
+                    break;
                     }
-                } while (value != 1 && value != 2);
+                    catch (InputMismatchException e){
+                        System.out.println("Invalid input. Please enter an integer.");
+                        sc.nextLine(); // Consume the invalid input
+                    }
+                }
 
-                System.out.println("Where is its location? (Leave no spacings)");
-                location = sc.next();
+                //GET number of slots for committee
+                while (true) {
+                    try{
+                        System.out.println("How many committee member slots are available?");
+                        committeeSlots = sc.nextInt();
+                        break;
+                    }
+                    catch (InputMismatchException e){
+                        System.out.println("Invalid input. Please enter an integer.");
+                        sc.nextLine(); // Consume the invalid input
+                    }
+                }
 
-                System.out.println("How many slots are available?");
-                slots = sc.nextInt();
-                //COMMENT why the need to leave no spacing? what does this mean
-                System.out.println("Please provide a description. (Leave no spacings)");
-                description = sc.next();
-                /*
+                //GET description
+                System.out.println("Please provide a description:");
+                description = sc.nextLine();
+
+                /* Can't remember if this is part of the requirements or if visibility only refers to faculty-visibility
                 do {
                     System.out.println("Should the Camp be visible? [1: YES, 0: NO]");
                     visible = sc.nextInt();
@@ -130,20 +192,21 @@ public class StaffMenuState implements DashboardState {
                     }
                 } while (visible != 1 && visible != 0);
                 */
-                //TODO creation of camp committee with input size
+
+                //Use a builder for better readability
                 Camp newCamp = new Camp.Builder()
                     .campName(campName)
                     .startDate(startDate)
                     .endDate(endDate)
                     .closingDate(closingDate)
                     .location(location)
-                    .totalSlots(slots)
+                    .attendeeSlots(attendeeSlots)
+                    .committeeSlots(committeeSlots)
                     .description(description)
                     .inCharge(user.getUserID())
                     .visibility(user.getFaculty())
                     .build();
                 System.out.println("Camp created successfully!");
-
         }
     }
 }

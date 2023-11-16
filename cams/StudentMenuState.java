@@ -1,5 +1,7 @@
 package cams;
 
+import cams.EnquiryHandler.Enquirer;
+
 import java.util.Scanner;
 
 public class StudentMenuState implements DashboardState{
@@ -20,9 +22,9 @@ public class StudentMenuState implements DashboardState{
         System.out.println("(1) Change your password");
         System.out.println("(2) Logout");
         System.out.println("(3) View my Camps");
-
         System.out.println("(4) Register for a Camp");
         System.out.println("(5) Withdraw from a Camp");
+        System.out.println("(6) View enquiries menu");
 
         option = sc.nextInt();
 
@@ -57,6 +59,9 @@ public class StudentMenuState implements DashboardState{
                     userInput = sc.next();
                     ((Participant) user).Deregister(userInput);
                 }
+                break;
+            case 6:
+                dashboard.enquirerMenu();
                 break;
         }
     }

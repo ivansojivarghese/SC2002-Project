@@ -5,7 +5,7 @@ import cams.PostTypes.Message;
 import cams.PostTypes.Post;
 import cams.User;
 
-public class Approver extends ApproverUI{
+public class Approver extends ApproverUI {
 
     @Override
     public int approve(User user, int postIndex, String isApproved) {

@@ -6,6 +6,8 @@ import java.util.Objects;
 import cams.PostTypes.*;
 
 public class Student extends User implements Participant { // student class
+    private boolean isCommittee = false;
+    private String myCommittee = null;
     public boolean isCommittee() {
         return isCommittee;
     }
@@ -14,7 +16,7 @@ public class Student extends User implements Participant { // student class
         isCommittee = committee;
     }
 
-    private boolean isCommittee = false;
+
 
     /*
     public void setPassword(int identity, String password) {
@@ -85,18 +87,27 @@ public class Student extends User implements Participant { // student class
     //IMPLEMENT Participant
     @Override
     public void Deregister(String campName) {
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        Camp camp = repo.retrieveCamp(campName);
+        if(camp == null)
+        {
+            System.out.println("Camp does not exist.");
+            return;
+        }
         if(this.getMyCamps().contains(campName)){
-            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-            Camp camp = repo.retrieveCamp(campName);
-            camp.removeAttendee(this);
-            this.removeCamp(campName);
-            System.out.println("Successfully deregistered.");
+            if(!campName.equalsIgnoreCase(myCommittee)){
+                camp.removeAttendee(this.getUserID());
+                this.removeCamp(campName);
+                System.out.println("Successfully deregistered.");
+            }
+            else
+                System.out.println("Camp committee members cannot withdraw from their camp.");
         }
         else
             System.out.println("Unable to deregister for a camp you did not register for.");
     }
     @Override
-    public void Register(String campName) { //campIndex is the index of the camp in the list of camps available to the student user
+    public void Register(String campName) {
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         if (repo.getSize() == 0) {
             System.out.println("No camps exist.");
@@ -107,7 +118,7 @@ public class Student extends User implements Participant { // student class
         boolean Registered = this.getMyCamps().contains(selectedCamp.getCampName()); // check if user has registered for camp already
         boolean datesClash = Date.checkClashes(this, selectedCamp);
         ; // check for clashes in dates with other camps
-        boolean availableSlot = selectedCamp.getRemainingSlots() > 0;
+        boolean availableSlot = selectedCamp.getRemainingAttendeeSlots() > 0;
 
         //FAILURE outcomes
         if (Registered) {
@@ -124,7 +135,7 @@ public class Student extends User implements Participant { // student class
         }
 
         //SUCCESS outcome
-        selectedCamp.addAttendee(this); //add attendee to camp
+        selectedCamp.addAttendee(this.getUserID()); //add attendee to camp
         this.addCamp(selectedCamp); //add camp to attendee
         System.out.println("Successfully registered.");
     }
