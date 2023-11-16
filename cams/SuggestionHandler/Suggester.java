@@ -1,5 +1,6 @@
 package cams.SuggestionHandler;
 
+import cams.Camp;
 import cams.PostTypes.*;
 import cams.User;
 
@@ -28,8 +29,13 @@ public class Suggester extends SuggesterUI{
             return -1; //user does not exist
 
         Post currentPost = user.getSuggestions().get(postIndex);
+
         if(currentPost.isReplied())
             return -2; //reply exists
+
+        Camp camp = currentPost.getCamp();
+        camp.removePost(PostType.SUGGESTION, currentPost);
+        //User does not store their posts
         return 1;
     }
 }

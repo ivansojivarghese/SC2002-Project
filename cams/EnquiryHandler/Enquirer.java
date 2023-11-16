@@ -1,5 +1,6 @@
 package cams.EnquiryHandler;
 
+import cams.Camp;
 import cams.PostTypes.*;
 import cams.User;
 
@@ -29,6 +30,10 @@ public class Enquirer extends EnquirerUI{
         Post currentPost = user.getEnquiries().get(postIndex);
         if(currentPost.isReplied())
             return -2; //reply exists
+
+        Camp camp = currentPost.getCamp();
+        camp.removePost(PostType.ENQUIRY, currentPost);
+        //User does not store their posts
         return 1;
     }
 }
