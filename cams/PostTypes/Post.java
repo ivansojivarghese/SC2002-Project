@@ -7,12 +7,12 @@ import java.util.List;
 
 public class Post {
     //Attributes
-    private Camp camp;
+    private String campName;
     private PostType postType;
     private List<Message> content;
 
     public Post(){
-        this.camp = null;
+        this.campName = null;
         this.content = null;
     }
 
@@ -29,6 +29,7 @@ public class Post {
     }
 
     public void displayContent(){
+        System.out.println("Camp: " + this.campName);
         for(Message message : this.content){
             message.displayContent();
         }
@@ -42,15 +43,19 @@ public class Post {
 
     public void removeFromCamp() {
         //if post is already in a camp, remove the current post from the camp
-        if(this.getCamp() != null) {
-            this.camp.removePost(this.postType, this);
+        Camp camp = this.getCamp();
+        if(camp != null) {
+            camp.removePost(this.postType, this);
         }
     }
 
     //Getters and Setters
     public Camp getCamp() {
-        return camp;
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        return repo.retrieveCamp(this.campName);
     }
+
+    public String getCampName(){return campName;}
 
     public Boolean setCamp(String campName) {
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
@@ -58,10 +63,10 @@ public class Post {
         if(camp == null) //if camp does not exist
             return false;
 
-        if(this.camp != null) { //if post already has a camp, remove the current post from the camp
+        if(getCamp() != null) { //if post already has a camp, remove the current post from the camp
             removeFromCamp();
         }
-        this.camp = camp; //set new camp
+        this.campName = campName; //set new camp
         camp.addEnquiry(this);
 
         return true;

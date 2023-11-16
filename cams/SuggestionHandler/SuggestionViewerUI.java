@@ -1,36 +1,47 @@
 package cams.SuggestionHandler;
 
+import cams.Dashboard;
 import cams.PostTypes.Post;
 import cams.User;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class SuggestionViewerUI {
-    public void displayMenu(User user){
+    public void display(Dashboard dashboard){
         Post currentPost;
+        User user = dashboard.getAuthenticatedUser();
         Scanner userInput = new Scanner(System.in);
         int choice;
-        do {
-            System.out.println("Select an action: ");
-            System.out.println("1. View my suggestions");
-            System.out.println("-1. Back");
+        view(user);
+        System.out.println("Select an action: ");
+        System.out.println("(-1) Back");
+
+        try {
             choice = userInput.nextInt();
 
-            switch (choice){
-                case 1:
-                    view(user);
-                    break;
-                case 2:
-                    break;
+            switch (choice) {
+                case -1:
+                    dashboard.loggedIn();
+                default:
+                    System.out.println("Invalid input.");
             }
-        } while(choice != -1);
+        }
+        catch (InputMismatchException e){
+            System.out.println("Invalid input. Please enter a number.");
+            userInput.nextLine();  // Consume the invalid input
+        }
     }
 
     public int view(User user){
         Post currentPost;
         System.out.println("Camp Suggestions: ");
         List<Post> mySuggestions = user.getSuggestions();
+        if(mySuggestions.isEmpty()){
+            System.out.println("No suggestions to display.");
+            return 0;
+        }
         for (int i = 0; i < mySuggestions.size(); i++) {
             currentPost = mySuggestions.get(i);
             System.out.println(i + ": ");

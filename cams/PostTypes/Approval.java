@@ -38,5 +38,6 @@ public class Approval extends Message{
             System.out.printf("Approved\n");
         else
             System.out.printf("Rejected\n");
+        System.out.println();
     }
 }
