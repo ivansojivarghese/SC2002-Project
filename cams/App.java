@@ -8,6 +8,8 @@ import cams.users.User;
 import java.util.Scanner;
 
 public class App {
+
+	//TODO implement this
 	public static Boolean initialiseUserData(){
 		//IMPLEMENT
         return false;
@@ -28,26 +30,11 @@ public class App {
 		Dashboard dashboard = new Dashboard();
 		dashboard.startMain();
 
+		//Re-displays the menu until user chooses to quit the App
 		while(!dashboard.isQuit()) {
 			dashboard.request();
 		}
 
 		System.out.println("APP TERMINATED");
-/*
-		if (authenticatedUser instanceof Student) { // student
-			// GO TO DASHBOARD
-			System.out.println("Welcome STUDENT " + authenticatedUser.getUserID() + "!");
-			Dashboard dashboard = new Dashboard(userStatus[1], studentArr[userStatus[1]].name, studentArr[userStatus[1]].userID, studentArr[userStatus[1]].faculty, "Student");
-		}
-
-		else if (authenticatedUser instanceof Staff) { // staff
-			System.out.println("Welcome STAFF " + authenticatedUser.getUserID() + "!");
-			// GO TO DASHBOARD
-			Dashboard dashboard = new Dashboard(userStatus[1], staffArr[userStatus[1]].name, staffArr[userStatus[1]].userID, staffArr[userStatus[1]].faculty, "Staff");
-		}
-
-		else { // does not exist
-			System.out.println("User does not exist.");
-		}*/
 	}
 }
