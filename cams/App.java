@@ -31,17 +31,17 @@ public class App {
 		// declaring user (staff and students) information from Excel file
 		if (unifiedUserRepository.isEmpty()) { // DECLARE ONCE
 			
-			System.out.println("wow");
+			// System.out.println("wow");
 			
 			ArrayList<User> staff = null;
 			ArrayList<User> student = null;
 			staff = ReadExcelFile.updateFromFile("staff_list.xlsx"); // return a stack of user class objects
 			student = ReadExcelFile.updateFromFile("student_list.xlsx"); // return a stack of user class objects
 			
-			for (int i = 0; i < staff.size() - 1; i++) {
+			for (int i = 0; i < staff.size(); i++) {
 				unifiedUserRepository.addUser(staff.get(i)); // add each staff user object into repository
 			}
-			for (int j = 0; j < student.size() - 1; j++) {
+			for (int j = 0; j < student.size(); j++) {
 				unifiedUserRepository.addUser(student.get(j)); // add each student user object into repository
 			}
 			
@@ -50,7 +50,7 @@ public class App {
 				return;
 		}
 		
-		System.out.println("wow");
+		// System.out.println("wow");
 
 		//Proceed to login page
 		Dashboard dashboard = new Dashboard();
