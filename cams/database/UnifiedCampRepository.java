@@ -12,7 +12,9 @@ public class UnifiedCampRepository {
     private HashMap<String, Camp> Camps;
 
     //prevent construction outside the class
-    private UnifiedCampRepository(){}
+    private UnifiedCampRepository(){
+        this.Camps = new HashMap<String, Camp>();
+    }
 
     public void addCamp(Camp camp){
         this.Camps.put(camp.getCampName(), camp);

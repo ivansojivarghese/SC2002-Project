@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class App {
 	public static Boolean initialiseUserData(){
-		//IMPLEMENT
+		
 		if (!UnifiedUserRepository.getInstance().isEmpty()) {
 			return true;
 		}
