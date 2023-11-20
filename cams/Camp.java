@@ -1,6 +1,8 @@
 package cams;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import cams.post_types.*;
 import cams.util.Faculty;
@@ -19,7 +21,7 @@ public class Camp extends App {
 	private List<Post> enquiries;
 	private List<Post> suggestions;
 	private List<String> attendees;
-	private List<String> committee;
+	private HashMap<String, Integer> committee;
 
 	//Best practice to always have an empty constructor
 	public Camp(){}
@@ -56,7 +58,7 @@ public class Camp extends App {
 		private List<Post> enquiries;
 		private List<Post> suggestions;
 		private List<String> attendees;
-		private List<String> committee;
+		private HashMap<String, Integer> committee;
 
 		public Builder() {
 			// Default values can be set here
@@ -131,7 +133,7 @@ public class Camp extends App {
 			return this;
 		}
 
-		public Builder committee(List<String> committee) {
+		public Builder committee(HashMap<String, Integer> committee) {
 			this.committee = committee;
 			return this;
 		}
@@ -207,10 +209,7 @@ public class Camp extends App {
 	public void removeAttendee(String userID){this.attendees.remove(userID);}
 
 	public List<String> getCommittee() {
-		return committee;
-	}
-	public void setCommittee(List<String> committee) {
-		this.committee = committee;
+		return new ArrayList<>(committee.keySet());
 	}
 
 	public int getCommitteeSlots() {
@@ -224,7 +223,7 @@ public class Camp extends App {
 	public void addCommittee(String userID) {
 		if(this.getRemainingCommitteeSlots() > 0){
 			System.out.println("User has been added to the camp committee!");
-			this.committee.add(userID);
+			this.committee.put(userID, 0); //Put UserID with points intialised to 0 into the committee
 		}
 		else
 			System.out.println("Camp Committee is full.");
@@ -240,7 +239,7 @@ public class Camp extends App {
 
 	//if specified user has already joined the camp as an attendee or committee, returns true
 	public boolean checkForMember(String userID) {
-		return this.committee.contains(userID) || this.attendees.contains(userID);
+		return this.committee.containsKey(userID) || this.attendees.contains(userID);
 	}
 
 	public int getNumAttendees() {
@@ -299,7 +298,6 @@ public class Camp extends App {
 				break;
 		}
 	}
-
 
 	//Prints formatted camp information to user
 	public void display() {
