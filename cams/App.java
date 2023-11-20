@@ -6,16 +6,24 @@ import cams.database.UnifiedUserRepository;
 import cams.users.User;
 import cams.util.ReadExcelFile;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class App {
 	public static Boolean initialiseUserData(){
 		//IMPLEMENT
+		if (!UnifiedUserRepository.getInstance().isEmpty()) {
+			return true;
+		}
 		
         return false;
     }
 
 	public static void main(String[] args) {
+		
+		// final HashMap<String, User> staff;
+		
 		//DECLARE databases
 		UnifiedCampRepository unifiedCampRepository = UnifiedCampRepository.getInstance();
 		UnifiedUserRepository unifiedUserRepository = UnifiedUserRepository.getInstance();
@@ -23,21 +31,26 @@ public class App {
 		// declaring user (staff and students) information from Excel file
 		if (unifiedUserRepository.isEmpty()) { // DECLARE ONCE
 			
-			ReadExcelFile.updateFromFile("staff_list");
+			System.out.println("wow");
 			
-			ReadExcelFile.updateFromFile("student_list");
+			ArrayList<User> staff = null;
+			ArrayList<User> student = null;
+			staff = ReadExcelFile.updateFromFile("staff_list.xlsx"); // return a stack of user class objects
+			student = ReadExcelFile.updateFromFile("student_list.xlsx"); // return a stack of user class objects
 			
-			// unifiedUserRepository.addUser("ac");
-			
-			// go to staff list
-			// loop through all names and add to this
-			
-			// students list
-			// loop through all
+			for (int i = 0; i < staff.size() - 1; i++) {
+				unifiedUserRepository.addUser(staff.get(i)); // add each staff user object into repository
+			}
+			for (int j = 0; j < student.size() - 1; j++) {
+				unifiedUserRepository.addUser(student.get(j)); // add each student user object into repository
+			}
 			
 			if(!(initialiseUserData())) //IF failed to initialise
+				
 				return;
 		}
+		
+		System.out.println("wow");
 
 		//Proceed to login page
 		Dashboard dashboard = new Dashboard();

@@ -7,6 +7,7 @@ import cams.Camp;
 import cams.post_types.*;
 import cams.database.UnifiedCampRepository;
 import cams.util.Date;
+import cams.util.Faculty;
 
 public class Student extends User implements Participant { // student class
     private boolean isCommittee = false;
@@ -22,6 +23,14 @@ public class Student extends User implements Participant { // student class
 
     public String getCommittee(){
         return this.myCommittee;
+    }
+    
+    public Student(String name, String userID, String faculty) {
+    	this.setName(name);
+    	this.setUserID(userID);   
+    	if (faculty != "") {
+	    	this.setFaculty(Faculty.valueOf(faculty));
+    	}
     }
 
     /*

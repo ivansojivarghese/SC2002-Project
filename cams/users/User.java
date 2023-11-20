@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class User {
+	private String name;
     private String userID;
     private String password;
     private Faculty faculty;
@@ -30,6 +31,10 @@ public abstract class User {
     }
     public void removeCamp(String campName){
         this.myCamps.remove(campName);
+    }
+    
+    public void setName(String name) {
+    	this.name = name;
     }
 
     public String getUserID() {
@@ -55,5 +60,4 @@ public abstract class User {
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
-
 }

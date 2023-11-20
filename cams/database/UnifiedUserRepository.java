@@ -13,6 +13,9 @@ public class UnifiedUserRepository {
     }
 
     public void addUser(User user){
+    	if (this.users == null) {
+    		this.users = new HashMap<String, User>();
+    	}
         this.users.put(user.getUserID(), user);
     }
     public User retrieveUser(String userID){

@@ -2,6 +2,7 @@ package cams.users;
 
 import cams.Camp;
 import cams.post_types.Post;
+import cams.util.Faculty;
 import cams.database.UnifiedCampRepository;
 
 import java.util.List;
@@ -42,6 +43,14 @@ public class Staff extends User {
             camp.display();
             System.out.println("______________");
         }
+    }
+    
+    public Staff(String name, String userID, String faculty) {
+    	this.setName(name);
+    	this.setUserID(userID);   
+    	if (faculty != "") {
+	    	this.setFaculty(Faculty.valueOf(faculty));
+    	}
     }
 
 }
