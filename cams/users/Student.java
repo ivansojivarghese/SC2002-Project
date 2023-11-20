@@ -25,12 +25,10 @@ public class Student extends User implements Participant { // student class
         return this.myCommittee;
     }
     
-    public Student(String name, String userID, String faculty) {
+    public Student(String name, String userID, Faculty faculty) {
     	this.setName(name);
-    	this.setUserID(userID);   
-    	if (faculty != "") {
-	    	this.setFaculty(Faculty.valueOf(faculty));
-    	}
+    	this.setUserID(userID);
+        this.setFaculty(faculty);
     }
 
     /*

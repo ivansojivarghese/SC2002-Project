@@ -4,22 +4,13 @@ import cams.dashboards.Dashboard;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
 import cams.users.User;
-import cams.util.ReadExcelFile;
+import cams.util.UserType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class App {
-	public static Boolean initialiseUserData(){
-		
-		if (!UnifiedUserRepository.getInstance().isEmpty()) {
-			return true;
-		}
-		
-        return false;
-    }
-
 	public static void main(String[] args) {
 		
 		//DECLARE databases
@@ -28,21 +19,9 @@ public class App {
 
 		// declaring user (staff and students) information from Excel file
 		if (unifiedUserRepository.isEmpty()) { // DECLARE ONCE
-			
-			ArrayList<User> staff = null;
-			ArrayList<User> student = null;
-			staff = ReadExcelFile.updateFromFile("staff_list.xlsx"); // return a stack of user class objects
-			student = ReadExcelFile.updateFromFile("student_list.xlsx"); // return a stack of user class objects
-			
-			for (int i = 0; i < staff.size(); i++) {
-				unifiedUserRepository.addUser(staff.get(i)); // add each staff user object into repository
-			}
-			for (int j = 0; j < student.size(); j++) {
-				unifiedUserRepository.addUser(student.get(j)); // add each student user object into repository
-			}
-			
-			if(!(initialiseUserData())) //IF failed to initialise
-				
+			if(!(unifiedUserRepository.intialiseData("staff_list.xlsx", UserType.STAFF) &&
+				unifiedUserRepository.intialiseData("student_list.xlsx", UserType.STUDENT)))
+				//IF failed to initialise
 				return;
 		}
 

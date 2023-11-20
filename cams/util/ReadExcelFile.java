@@ -1,86 +1,68 @@
-package cams.util;
+//MOVED all user data intialising to UserRepo class for better encapsulation
 
-import java.io.File;  
+/*package cams.util;
+
+import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-
-import org.apache.poi.ss.usermodel.Cell;  
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;  
+import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import cams.users.*;
 
 public class ReadExcelFile {
-	public static ArrayList<User> updateFromFile(String filename) {
-		
-		ArrayList<User> data = new ArrayList<User>();
-		
-		try {  
-			
+
+	public static ArrayList<User> updateFromFile(String filename, UserType userType) {
+		ArrayList<User> data = new ArrayList<>();
+
+		try {
 			File file = new File(System.getProperty("user.dir") + "\\cams\\util\\" + filename);
-			FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file  
-			
-			//creating Workbook instance that refers to .xlsx file  
-			XSSFWorkbook wb = new XSSFWorkbook(fis);   
-			XSSFSheet sheet = wb.getSheetAt(0);     //creating a Sheet object to retrieve object  
-			Iterator<Row> itr = sheet.iterator();    //iterating over excel file  
-			
-			int rowLevel = 1;
-			int cellLevel = 0;
-			
-			while (itr.hasNext()) {  // iterate over each row
-				Row row = itr.next();  
-				Iterator<Cell> cellIterator = row.cellIterator();   //iterating over each column  
-				cellLevel = 1;
-				
-				String name = "";
-				String email = "";
-				String userID = "";
-				Faculty faculty = null;
-				
-				while (cellIterator.hasNext()) {  
-					
-					Cell cell = cellIterator.next();  
-					
-					if (cell.getStringCellValue().length() != 0) { // only with text values
-						if (rowLevel > 1) {
-							switch (cellLevel) {
-								case 1: // name
-									name = cell.getStringCellValue();
-								break;
-								case 2: // email
-									email = cell.getStringCellValue();
-									int tgt = email.indexOf("@");
-									userID = email.substring(0, tgt);
-								break;
-								case 3: // faculty
-									faculty = Faculty.valueOf(cell.getStringCellValue());
-								break;
-							}
-						}
-					}
-					
-					cellLevel++;
-				}  
-				
-				User user = new Staff(name, userID, faculty);
-				
-				if (!user.getUserID().isEmpty()) {
-					// System.out.println(user.getUserID());
-				
-					data.add(user);
+			FileInputStream fis = new FileInputStream(file);
+			XSSFWorkbook wb = new XSSFWorkbook(fis);
+			XSSFSheet sheet = wb.getSheetAt(0);
+
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) continue; // Skip header row
+
+                String name = "", email = "", userID = "";
+                Faculty faculty = null;
+
+                for (Cell cell : row) {
+                    String cellValue = cell.getStringCellValue();
+                    if (cellValue.isEmpty()) continue;
+
+                    switch (cell.getColumnIndex()) {
+                        case 0:
+                            name = cellValue;
+                            break;
+                        case 1:
+                            email = cellValue;
+                            userID = email.substring(0, email.indexOf("@"));
+                            break;
+                        case 2:
+                            faculty = Faculty.valueOf(cellValue);
+                            break;
+                    }
+                }
+
+                if (userID.isEmpty()) continue;
+				switch (userType) {
+					case STUDENT:
+						data.add(new Student(name, userID, faculty)); // Student constructor
+						break;
+					case STAFF:
+						data.add(new Staff(name, userID, faculty)); // Staff constructor
+						break;
 				}
-				
-				rowLevel++;
-			}  
-			
-		}  catch(Exception e)  {  
-			e.printStackTrace();  
-		}  
-		
+            }
+
+			wb.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return data;
 	}
 }
+*/
