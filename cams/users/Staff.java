@@ -9,6 +9,8 @@ import java.util.List;
 
 public class Staff extends User {
 
+    public Staff() {}
+
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff
         List<Post> myEnquiries = null;
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
@@ -45,38 +47,10 @@ public class Staff extends User {
         }
     }
     
-    public Staff(String name, String userID, String faculty) {
+    public Staff(String name, String userID, Faculty faculty) {
     	this.setName(name);
-    	this.setUserID(userID);   
-    	if (faculty != "") {
-	    	this.setFaculty(Faculty.valueOf(faculty));
-    	}
-    }
-
-}
-    // Student class constructor
-//Dont need this. new password can be set using user.setPassword().
-    /*
-    Staff(String name, String userID, String faculty, String password, int identity)
-    {
-        this.name = name;
-        this.userID = userID;
-        this.faculty = faculty;
-        if (password == null) {        	
-        	this.password = "password";
-        } else {        	
-        	setPassword(identity, password);
-        }
+    	this.setUserID(userID);
+        this.setFaculty(faculty);
+        this.setPassword("password");
     }
 }
-
-class NewPasswordStaff extends Staff {
-    NewPasswordStaff(String name, String userID, String faculty, String password, int identity) {
-		super(name, userID, faculty, password, identity);
-		// TODO Auto-generated constructor stub
-	}
-
-	public void setPassword(String password) {
-    	this.password = password;
-    }
-}*/

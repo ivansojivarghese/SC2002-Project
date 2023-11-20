@@ -24,7 +24,10 @@ public class LogoutState implements DashboardState{
                 dashboard.setQuit(true);
                 return;
             }
-            case 1 -> authenticatedUser = Login.loginAttempt();
+            case 1 -> {
+                System.out.println("Attempting Login...");
+                authenticatedUser = Login.loginAttempt();
+            }
         }
 
         //IF login successful set the menu to the loggedIn menu

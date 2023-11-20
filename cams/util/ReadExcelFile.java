@@ -39,7 +39,7 @@ public class ReadExcelFile {
 				String name = "";
 				String email = "";
 				String userID = "";
-				String faculty = "";
+				Faculty faculty = null;
 				
 				while (cellIterator.hasNext()) {  
 					
@@ -57,7 +57,7 @@ public class ReadExcelFile {
 									userID = email.substring(0, tgt);
 								break;
 								case 3: // faculty
-									faculty = cell.getStringCellValue();
+									faculty = Faculty.valueOf(cell.getStringCellValue());
 								break;
 							}
 						}
@@ -68,7 +68,7 @@ public class ReadExcelFile {
 				
 				User user = new Staff(name, userID, faculty);
 				
-				if (user.getUserID() != "") {
+				if (!user.getUserID().isEmpty()) {
 					// System.out.println(user.getUserID());
 				
 					data.add(user);
