@@ -48,10 +48,10 @@ public class StudentMenuState implements DashboardState{
 
             case 2: //logout
                 dashboard.logout();
-
+                break;
             case 3: //View registered camps
                 user.displayMyCamps();
-
+                break;
             case 4: //Register
                 user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
                 if(user instanceof Participant){

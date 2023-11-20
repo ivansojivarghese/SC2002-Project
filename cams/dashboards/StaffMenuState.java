@@ -51,10 +51,10 @@ public class StaffMenuState implements DashboardState {
 
             case 2:
                 dashboard.logout();
-
+                break;
             case 3:
                 user.displayMyCamps();
-
+                break;
             case 4:
                 //TODO maybe put this method for viewing available camps in camp repo instead? for better encapsulation
                 //Users should be able to see all camps available to their faculty, irregardless of timing clashes

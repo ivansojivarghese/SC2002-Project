@@ -22,16 +22,12 @@ public class App {
 
 	public static void main(String[] args) {
 		
-		// final HashMap<String, User> staff;
-		
 		//DECLARE databases
 		UnifiedCampRepository unifiedCampRepository = UnifiedCampRepository.getInstance();
 		UnifiedUserRepository unifiedUserRepository = UnifiedUserRepository.getInstance();
 
 		// declaring user (staff and students) information from Excel file
 		if (unifiedUserRepository.isEmpty()) { // DECLARE ONCE
-			
-			// System.out.println("wow");
 			
 			ArrayList<User> staff = null;
 			ArrayList<User> student = null;
@@ -49,8 +45,6 @@ public class App {
 				
 				return;
 		}
-		
-		// System.out.println("wow");
 
 		//Proceed to login page
 		Dashboard dashboard = new Dashboard();
