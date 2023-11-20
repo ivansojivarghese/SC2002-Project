@@ -18,6 +18,14 @@ public class UnifiedUserRepository {
     public User retrieveUser(String userID){
         return users.get(userID);
     }
+    
+    public boolean isEmpty() {
+    	if (this.users != null) {
+    		return this.users.isEmpty();
+    	} else {
+    		return true;
+    	}
+    }
 
     public static UnifiedUserRepository getInstance() {
         // If the instance is null, create a new one
