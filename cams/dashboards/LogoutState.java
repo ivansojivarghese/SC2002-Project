@@ -13,20 +13,24 @@ public class LogoutState implements DashboardState{
 
         // START main menu
         System.out.println("Welcome to the Camp Application and Management System (CAMs).");
-        System.out.println("Select an action: ");
         System.out.println("1: Login");
         System.out.println("0: Quit");
+        System.out.printf("SELECT AN ACTION: ");
 
         choice = sc.nextInt();
+
         switch (choice) {
             case 0 -> {
                 System.out.println("Program terminating...");
+                System.out.println("______________________________________________________________");
                 dashboard.setQuit(true);
-                return;
+                break;
             }
             case 1 -> {
                 System.out.println("Attempting Login...");
+                System.out.println("______________________________________________________________");
                 authenticatedUser = Login.loginAttempt();
+                break;
             }
         }
 

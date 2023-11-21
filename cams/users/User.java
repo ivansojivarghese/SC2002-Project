@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class User {
-	private String name;
+    private String name;
     private String userID;
     private String password;
     private Faculty faculty;
@@ -22,6 +22,14 @@ public abstract class User {
     public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();
 
+    public User(){}
+    public User(String name, String userID, Faculty faculty){
+        this.setName(name);
+        this.setUserID(userID);
+        this.setFaculty(faculty);
+        this.setPassword("password");
+    }
+
     public List<String> getMyCamps() {
         return this.myCamps;
     }
@@ -32,7 +40,11 @@ public abstract class User {
     public void removeCamp(String campName){
         this.myCamps.remove(campName);
     }
-    
+
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
     	this.name = name;
     }
@@ -42,7 +54,8 @@ public abstract class User {
     }
 
     public void setUserID(String userID) {
-        this.userID = userID;
+        //UserID is always set to uppercase
+        this.userID = userID.toUpperCase();
     }
 
     public String getPassword() {
@@ -50,7 +63,8 @@ public abstract class User {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        //Set password without any leading or trailing space to prevent user error
+        this.password = password.strip();
     }
 
     public Faculty getFaculty() {

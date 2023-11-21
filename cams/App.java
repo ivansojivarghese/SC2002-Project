@@ -30,6 +30,7 @@ public class App {
 		dashboard.startMain();
 
 		while(!dashboard.isQuit()) {
+			System.out.println("______________________________________________________________");
 			dashboard.request();
 		}
 

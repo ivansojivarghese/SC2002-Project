@@ -23,9 +23,13 @@ public class StaffMenuState implements DashboardState {
         User user = dashboard.getAuthenticatedUser();
 
         // Code to display options
-        System.out.println("-- DASHBOARD --");
-        System.out.println("STAFF Username: " + user.getUserID() + ", Faculty: " + user.getFaculty());
-        System.out.println("-- OPTIONS --");
+        System.out.println("                          DASHBOARD                           ");
+        System.out.println("______________________________________________________________");
+        System.out.println("STAFF Name: " + user.getName());
+        System.out.println("Username: " + user.getUserID());
+        System.out.println("Faculty: " + user.getFaculty());
+        System.out.println("______________________________________________________________");
+        System.out.println("                             MENU                              ");
         System.out.println("(1) Change your password");
         System.out.println("(2) Logout");
         System.out.println("(3) View my Camps");
@@ -37,13 +41,15 @@ public class StaffMenuState implements DashboardState {
             System.out.println("(7) Reply to my camps' suggestions");
             System.out.println("(8) Respond to camp enquiries");
         }
+        System.out.printf("SELECT AN ACTION: ");
         option = sc.nextInt();
+        System.out.println(); //consume new line
 
         switch (option){
             case 1:
                 String newPassword;
 
-                System.out.println("Enter new password:");
+                System.out.printf("Enter new password: ");
                 newPassword = sc.next();
                 user.setPassword(newPassword);
                 System.out.println("Password successfully changed!");

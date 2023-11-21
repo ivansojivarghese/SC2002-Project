@@ -11,10 +11,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UnifiedUserRepository {
+    // Use simple logger instead of Apache Log4j2 as it is overkill for a simple App
+    // The following line hides error due to Log4j2 logging implementation not found
     private static UnifiedUserRepository instance;
     private HashMap<String, User> users;
 
@@ -26,8 +30,10 @@ public class UnifiedUserRepository {
     public void addUser(User user){
         this.users.put(user.getUserID(), user);
     }
+
+    //UserID is always uppercase to remove case sensitivity
     public User retrieveUser(String userID){
-        return users.get(userID);
+        return users.get(userID.toUpperCase());
     }
     
     public boolean isEmpty() {
@@ -92,8 +98,12 @@ public class UnifiedUserRepository {
             }
 
             wb.close();
-        } catch (Exception e){
-            System.out.println("Error in initialising user data files.");
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("User data files not found, unable to initialise user database.");
+        }
+        catch (Exception e){
+            System.out.println("Unknown error in initialising user data files.");
             return false;
         }
         return true;

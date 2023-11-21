@@ -11,6 +11,11 @@ public class Staff extends User {
 
     public Staff() {}
 
+    public Staff(String name, String userID, Faculty faculty) {
+        super(name, userID, faculty);
+        this.setPassword("password");
+    }
+
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff
         List<Post> myEnquiries = null;
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
@@ -47,10 +52,5 @@ public class Staff extends User {
         }
     }
     
-    public Staff(String name, String userID, Faculty faculty) {
-    	this.setName(name);
-    	this.setUserID(userID);
-        this.setFaculty(faculty);
-        this.setPassword("password");
-    }
+
 }
