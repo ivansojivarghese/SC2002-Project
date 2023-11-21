@@ -20,14 +20,13 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
 
         boolean hasSuggestion = view(user) > 0;
 
-        System.out.println("Select an action: ");
         System.out.println("(1) Submit a new suggestion");
         if(hasSuggestion){
             System.out.println("(2) Edit a suggestion");
             System.out.println("(3) Delete a suggestions");
         }
         System.out.println("(-1) Back");
-
+        System.out.printf("SELECT AN ACTION: ");
         try {
             choice = userInput.nextInt();
 

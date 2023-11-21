@@ -3,6 +3,7 @@ import cams.Camp;
 import cams.post_types.Post;
 import cams.util.Faculty;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public abstract class User {
         return Objects.equals(password, this.password);
     }
 
-    public abstract List<Camp> viewAllCamps();
+    public abstract void viewAllCamps();
     public abstract void displayMyCamps();
     public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();
@@ -28,6 +29,7 @@ public abstract class User {
         this.setUserID(userID);
         this.setFaculty(faculty);
         this.setPassword("password");
+        this.myCamps = new ArrayList<String>();
     }
 
     public List<String> getMyCamps() {

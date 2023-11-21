@@ -14,9 +14,9 @@ public class SuggestionViewerUI {
         Scanner userInput = new Scanner(System.in);
         int choice;
         view(user);
-        System.out.println("Select an action: ");
-        System.out.println("(-1) Back");
 
+        System.out.println("(-1) Back");
+        System.out.printf("SELECT AN ACTION: ");
         try {
             choice = userInput.nextInt();
 

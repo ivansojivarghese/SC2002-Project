@@ -37,11 +37,7 @@ public class UnifiedUserRepository {
     }
     
     public boolean isEmpty() {
-    	if (this.users != null) {
-    		return this.users.isEmpty();
-    	} else {
-    		return true;
-    	}
+        return this.users.isEmpty();
     }
 
     public static UnifiedUserRepository getInstance() {

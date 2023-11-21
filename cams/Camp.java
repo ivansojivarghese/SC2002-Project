@@ -7,7 +7,7 @@ import java.util.List;
 import cams.post_types.*;
 import cams.util.Faculty;
 
-public class Camp extends App {
+public class Camp {
 	private String campName;
 	private LocalDate startDate;
 	private LocalDate endDate;
@@ -62,10 +62,10 @@ public class Camp extends App {
 
 		public Builder() {
 			// Default values can be set here
-			this.suggestions = null;
-			this.enquiries = null;
-			this.attendees = null;
-			this.committee = null;
+			this.suggestions = new ArrayList<>();
+			this.enquiries = new ArrayList<>();
+			this.attendees = new ArrayList<>();
+			this.committee = new HashMap<>();
 		}
 
 		public Builder campName(String campName) {
@@ -302,8 +302,8 @@ public class Camp extends App {
 	//Prints formatted camp information to user
 	public void display() {
 		System.out.println("Name: " + this.campName);
-		System.out.println("Dates: " + this.startDate.toString() + " - " + this.endDate.toString());
-		System.out.println("Registration closes on: " + this.closingDate.toString());
+		System.out.println("Dates: " + this.startDate + " to " + this.endDate);
+		System.out.println("Registration closes on: " + this.closingDate);
 		System.out.println("Open to: " + this.visibility);
 		System.out.println("Location: " + this.location);
 		System.out.println("Available Attendee Slots: " + this.getRemainingAttendeeSlots() + " / " + this.attendeeSlots);

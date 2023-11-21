@@ -8,6 +8,7 @@ import cams.database.UnifiedCampRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -43,7 +44,8 @@ public class StaffMenuState implements DashboardState {
         }
         System.out.printf("SELECT AN ACTION: ");
         option = sc.nextInt();
-        System.out.println(); //consume new line
+        sc.nextLine(); //consume new line
+        System.out.println();
 
         switch (option){
             case 1:
@@ -90,11 +92,11 @@ public class StaffMenuState implements DashboardState {
                 //GET Camp Name
                 while(true){
                     System.out.println("You are creating a new Camp.");
-                    System.out.println("What is its name?");
+                    System.out.printf("Name of Camp: ");
                     campName = sc.nextLine();
-                    UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
 
-                    if (repo.retrieveCamp(campName) != null) {
+                    UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+                    if (repo.retrieveCamp(campName) == null) {
                         break; // Break the loop if the name doesn't exist in the map
                     }
                     System.out.println("This name already exists. Please enter a different name.");
@@ -103,17 +105,24 @@ public class StaffMenuState implements DashboardState {
                 while(true) {
                     try {
                         //INPUT START DATE
-                        System.out.println("Enter start date (format: yyyy-MM-dd): ");
+                        System.out.printf("Enter start date (dd-MM-yyyy): ");
                         input = sc.nextLine();
-                        startDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        startDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+
+                        if(!startDate.isAfter(LocalDate.now()))
+                        {
+                            System.out.println("Start date of camp must be after the date of creation.");
+                            continue;
+                        }
+
                         System.out.println("Start Date: " + startDate);
 
                         while (true) {
                             //INPUT end date
-                            System.out.println("Enter end date (format: yyyy-MM-dd): ");
+                            System.out.printf("Enter end date (dd-MM-yyyy): ");
                             input = sc.nextLine();
 
-                            endDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                            endDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
                             System.out.println("End Date: " + endDate);
 
                             if (startDate.isEqual(endDate) || endDate.isAfter(startDate)) {
@@ -124,19 +133,23 @@ public class StaffMenuState implements DashboardState {
                         }
                         break;
                     } catch (Exception e) {
-                        System.out.println("Invalid date format!");
+                        System.out.println("Invalid date format! Please try again.");
                     }
                 }
                 //Get closing date of registration
                 while(true) {
                     try {
-                        System.out.println("Enter registration closing date (format: yyyy-MM-dd): ");
+                        System.out.printf("Enter registration closing date (dd-MM-yyyy): ");
                         input = sc.nextLine();
-                        closingDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                        closingDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
 
-                        if(closingDate.isBefore(startDate)){
+                        //Closing date of registration must be before the start of the camp and after today
+                        if(closingDate.isBefore(startDate) && closingDate.isAfter(LocalDate.now())){
                             System.out.println("Closing Date: " + closingDate);
                             break;
+                        }
+                        else {
+                            System.out.println("Closing date for registration must be after today and before the camp begins.");
                         }
                     } catch (Exception e) {
                         System.out.println("Invalid date format!");
@@ -145,17 +158,20 @@ public class StaffMenuState implements DashboardState {
 
                 //Get visibility
                 while (true) {
-                    System.out.println("Is this open to the whole of NTU (1), or just only to your faculty? (2)");
+                    System.out.printf("Camp is (1) open to the whole of NTU OR (2) only to your faculty: ");
                     input = sc.nextLine(); //Use nextLine instead of nextInt to prevent integer mismatch exception
                     if ("1".equals(input) || "2".equals(input)) {
                         value = Integer.parseInt(input); // Convert to integer
 
                         if (value == 1 || value == 2) {
-                            if(value == 2)
+                            //If user chooses to open only to faculty, set visibility accordingly.
+                            //Otherwise, maintain the default visibility value (Open to all)
+                            if(value == 2){
                                 visibility = user.getFaculty();
+                            }
+                            System.out.println("Camp is available to " + visibility.toString());
                             break;
                         }
-
                         else {
                             System.out.println("Invalid input. Please enter 1 or 2.");
                         }
@@ -163,37 +179,48 @@ public class StaffMenuState implements DashboardState {
                 }
 
                 //GET location
-                System.out.println("Where is its location?");
-                location = sc.nextLine();
+                System.out.printf("Camp location: ");
+                location = sc.nextLine().strip();
 
                 //GET number of slots for attendees
                 while (true) {
                     try{
-                    System.out.println("How many attendee slots are available?");
-                    attendeeSlots = sc.nextInt();
-                    break;
+                        System.out.printf("No. of attendee slots available: ");
+                        attendeeSlots = sc.nextInt();
+                        sc.nextLine(); //consume newline
+                        if(attendeeSlots < 10 || attendeeSlots > 5000){
+                            System.out.println("Camp must have minimum of 10 and maximum of 5000 attendee slots.");
+                            continue;
+                        }
+                        break;
                     }
                     catch (InputMismatchException e){
                         System.out.println("Invalid input. Please enter an integer.");
-                        sc.nextLine(); // Consume the invalid input
                     }
                 }
 
                 //GET number of slots for committee
                 while (true) {
                     try{
-                        System.out.println("How many committee member slots are available?");
+                        System.out.printf("No. of committee member slots available (Max 10): ");
                         committeeSlots = sc.nextInt();
-                        break;
+                        sc.nextLine(); //consume newline
+
+                        if(committeeSlots < 1)
+                            System.out.println("Invalid number. Please create at least one slot. Try again.");
+
+                        else if(committeeSlots > 10)
+                            System.out.println("Maximum 10 committee members allowed. Try again.");
+
+                        else break;
                     }
                     catch (InputMismatchException e){
                         System.out.println("Invalid input. Please enter an integer.");
-                        sc.nextLine(); // Consume the invalid input
                     }
                 }
 
                 //GET description
-                System.out.println("Please provide a description:");
+                System.out.printf("Please provide a description of the camp: ");
                 description = sc.nextLine();
 
                 /* Can't remember if this is part of the requirements or if visibility only refers to faculty-visibility
@@ -223,14 +250,16 @@ public class StaffMenuState implements DashboardState {
                     .build();
                 UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
                 repo.addCamp(newCamp);
+                user.addCamp(newCamp);
 
                 System.out.println("Camp created successfully!");
-
+                break;
             case 7:
                 dashboard.approverMenu();
                 break;
             case 8:
                 dashboard.replierMenu();
+                break;
         }
     }
 }

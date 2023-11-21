@@ -1,8 +1,11 @@
 package cams.database;
 
 import cams.Camp;
+import cams.util.Faculty;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
 public class UnifiedCampRepository {
@@ -15,12 +18,30 @@ public class UnifiedCampRepository {
     private UnifiedCampRepository(){
         this.Camps = new HashMap<String, Camp>();
     }
+    public List<Camp> filterCampByFaculty(Faculty faculty){
+        List<Camp> filteredCamps = new ArrayList<>();
+        for(Camp camp : this.Camps.values())
+            if(camp.getVisibility() == faculty)
+                filteredCamps.add(camp);
 
+        return filteredCamps;
+    }
+
+    public List<Camp> allCamps(){
+        return new ArrayList<>(this.Camps.values());
+    }
+    public boolean isEmpty() {
+        return this.Camps.isEmpty();
+    }
+
+    //Key is the Camp name and is always set to UpperCase, without any spacing
+    //Removing spacing prevents duplicate camp names where the only different is spaces
     public void addCamp(Camp camp){
-        this.Camps.put(camp.getCampName(), camp);
+        this.Camps.put(camp.getCampName().toUpperCase().replaceAll("\\s", ""), camp);
     }
     public Camp retrieveCamp(String campName){
-        campName = campName.toLowerCase(Locale.ROOT).strip();
+        //Retrieve camp using uppercase camp name without any spaces
+        campName = campName.toUpperCase().replaceAll("\\s", "");
         return Camps.get(campName);
     }
 

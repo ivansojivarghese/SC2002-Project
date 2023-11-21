@@ -5,6 +5,7 @@ import cams.post_types.Post;
 import cams.util.Faculty;
 import cams.database.UnifiedCampRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Staff extends User {
@@ -17,40 +18,56 @@ public class Staff extends User {
     }
 
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff
-        List<Post> myEnquiries = null;
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        for (String campName : this.getMyCamps()) {
-            Camp camp = repo.retrieveCamp(campName);
-            myEnquiries.addAll(camp.getEnquiries());
+        List<Post> myEnquiries = new ArrayList<>();
+        try{
+            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+            for (String campName : this.getMyCamps()) {
+                Camp camp = repo.retrieveCamp(campName);
+                myEnquiries.addAll(camp.getEnquiries());
+            }
+        }
+        catch (NullPointerException e){
+                System.out.println("No camp to retrieve suggestions from.");
         }
         return myEnquiries;
     }
 
     //TODO implement this method to return all camps
     @Override
-    public List<Camp> viewAllCamps() {
-        List<Camp> collection = null;
-        return collection;
+    public void viewAllCamps() {
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        for(Camp c : repo.allCamps()){
+            System.out.println("_________________________________");
+            c.display();
+        }
     }
 
     @Override
     public List<Post> getSuggestions() {
-        List<Post> mySuggestions = null;
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        for (String campName : this.getMyCamps()) {
-            Camp camp = repo.retrieveCamp(campName);
-            mySuggestions.addAll(camp.getSuggestions());
+        List<Post> mySuggestions = new ArrayList<>();
+        try{
+            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+            for (String campName : this.getMyCamps()) {
+                Camp camp = repo.retrieveCamp(campName);
+                mySuggestions.addAll(camp.getSuggestions());
+            }
+        }
+        catch (NullPointerException e){
+            System.out.println("No camp to retrieve suggestions from.");
         }
         return mySuggestions;
     }
     public void displayMyCamps(){
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        for(String c: this.getMyCamps()){
-            Camp camp = repo.retrieveCamp(c);
-            camp.display();
-            System.out.println("______________");
+        try{
+            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+            System.out.println("My Created Camps: ");
+            for(String c: this.getMyCamps()){
+                System.out.println("_________________________________");
+                Camp camp = repo.retrieveCamp(c);
+                camp.display();
+            }
+        } catch (NullPointerException e){
+            System.out.println("No camps created.");
         }
     }
-    
-
 }

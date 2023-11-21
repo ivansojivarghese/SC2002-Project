@@ -22,7 +22,7 @@ class Login { //Class is package-private
             return null;
         }
 
-        System.out.printf("Enter your password: ");
+        System.out.printf("Enter your password (Case Sensitive): ");
         Password = sc.next(); // get Password
         if(user.validateLogin(Password)){
             System.out.println("Logging in successfully...");

@@ -16,7 +16,6 @@ public class StudentMenuState implements DashboardState{
         User user = dashboard.getAuthenticatedUser();
 
         // Code to display options
-        System.out.println("______________________________________________________________");
         System.out.println("                          DASHBOARD                           ");
         System.out.println("______________________________________________________________");
         Student student = (Student) user;
@@ -40,7 +39,8 @@ public class StudentMenuState implements DashboardState{
         }
         System.out.printf("SELECT AN ACTION: ");
         option = sc.nextInt();
-        System.out.println(); //consume new line
+        sc.nextLine(); //consume new line
+        System.out.println();
 
         switch (option){
             case 1: //change password

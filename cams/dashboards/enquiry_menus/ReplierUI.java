@@ -20,12 +20,11 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
         int postIndex;
 
         boolean hasEnquiry = view(user) > 0;
-
-        System.out.println("Select an action: ");
         if(hasEnquiry) {
             System.out.println("(1) Reply to an enquiry");
         }
         System.out.println("(-1) Back");
+        System.out.printf("SELECT AN ACTION: ");
         try {
             choice = userInput.nextInt();
             userInput.nextLine(); //Consume the new line

@@ -24,14 +24,13 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI, Da
 
         //Attempt to display enquiries
         //If display fails provide a different menu
-        System.out.println("Select an action: ");
         System.out.println("(1) Submit a new enquiry");
         if(hasEnquiries) {
             System.out.println("(2) Edit an enquiry");
             System.out.println("(3) Delete an enquiry");
         }
         System.out.println("(-1) Back to user dashboard");
-
+        System.out.printf("SELECT AN ACTION: ");
         try{
             choice = userInput.nextInt();
             userInput.nextLine();  // Consume the leftover newline

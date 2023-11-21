@@ -1,5 +1,6 @@
 package cams.users;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -10,14 +11,14 @@ import cams.util.Date;
 import cams.util.Faculty;
 
 public class Student extends User implements Participant { // student class
-    private boolean isCommittee = false;
-    private String myCommittee = null;
+    private String myCommittee;
+
+    //returns false if student's myCommmittee variable is NA
     public boolean isCommittee() {
-        return isCommittee;
+        return !myCommittee.equalsIgnoreCase("NA");
     }
 
     public void setCommittee(String committee) {
-        isCommittee = true;
         myCommittee = committee;
     }
 
@@ -53,7 +54,7 @@ public class Student extends User implements Participant { // student class
     }*/
 
     public List<Post> getEnquiries() {
-        List<Post> myEnquiries = null;
+        List<Post> myEnquiries = new ArrayList<>();
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         for (String campName : this.getMyCamps()) {
             Camp camp = repo.retrieveCamp(campName);
@@ -67,22 +68,30 @@ public class Student extends User implements Participant { // student class
     }
 
     public void displayMyCamps(){
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        for(String c: this.getMyCamps()){
-            Camp camp = repo.retrieveCamp(c);
-            camp.display();
-            System.out.println("______________");
+        try{
+            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+            System.out.println("My registered camps: ");
+            for(String c: this.getMyCamps()){
+                System.out.println("_________________________________");
+                Camp camp = repo.retrieveCamp(c);
+                camp.display();
+            }
+        } catch (NullPointerException e){
+            System.out.println("No camps registered.");
         }
     }
     //TODO implement this method to return all camps available to user
-    public List<Camp> viewAllCamps() {
-        List<Camp> collection = null;
-        return collection;
+    public void viewAllCamps() {
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        for(Camp c : repo.filterCampByFaculty(this.getFaculty())){
+            System.out.println("_________________________________");
+            c.display();
+        }
     }
 
     @Override
     public List<Post> getSuggestions() {
-        List<Post> mySuggestions = null;
+        List<Post> mySuggestions = new ArrayList<>();
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         for (String campName : this.getMyCamps()) {
             Camp camp = repo.retrieveCamp(campName);

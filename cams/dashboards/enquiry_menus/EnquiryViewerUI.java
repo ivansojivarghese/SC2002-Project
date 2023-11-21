@@ -20,8 +20,8 @@ public abstract class EnquiryViewerUI implements PostViewerUI, DashboardState {
         try {
             if (view(user) == 0)
                 System.out.println("No enquiries to display");
-            System.out.println("Select an action: ");
             System.out.println("(-1) Back");
+            System.out.printf("SELECT AN ACTION: ");
             choice = userInput.nextInt();
 
             switch (choice) {

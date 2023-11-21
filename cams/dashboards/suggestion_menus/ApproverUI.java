@@ -18,10 +18,10 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
 
         boolean hasSuggestion = view(user) > 0;
 
-        System.out.println("Select an action: ");
         if(hasSuggestion)
             System.out.println("(1) Approve/Reject Suggestion");
         System.out.println("(-1) Back");
+        System.out.printf("SELECT AN ACTION: ");
 
         try {
             choice = userInput.nextInt();
