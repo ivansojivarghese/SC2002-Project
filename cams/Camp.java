@@ -18,6 +18,7 @@ public class Camp {
 	private String description;
 	private String inCharge;
 	private Faculty visibility;
+	private Faculty originalVisibility;
 	private List<Post> enquiries;
 	private List<Post> suggestions;
 	private List<String> attendees;
@@ -274,6 +275,9 @@ public class Camp {
 
 	public Faculty getVisibility() {
 		return visibility;
+	}
+	public Faculty getOriginalVisibility() {
+		return originalVisibility;
 	}
 	public void setVisibility(Faculty visibility) {
 		this.visibility = visibility;

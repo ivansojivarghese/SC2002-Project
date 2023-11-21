@@ -7,6 +7,7 @@ import cams.database.UnifiedCampRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Staff extends User {
 
@@ -69,5 +70,73 @@ public class Staff extends User {
         } catch (NullPointerException e){
             System.out.println("No camps created.");
         }
+    }
+    
+    public void editMyCamps() {
+    	Scanner sc = new Scanner(System.in);
+    	int listCount = 1;
+    	int index, option, track = 0;
+    	boolean error = false;
+    	String targetName = null;
+    	if (this.getMyCamps() != null) {
+	    	try{
+	            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+	            System.out.println("Choose a Camp to edit. Make the selection through its index number:");
+	            for(String c: this.getMyCamps()){
+	                System.out.println("_________________________________");
+	                System.out.println("Index: " + listCount);
+	                Camp camp = repo.retrieveCamp(c);
+	                camp.display();
+	                listCount++;
+	            }
+	            index = sc.nextInt();
+	            for(String c: this.getMyCamps()){ // get name of targeted camp
+	                if (track < index) {
+	                	Camp camp = repo.retrieveCamp(c);
+	                	targetName = camp.getCampName();
+	                	track++;
+	                } else {
+	                	break;
+	                }
+	            }
+	            System.out.println("Camp name: " + targetName);
+	            System.out.println("Do you want to:");
+	            System.out.println("[1] Toggle its visibility?");
+	            System.out.println("[2] Delete it?");
+	            
+	            do {
+		            option = sc.nextInt();
+		            
+		            switch (option) {
+			            case 1: // toggle
+			            	Faculty inverse = null;
+			            	if (repo.retrieveCamp(targetName).getVisibility() != Faculty.NULL) {
+			            		inverse = Faculty.NULL;
+			            	} else {
+			            		inverse = repo.retrieveCamp(targetName).getOriginalVisibility();
+			            	}
+			            	System.out.println("This Camp is currently open to " + repo.retrieveCamp(targetName).getVisibility() + ".");
+			            	
+			            	repo.retrieveCamp(targetName).setVisibility(inverse);
+			            	
+			            	System.out.println("Proceeding to change visibility to " + inverse + ".");
+	
+			            break;
+			            case 2: // deletion
+			            	repo.deleteCamp(targetName);
+			            	System.out.println("This Camp has been deleted.");
+			            break;
+			            default:
+			            	error = true;
+			            break;
+		            }
+	            } while (error);
+	            
+	        } catch (NullPointerException e){
+	            System.out.println("No camps created.");
+	        }
+    	} else {
+    		System.out.println("No camps created.");
+    	}
     }
 }

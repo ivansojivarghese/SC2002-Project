@@ -44,6 +44,10 @@ public class UnifiedCampRepository {
         campName = campName.toUpperCase().replaceAll("\\s", "");
         return Camps.get(campName);
     }
+    
+    public void deleteCamp(String campName) { // delete the camp
+    	this.Camps.remove(campName);
+    }
 
     public int getSize(){
         return this.Camps.size();

@@ -70,9 +70,11 @@ public class StaffMenuState implements DashboardState {
                 user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
                 break;
             //TODO implement camp editing (case 5)
-            case 5:
-                user.viewAllCamps();
+            case 5: // DELETE, AND TOGGLE camps
+            	
+                user.editMyCamps();
                 break;
+                
             case 6:
                 //TODO abstract all of this away into the camp organiser interface? or just leave it here?
                 int value;
@@ -87,6 +89,7 @@ public class StaffMenuState implements DashboardState {
                 String description;
                 String inCharge = user.getUserID();
                 Faculty visibility = Faculty.ALL;
+                Faculty originalVisibility = Faculty.ALL;
 
                 //Use TRY-CATCH block with WHILE loop for getting valid input
                 //GET Camp Name
@@ -168,6 +171,7 @@ public class StaffMenuState implements DashboardState {
                             //Otherwise, maintain the default visibility value (Open to all)
                             if(value == 2){
                                 visibility = user.getFaculty();
+                                originalVisibility = visibility;
                             }
                             System.out.println("Camp is available to " + visibility.toString());
                             break;

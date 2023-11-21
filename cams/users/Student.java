@@ -160,4 +160,10 @@ public class Student extends User implements Participant { // student class
         this.addCamp(selectedCamp); //add camp to attendee
         System.out.println("Successfully registered.");
     }
+
+	@Override
+	public void editMyCamps() {
+		// TODO Auto-generated method stub
+		
+	}
 }

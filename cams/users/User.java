@@ -20,6 +20,7 @@ public abstract class User {
 
     public abstract void viewAllCamps();
     public abstract void displayMyCamps();
+    public abstract void editMyCamps();
     public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();
 
