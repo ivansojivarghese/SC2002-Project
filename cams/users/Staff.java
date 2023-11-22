@@ -57,21 +57,13 @@ public class Staff extends User implements Organiser{
         }
         return mySuggestions;
     }
+
+    //Refinement of displayMyCamps() method in User superclass
     public int displayMyCamps(){
-        int index = 0;
-        try{
-            index = -1;
-            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-            System.out.println("My Created Camps: ");
-            for(String c: this.getMyCamps()){
-                System.out.println("_________________________________");
-                System.out.println("Index: " + index++);
-                Camp camp = repo.retrieveCamp(c);
-                camp.display();
-            }
-        } catch (NullPointerException e){
+        System.out.println("My Created Camps: ");
+        int index = super.displayMyCamps();
+        if(index == 0)
             System.out.println("No camps created.");
-        }
         return index;
     }
 

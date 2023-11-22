@@ -66,24 +66,15 @@ public class Student extends User implements Participant { // student class
         return myEnquiries;
     }
 
+    //Refinement of displayMyCamps() method in User superclass
     public int displayMyCamps(){
-        int index = 0;
-
-        try{
-            index = -1;
-            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-            System.out.println("My registered camps: ");
-            for(String c: this.getMyCamps()){
-                System.out.println("_________________________________");
-                System.out.println("Index: " + index++);
-                Camp camp = repo.retrieveCamp(c);
-                camp.display();
-            }
-        } catch (NullPointerException e){
+        System.out.println("My registered camps: ");
+        int index = super.displayMyCamps();
+        if(index == 0)
             System.out.println("No camps registered.");
-        }
         return index;
     }
+
     //TODO implement this method to return all camps available to user
     public void viewAllCamps() {
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();

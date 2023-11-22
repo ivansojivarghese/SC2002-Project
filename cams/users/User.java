@@ -1,5 +1,6 @@
 package cams.users;
 import cams.Camp;
+import cams.database.UnifiedCampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
 
@@ -19,7 +20,22 @@ public abstract class User {
     }
 
     public abstract void viewAllCamps();
-    public abstract int displayMyCamps();
+    public int displayMyCamps() {
+        int index = -1;
+        try {
+            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+            for (String c : this.getMyCamps()) {
+                System.out.println("_________________________________");
+                System.out.println("Index: " + index++);
+                Camp camp = repo.retrieveCamp(c);
+                camp.display();
+            }
+        }
+        catch (NullPointerException e){
+            index = 0;
+        }
+        return index;
+    }
     public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();
 
