@@ -67,21 +67,21 @@ public class Staff extends User implements Organiser{
         return index;
     }
 
-    public void deleteCamp(Camp camp){
+    public void deleteCamp(String campName){
         OrganiserActions action = new CampDeleter();
-        action.manageCamp();
+        action.manageCamp(this, campName);
     }
-    public void editCamp(Camp camp){
+    public void editCamp(String campName){
         OrganiserActions action = new CampEditor();
-        action.manageCamp();
+        action.manageCamp(this, campName);
     }
-    public void createCamp(Camp camp){
+    public void createCamp(String campName){
         OrganiserActions action = new CampCreator();
-        action.manageCamp();
+        action.manageCamp(this, campName);
     }
 
-    public void assignCamp(String UserID, Camp camp){
+    public void assignCamp(String UserID, String campName){
         OrganiserActions action = new Assigner();
-        action.manageCamp();
+        action.manageCamp(this, campName);
     }
 }

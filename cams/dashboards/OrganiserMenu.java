@@ -100,7 +100,14 @@ public class OrganiserMenu implements DashboardState{
                 break;
 
             case 9: // deletion
+                //TODO Add error prevention if needed
+                if(selectedCamp.getNumAttendees() > 0)
+                {
+                    System.out.println("Camps with participants cannot be deleted.");
+                }
+                user.removeCamp(selectedCamp.getCampName());
                 repo.deleteCamp(selectedCamp.getCampName());
+
                 System.out.println("This Camp has been deleted.");
                 break;
             default:

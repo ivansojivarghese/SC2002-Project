@@ -7,6 +7,7 @@ import cams.util.Date;
 public class RegisteringParticipant implements ParticipantActions {
     @Override
     public void manageRegistration(User user, String campName) {
+        //TODO prevent participants for registering for camps that are closed OR over
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         if (repo.getSize() == 0) {
             System.out.println("No camps exist.");
