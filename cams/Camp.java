@@ -17,8 +17,8 @@ public class Camp {
 	private int committeeSlots = 10;
 	private String description;
 	private String inCharge;
-	private Faculty visibility;
-	private Faculty originalVisibility;
+	private Faculty facultyRestriction;
+	private boolean visible;
 	private List<Post> enquiries;
 	private List<Post> suggestions;
 	private List<String> attendees;
@@ -38,7 +38,7 @@ public class Camp {
 		this.committeeSlots = builder.committeeSlots;
 		this.description = builder.description;
 		this.inCharge = builder.inCharge;
-		this.visibility = builder.visibility;
+		this.facultyRestriction = builder.facultyRestriction;
 		this.enquiries = builder.enquiries;
 		this.suggestions = builder.suggestions;
 		this.attendees = builder.attendees;
@@ -55,7 +55,8 @@ public class Camp {
 		private int committeeSlots;
 		private String description;
 		private String inCharge;
-		private Faculty visibility;
+		private Faculty facultyRestriction;
+		private boolean visible;
 		private List<Post> enquiries;
 		private List<Post> suggestions;
 		private List<String> attendees;
@@ -114,8 +115,8 @@ public class Camp {
 			return this;
 		}
 
-		public Builder visibility(Faculty visibility) {
-			this.visibility = visibility;
+		public Builder facultyRestriction(Faculty faculty) {
+			this.facultyRestriction = faculty;
 			return this;
 		}
 
@@ -139,9 +140,16 @@ public class Camp {
 			return this;
 		}
 
+		public Builder visible(boolean visibility) {
+			this.visible = visibility;
+			return this;
+		}
+
 		public Camp build() {
 			return new Camp(this);
 		}
+
+
 	}
 
 	//Getters and Setters
@@ -273,14 +281,18 @@ public class Camp {
 		this.inCharge = inCharge;
 	}
 
-	public Faculty getVisibility() {
-		return visibility;
+	public boolean getVisible() {
+		return visible;
 	}
-	public Faculty getOriginalVisibility() {
-		return originalVisibility;
+	public void setVisible(boolean visible) {
+		this.visible = visible;
+    }
+
+	public Faculty getFacultyRestriction() {
+		return facultyRestriction;
 	}
-	public void setVisibility(Faculty visibility) {
-		this.visibility = visibility;
+	public void setFacultyRestriction(Faculty faculty) {
+		this.facultyRestriction = faculty;
 	}
 
 	public void setEnquiries(List<Post> enquiries) {
@@ -308,7 +320,7 @@ public class Camp {
 		System.out.println("Name: " + this.campName);
 		System.out.println("Dates: " + this.startDate + " to " + this.endDate);
 		System.out.println("Registration closes on: " + this.closingDate);
-		System.out.println("Open to: " + this.visibility);
+		System.out.println("Open to: " + this.facultyRestriction);
 		System.out.println("Location: " + this.location);
 		System.out.println("Available Attendee Slots: " + this.getRemainingAttendeeSlots() + " / " + this.attendeeSlots);
 		System.out.println("Committee Size: " + this.getCommittee().size() + " / " + this.committeeSlots);
@@ -319,7 +331,7 @@ public class Camp {
 	public String toString() {
 	    return "Name: " + this.campName + ", Starting Date: " + this.startDate + ", Ending Date: "
 	+ this.endDate + ", Closing Date: " + this.closingDate + ", Open to: "
-	    		+ this.visibility + ", Location: " + this.location + ", Attendee Slots: " + this.attendeeSlots + ", Committee Slots: " + this.committeeSlots + ", Committee Members: "
+	    		+ this.facultyRestriction + ", Location: " + this.location + ", Attendee Slots: " + this.attendeeSlots + ", Committee Slots: " + this.committeeSlots + ", Committee Members: "
 	    		+ this.getCommittee().toString() + ", Student Members: " + this.getAttendees() + ", Description: " + this.description + ", Staff-in-Charge: " + this.inCharge;
 	}
 }

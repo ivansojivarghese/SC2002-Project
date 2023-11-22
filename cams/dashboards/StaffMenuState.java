@@ -8,8 +8,8 @@ import cams.database.UnifiedCampRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class StaffMenuState implements DashboardState {
@@ -44,6 +44,7 @@ public class StaffMenuState implements DashboardState {
         }
         System.out.printf("SELECT AN ACTION: ");
         option = sc.nextInt();
+        int index;
         sc.nextLine(); //consume new line
         System.out.println();
 
@@ -65,14 +66,13 @@ public class StaffMenuState implements DashboardState {
                 break;
             case 4:
                 //TODO maybe put this method for viewing available camps in camp repo instead? for better encapsulation
-                //Users should be able to see all camps available to their faculty, irregardless of timing clashes
+                //Users should be able to see all camps available to their facultyRestriction, irregardless of timing clashes
                 //so they can choose to withdraw to attend other camps
                 user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
                 break;
             //TODO implement camp editing (case 5)
             case 5: // DELETE, AND TOGGLE camps
-            	
-                user.editMyCamps();
+                dashboard.organiserMenu();
                 break;
                 
             case 6:
@@ -88,8 +88,8 @@ public class StaffMenuState implements DashboardState {
                 int committeeSlots;
                 String description;
                 String inCharge = user.getUserID();
-                Faculty visibility = Faculty.ALL;
-                Faculty originalVisibility = Faculty.ALL;
+                Faculty facultyRestriction = Faculty.ALL;
+                boolean visibility = false;
 
                 //Use TRY-CATCH block with WHILE loop for getting valid input
                 //GET Camp Name
@@ -159,21 +159,20 @@ public class StaffMenuState implements DashboardState {
                     }
                 }
 
-                //Get visibility
+                //Get facultyRestriction
                 while (true) {
-                    System.out.printf("Camp is (1) open to the whole of NTU OR (2) only to your faculty: ");
+                    System.out.printf("Camp is (1) open to the whole of NTU OR (2) only to your facultyRestriction: ");
                     input = sc.nextLine(); //Use nextLine instead of nextInt to prevent integer mismatch exception
                     if ("1".equals(input) || "2".equals(input)) {
                         value = Integer.parseInt(input); // Convert to integer
 
                         if (value == 1 || value == 2) {
-                            //If user chooses to open only to faculty, set visibility accordingly.
-                            //Otherwise, maintain the default visibility value (Open to all)
+                            //If user chooses to open only to facultyRestriction, set facultyRestriction accordingly.
+                            //Otherwise, maintain the default facultyRestriction value (Open to all)
                             if(value == 2){
-                                visibility = user.getFaculty();
-                                originalVisibility = visibility;
+                                facultyRestriction = user.getFaculty();
                             }
-                            System.out.println("Camp is available to " + visibility.toString());
+                            System.out.println("Camp is available to " + facultyRestriction.toString());
                             break;
                         }
                         else {
@@ -227,7 +226,6 @@ public class StaffMenuState implements DashboardState {
                 System.out.printf("Please provide a description of the camp: ");
                 description = sc.nextLine();
 
-                /* Can't remember if this is part of the requirements or if visibility only refers to faculty-visibility
                 do {
                     System.out.println("Should the Camp be visible? [1: YES, 0: NO]");
                     visible = sc.nextInt();
@@ -237,7 +235,6 @@ public class StaffMenuState implements DashboardState {
                         visibility = false;
                     }
                 } while (visible != 1 && visible != 0);
-                */
 
                 //Use a builder for better readability
                 Camp newCamp = new Camp.Builder()
@@ -250,7 +247,8 @@ public class StaffMenuState implements DashboardState {
                     .committeeSlots(committeeSlots)
                     .description(description)
                     .inCharge(user.getUserID())
-                    .visibility(user.getFaculty())
+                    .facultyRestriction(facultyRestriction)
+                    .visible(visibility)
                     .build();
                 UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
                 repo.addCamp(newCamp);
@@ -266,4 +264,6 @@ public class StaffMenuState implements DashboardState {
                 break;
         }
     }
+
+
 }

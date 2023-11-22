@@ -7,7 +7,6 @@ import java.util.Objects;
 import cams.Camp;
 import cams.post_types.*;
 import cams.database.UnifiedCampRepository;
-import cams.util.Date;
 import cams.util.Faculty;
 
 public class Student extends User implements Participant { // student class
@@ -67,18 +66,23 @@ public class Student extends User implements Participant { // student class
         return myEnquiries;
     }
 
-    public void displayMyCamps(){
+    public int displayMyCamps(){
+        int index = 0;
+
         try{
+            index = -1;
             UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
             System.out.println("My registered camps: ");
             for(String c: this.getMyCamps()){
                 System.out.println("_________________________________");
+                System.out.println("Index: " + index++);
                 Camp camp = repo.retrieveCamp(c);
                 camp.display();
             }
         } catch (NullPointerException e){
             System.out.println("No camps registered.");
         }
+        return index;
     }
     //TODO implement this method to return all camps available to user
     public void viewAllCamps() {
@@ -104,66 +108,27 @@ public class Student extends User implements Participant { // student class
         return mySuggestions;
     }
 
-
     //IMPLEMENT Participant
-    @Override
-    public void Deregister(String campName) {
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        Camp camp = repo.retrieveCamp(campName);
-        if(camp == null)
-        {
-            System.out.println("Camp does not exist.");
-            return;
-        }
-        if(this.getMyCamps().contains(campName)){
-            if(!campName.equalsIgnoreCase(myCommittee)){
-                camp.removeAttendee(this.getUserID());
-                this.removeCamp(campName);
-                System.out.println("Successfully deregistered.");
-            }
-            else
-                System.out.println("Camp committee members cannot withdraw from their camp.");
+    public void deregister(String campName){
+        ParticipantActions action = new DeregisteringParticipant();
+        if(!campName.equalsIgnoreCase(this.getCommittee())) {
+            action.manageRegistration(this, campName);
         }
         else
-            System.out.println("Unable to deregister for a camp you did not register for.");
-    }
-    @Override
-    public void Register(String campName) {
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        if (repo.getSize() == 0) {
-            System.out.println("No camps exist.");
-            return;
-        }
-        Camp selectedCamp = repo.retrieveCamp(campName);
-
-        boolean Registered = this.getMyCamps().contains(selectedCamp.getCampName()); // check if user has registered for camp already
-        boolean datesClash = Date.checkClashes(this, selectedCamp);
-        // check for clashes in dates with other camps
-        boolean availableSlot = selectedCamp.getRemainingAttendeeSlots() > 0;
-
-        //FAILURE outcomes
-        if (Registered) {
-            System.out.println("Camp is already registered.");
-            return;
-        }
-        if (datesClash) {
-            System.out.println("Unable to register due to clashes.");
-            return;
-        }
-        if (!availableSlot) {
-            System.out.println("No available slots.");
-            return;
-        }
-
-        //SUCCESS outcome
-        selectedCamp.addAttendee(this.getUserID()); //add attendee to camp
-        this.addCamp(selectedCamp); //add camp to attendee
-        System.out.println("Successfully registered.");
+            System.out.println("Camp committee members cannot withdraw from their camp.");
     }
 
+    public void register(String campName){
+        ParticipantActions action = new RegistratingParticipant();
+        action.manageRegistration(this, campName);
+    }
+
+
+    //only staff can edit camps, students cannot edit camps. shld never implement/create methods that are not used.
+    /*
 	@Override
 	public void editMyCamps() {
 		// TODO Auto-generated method stub
 		
-	}
+	}*/
 }

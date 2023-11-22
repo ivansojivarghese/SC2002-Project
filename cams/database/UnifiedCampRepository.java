@@ -6,7 +6,6 @@ import cams.util.Faculty;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
 public class UnifiedCampRepository {
     //Use of Singleton design pattern to ensure only one instance exists
@@ -21,7 +20,7 @@ public class UnifiedCampRepository {
     public List<Camp> filterCampByFaculty(Faculty faculty){
         List<Camp> filteredCamps = new ArrayList<>();
         for(Camp camp : this.Camps.values())
-            if(camp.getVisibility() == faculty)
+            if(camp.getFacultyRestriction() == faculty)
                 filteredCamps.add(camp);
 
         return filteredCamps;

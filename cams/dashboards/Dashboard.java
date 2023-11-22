@@ -82,6 +82,10 @@ public class Dashboard {
 	public void staffMenu(){
 		setState(new StaffMenuState());
 	}
+
+	public void organiserMenu() {
+		setState(new OrganiserMenu());
+	}
 }
 /*
 	Scanner sc = new Scanner(System.in);

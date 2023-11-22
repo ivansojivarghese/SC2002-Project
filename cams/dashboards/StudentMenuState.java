@@ -60,18 +60,20 @@ public class StudentMenuState implements DashboardState{
                 break;
             case 4: //Register
                 user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
+                //Only participants may register for camps
                 if(user instanceof Participant){
                     System.out.println("Enter name of camp to register for: ");
                     userInput = sc.next();
-                    ((Participant) user).Register(userInput);
+                    ((Participant) user).register(userInput);
                 }
                 break;
 
             case 5: //Withdraw
+                //Only participants may withdraw from camps
                 if(user instanceof Participant) {
                     System.out.println("Enter name of camp to withdraw from: ");
                     userInput = sc.next();
-                    ((Participant) user).Deregister(userInput);
+                    ((Participant) user).deregister(userInput);
                 }
                 break;
             case 6:
