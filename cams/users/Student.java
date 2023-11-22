@@ -110,7 +110,7 @@ public class Student extends User implements Participant { // student class
     }
 
     public void register(String campName){
-        ParticipantActions action = new RegistratingParticipant();
+        ParticipantActions action = new RegisteringParticipant();
         action.manageRegistration(this, campName);
     }
 

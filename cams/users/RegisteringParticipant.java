@@ -4,7 +4,7 @@ import cams.Camp;
 import cams.database.UnifiedCampRepository;
 import cams.util.Date;
 
-public class RegistratingParticipant implements ParticipantActions {
+public class RegisteringParticipant implements ParticipantActions {
     @Override
     public void manageRegistration(User user, String campName) {
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
