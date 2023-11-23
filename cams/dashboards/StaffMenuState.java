@@ -15,6 +15,7 @@ public class StaffMenuState implements DashboardState {
     //> LOGOUT (BACK TO LOG IN PAGE)
     @Override
     public void display(Dashboard dashboard) {
+        //Use string to store user's menu selection because it is safer
         int option;
         String input;
         Scanner sc = new Scanner(System.in);
@@ -32,24 +33,26 @@ public class StaffMenuState implements DashboardState {
         System.out.println("(2) Logout");
         System.out.println("(3) View my Camps");
 
-        if (user instanceof Staff) {
-            System.out.println("(4) View all Camps");
-            System.out.println("(5) Edit your Camp(s)");
-            System.out.println("(6) Create a new Camp");
-            System.out.println("(7) Respond to camp suggestions");
-            System.out.println("(8) Respond to camp enquiries");
-            System.out.println("(9) View Participants/Committee Members for a camp");
-        }
+
+        System.out.println("(4) View all Camps");
+        System.out.println("(5) Edit your Camp(s)");
+        System.out.println("(6) Create a new Camp");
+        System.out.println("(7) Respond to camp suggestions");
+        System.out.println("(8) Respond to camp enquiries");
+        System.out.println("(9) View Participants/Committee Members for a camp");
+
         //GET user choice
         while(true) {
             try {
                 System.out.print("SELECT AN ACTION: ");
-                option = sc.nextInt();
-                sc.nextLine(); //consume new line
-                break;
+                input = sc.nextLine().strip();
+                option = Integer.parseInt(input);
+                if(option >= 1 && option <= 9)
+                    break;
+                System.out.println("Invalid input, please try again.");
             }
-            catch (InputMismatchException e){
-                System.out.println("Invalid input, please enter an integer.");
+            catch (Exception e){
+                System.out.println("Error: " + e.getMessage());
             }
         }
         System.out.println();
@@ -229,7 +232,6 @@ public class StaffMenuState implements DashboardState {
             case 8 -> dashboard.setState(new Replier());
             case 9 -> {
             } //TODO implement view list of participants/committee members for a camp
-            default -> System.out.println("Invalid input.");
         }
     }
 

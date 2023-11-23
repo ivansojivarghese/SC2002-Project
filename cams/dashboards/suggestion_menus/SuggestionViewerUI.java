@@ -11,24 +11,9 @@ import java.util.Scanner;
 public class SuggestionViewerUI {
     public void display(Dashboard dashboard){
         User user = dashboard.getAuthenticatedUser();
-        Scanner userInput = new Scanner(System.in);
-        int choice;
+
         view(user);
-
-        System.out.println("(-1) Back");
-        System.out.print("SELECT AN ACTION: ");
-        try {
-            choice = userInput.nextInt();
-
-            if (choice == -1) {
-                dashboard.loggedIn();
-            }
-            System.out.println("Invalid input.");
-        }
-        catch (InputMismatchException e){
-            System.out.println("Invalid input. Please enter a number.");
-            userInput.nextLine();  // Consume the invalid input
-        }
+        dashboard.loggedIn();
     }
 
     public int view(User user){

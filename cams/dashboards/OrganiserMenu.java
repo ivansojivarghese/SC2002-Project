@@ -28,7 +28,8 @@ public class OrganiserMenu implements DashboardState{
         String selectedCamp = "";
 
         //DISPLAYS list of user's camp and gets number of camps
-        if (user.displayMyCamps() == 0) //if no camps to edit
+        int numCamps = user.displayMyCamps();
+        if (numCamps == 0) //if no camps to edit
         {
             System.out.println("Returning to main menu...");
             dashboard.loggedIn();
@@ -37,9 +38,12 @@ public class OrganiserMenu implements DashboardState{
 
         while(true) {
             try {
-                System.out.printf("Select a Camp to edit through its index number: ");
-                int index = sc.nextInt();
-                selectedCamp = user.getMyCamps().get(index);
+                System.out.print("Select a Camp to edit through its index number: ");
+                userInput = sc.nextLine().strip();
+                option = Integer.parseInt(userInput);
+                if(!(option >= 0 && option <= numCamps))
+                    continue;
+                selectedCamp = user.getMyCamps().get(option);
 
                 //If camp exists
                 if(!organiser.isCampNameUnique(selectedCamp)){
@@ -78,40 +82,42 @@ public class OrganiserMenu implements DashboardState{
 
         while(true) {
             try {
-                System.out.printf("SELECT ACTION: ");
-                option = sc.nextInt();
+                System.out.print("SELECT ACTION: ");
+                userInput = sc.nextLine().strip();
+                option = Integer.parseInt(userInput);
                 if(option >= 0 && option <= 9)
                     break;
-            } catch (InputMismatchException e) {
                 System.out.println("Invalid input, please try again.");
+            }
+            catch (Exception e){
+                System.out.println("Error: " + e.getMessage());
             }
         }
 
         switch (option) {
-            case 0:
-                //TODO Assign students
-                break;
-            case 1:
-                //TODO Change camp name
-                break;
-            case 2: //Toggle visibility
+            case 0 -> {
+            }
+            //TODO Assign students
+            case 1 -> {
+            }
+            //TODO Change camp name
+            case 2 -> { //Toggle visibility
                 do {
                     System.out.println("Camp is visible: " + String.valueOf(details.isVisible()).toUpperCase());
                     System.out.println("Only visible camps can be viewed by potential participants.");
                     System.out.println("Change visible to " + String.valueOf(!details.isVisible()).toUpperCase() + "? (Y / N)");
                     userInput = sc.next();
-                } while(!userInput.equalsIgnoreCase("y") && !userInput.equalsIgnoreCase("n"));
-
-                if(userInput.equalsIgnoreCase("y")) {
+                } while (!userInput.equalsIgnoreCase("y") && !userInput.equalsIgnoreCase("n"));
+                if (userInput.equalsIgnoreCase("y")) {
                     System.out.println("Proceeding to change visibility to " + String.valueOf(!details.isVisible()).toUpperCase() + ".");
                     details.setVisibility(!details.isVisible());
                     organiser.editCamp(selectedCamp, details);
                 }
                 dashboard.loggedIn();
                 return;
-            case 3: // toggle faculty restriction
+            }
+            case 3 -> { // toggle faculty restriction
                 System.out.println("Camp was previously open to " + details.getFacultyRestriction() + ".");
-
                 if (details.getFacultyRestriction() != Faculty.ALL) {
                     details.setFacultyRestriction(Faculty.ALL);
                 } else {
@@ -121,34 +127,34 @@ public class OrganiserMenu implements DashboardState{
                 System.out.println("Camp is now open to " + details.getFacultyRestriction() + ".");
                 dashboard.loggedIn();
                 return;
+            }
 
             //TODO other functionalities
 
-            case 9: // deletion
+            case 9 -> { // deletion
                 //TODO Add error prevention if needed
-                if(organiser.getNumAttendees(selectedCamp) > 0)
-                {
+                if (organiser.getNumAttendees(selectedCamp) > 0) {
                     System.out.println("Camps with participants cannot be deleted.");
                     return;
                 }
                 do {
                     System.out.println("Are you sure you want to delete " + selectedCamp + " ? (Y / N)");
                     userInput = sc.next();
-                } while(!userInput.equalsIgnoreCase("y") && !userInput.equalsIgnoreCase("n"));
-
-                if(userInput.equalsIgnoreCase("y")) {
+                } while (!userInput.equalsIgnoreCase("y") && !userInput.equalsIgnoreCase("n"));
+                if (userInput.equalsIgnoreCase("y")) {
                     organiser.deleteCamp(selectedCamp);
                     System.out.println("This Camp has been deleted.");
-                }
-                else {
+                } else {
                     System.out.println("Abandoning delete action, returning to main menu...");
                 }
                 dashboard.loggedIn();
                 return;
-            default:
+            }
+            default -> {
                 System.out.println("Invalid input.");
                 dashboard.loggedIn();
                 return;
+            }
         }
     }
 }

@@ -13,8 +13,9 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
     }
 
     public void display(Dashboard dashboard){
-        Scanner userInput = new Scanner(System.in);
-        int choice;
+        Scanner sc = new Scanner(System.in);
+        String userInput;
+        int option;
         int postIndex;
         String content;
         User user = dashboard.getAuthenticatedUser();
@@ -29,21 +30,36 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
             System.out.println("(2) Edit an enquiry");
             System.out.println("(3) Delete an enquiry");
         }
-        System.out.println("(-1) Back to user dashboard");
-        System.out.print("SELECT AN ACTION: ");
-        try{
-            choice = userInput.nextInt();
-            userInput.nextLine();  // Consume the leftover newline
+        else {
+            System.out.println("No enquiries to display");
+            dashboard.loggedIn();
+            return;
+        }
+        System.out.println("(0) Back to user dashboard");
 
-            switch (choice) {
-                case -1 ->
+        while(true) {
+            try {
+                System.out.print("SELECT AN ACTION: ");
+                userInput = sc.nextLine().strip();;
+                option = Integer.parseInt(userInput);
+                if(option >= 0 && option <= 3)
+                    break;
+                System.out.println("Invalid input, please try again.");
+            }
+            catch (Exception e){
+                System.out.println("Error: " + e.getMessage());
+            }
+        }
+        try{
+            switch (option) {
+                case 0 ->
                     //Set dashboard state to the loggedIn menu
                         dashboard.loggedIn();
                 case 1 -> { //submit a new enquiry
                     System.out.println("Name of camp you are enquiring about: ");
-                    String campName = userInput.nextLine();
+                    String campName = sc.nextLine();
                     System.out.println("Input query: ");
-                    content = userInput.nextLine();
+                    content = sc.nextLine();
                     try {
                         if (submit(campName, user.getUserID(), content))
                             System.out.println("Success!");
@@ -53,9 +69,9 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
                 }
                 case 2 -> { //Edit an enquiry
                     System.out.println("Enter index of enquiry to edit: ");
-                    postIndex = userInput.nextInt();
+                    postIndex = sc.nextInt();
                     System.out.println("Input modified query: ");
-                    content = userInput.nextLine();
+                    content = sc.nextLine();
                     try {
                         if (edit(user, postIndex, content))
                             System.out.println("Success!");
@@ -65,7 +81,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
                 }
                 case 3 -> { //Delete an enquiry
                     System.out.println("Enter index of enquiry to delete: ");
-                    postIndex = userInput.nextInt();
+                    postIndex = sc.nextInt();
                     try {
                         if (delete(user, postIndex))
                             System.out.println("Success!");
@@ -78,7 +94,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
         }
         catch (InputMismatchException e){
             System.out.println("Invalid input. Please enter a number.");
-            userInput.nextLine();  // Consume the invalid input
+            sc.nextLine();  // Consume the invalid input
         }
         //At the end of the display method, the main APP will redisplay the set menu
     }

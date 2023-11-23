@@ -24,28 +24,29 @@ public class StudentMenuState implements DashboardState{
 
         //Initialise variables and scanner for user input
         int option = 0;
+        String input;
         Scanner sc = new Scanner(System.in);
 
         // Display options of the main menu
         this.mainMenu();
 
         //GET user choice
-        do {
+        while(true) {
             try {
                 System.out.print("SELECT AN ACTION: ");
-                option = sc.nextInt();
-                sc.nextLine(); //consume new line
-                break;
+                input = sc.nextLine().strip();
+                option = Integer.parseInt(input);
+                if(option >= 1 && option <= 6)
+                    break;
+                System.out.println("Invalid input, please try again.");
             }
-            catch (InputMismatchException e){
-                System.out.println("Invalid input, please enter an integer.");
+            catch (Exception e){
+                System.out.println("Error: " + e.getMessage());
             }
-        } while(option < 1 || option > 6);
+        }
         System.out.println();
 
         menuLogic(option);
-
-        sc.close();
     }
     protected void mainMenu(){
         // Code to display options

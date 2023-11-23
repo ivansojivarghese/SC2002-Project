@@ -11,10 +11,11 @@ import java.util.Scanner;
 
 public abstract class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
     public void display(Dashboard dashboard){
-        Scanner userInput = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         User user = dashboard.getAuthenticatedUser();
         String content;
-        int choice = 0;
+        String userInput;
+        int option = 0;
         int postIndex;
 
         boolean hasSuggestion = view(user) > 0;
@@ -24,26 +25,31 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
             System.out.println("(2) Edit a suggestion");
             System.out.println("(3) Delete a suggestions");
         }
-        System.out.println("(-1) Back");
+        System.out.println("(0) Back");
 
         //GET user input for menu action
-        System.out.print("SELECT AN ACTION: ");
-        try {
-            choice = userInput.nextInt();
-        }
-        catch (InputMismatchException e){
-            System.out.println("Invalid input. Please enter a number.");
-            userInput.nextLine();  // Consume the invalid input
+        while(true) {
+            try {
+                System.out.print("SELECT AN ACTION: ");
+                userInput = sc.nextLine().strip();
+                option = Integer.parseInt(userInput);
+                if(option >= 0 && option <= 3)
+                    break;
+                System.out.println("Invalid input, please try again.");
+            }
+            catch (Exception e){
+                System.out.println("Error: " + e.getMessage());
+            }
         }
 
         //SELECT menu choice
-        switch (choice) {
-            case -1 -> dashboard.loggedIn();
+        switch (option) {
+            case 0 -> dashboard.loggedIn();
             case 1 -> {
                 String campName = ((Student) user).getCommittee();
                 System.out.println("Name of camp you are suggesting to: " + campName);
                 System.out.println("Input content: ");
-                content = userInput.nextLine();
+                content = sc.nextLine();
                 try {
                     if (submit(campName, user.getUserID(), content))
                         System.out.println("Success!");
@@ -53,10 +59,10 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
             }
             case 2 -> { //submit a new enquiry
                 System.out.println("Enter index of suggestion to edit: ");
-                choice = userInput.nextInt();
-                postIndex = choice;
+                option = sc.nextInt();
+                postIndex = option;
                 System.out.println("Input new content: ");
-                content = userInput.nextLine();
+                content = sc.nextLine();
                 try {
                     if (edit(user, postIndex, content))
                         System.out.println("Success!");
@@ -66,8 +72,8 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
             }
             case 3 -> {
                 System.out.println("Enter index of suggestion to delete: ");
-                choice = userInput.nextInt();
-                postIndex = choice;
+                option = sc.nextInt();
+                postIndex = option;
                 try {
                     if (delete(user, postIndex))
                         System.out.println("Success!");

@@ -1,7 +1,6 @@
 package cams.dashboards.enquiry_menus;
 
 import cams.dashboards.Dashboard;
-import cams.dashboards.DashboardState;
 import cams.dashboards.post_menus.PostViewerUI;
 import cams.post_types.Post;
 import cams.users.User;
@@ -14,27 +13,11 @@ public abstract class EnquiryViewerUI implements PostViewerUI {
     public EnquiryViewerUI(){}
     public void display(Dashboard dashboard){
         User user = dashboard.getAuthenticatedUser();
-        Scanner userInput = new Scanner(System.in);
-        int choice;
 
         if (view(user) == 0)
             System.out.println("No enquiries to display");
-        System.out.println("(-1) Back");
-        System.out.print("SELECT AN ACTION: ");
 
-        try {
-            choice = userInput.nextInt();
-
-            if (choice == -1) {//Return to loggedIn menu
-                dashboard.loggedIn();
-            } else {
-                System.out.println("Invalid input.");
-            }
-        }
-        catch (InputMismatchException e){
-            System.out.println("Invalid input. Please enter a number.");
-            userInput.nextLine();  // Consume the invalid input
-        }
+        dashboard.loggedIn();
     }
 
     public int view(User user){
