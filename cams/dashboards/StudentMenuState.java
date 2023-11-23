@@ -1,23 +1,52 @@
 package cams.dashboards;
 
 import cams.dashboards.enquiry_menus.Enquirer;
-import cams.dashboards.enquiry_menus.Replier;
-import cams.dashboards.suggestion_menus.Suggester;
 import cams.users.Participant;
+import cams.users.ParticipantAction;
 import cams.users.Student;
 import cams.users.User;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StudentMenuState implements DashboardState{
+    private final Participant participant;
+    private Dashboard dashboard;
+    private User user;
+    public StudentMenuState(){
+        this.participant = new ParticipantAction();
+    }
     @Override
     public void display(Dashboard dashboard) {
-        int option;
-        String userInput;
+        //Initialise Dashboard variable
+        this.dashboard = dashboard;
+        this.user = dashboard.getAuthenticatedUser();
 
+        //Initialise variables and scanner for user input
+        int option = 0;
         Scanner sc = new Scanner(System.in);
-        User user = dashboard.getAuthenticatedUser();
 
+        // Display options of the main menu
+        this.mainMenu();
+
+        //GET user choice
+        do {
+            try {
+                System.out.print("SELECT AN ACTION: ");
+                option = sc.nextInt();
+                sc.nextLine(); //consume new line
+                break;
+            }
+            catch (InputMismatchException e){
+                System.out.println("Invalid input, please enter an integer.");
+            }
+        } while(option < 1 || option > 6);
+        System.out.println();
+        sc.close();
+
+        menuLogic(option);
+    }
+    protected void mainMenu(){
         // Code to display options
         System.out.println("                          DASHBOARD                           ");
         System.out.println("______________________________________________________________");
@@ -31,19 +60,15 @@ public class StudentMenuState implements DashboardState{
         System.out.println("(1) Change your password");
         System.out.println("(2) Logout");
         System.out.println("(3) View my Camps");
+
         System.out.println("(4) Register for a Camp");
         System.out.println("(5) Withdraw from a Camp");
         System.out.println("(6) View enquiries menu");
+    }
 
-        if(((Student) user).isCommittee())
-        {
-            System.out.println("(7) View suggestions menu");
-            System.out.println("(8) Reply to enquiries for my camp");
-        }
-        System.out.print("SELECT AN ACTION: ");
-        option = sc.nextInt();
-        sc.nextLine(); //consume new line
-        System.out.println();
+    protected void menuLogic(int option){
+        String userInput;
+        Scanner sc = new Scanner(System.in);
 
         switch (option) {
             case 1 -> { //change password
@@ -58,25 +83,21 @@ public class StudentMenuState implements DashboardState{
             case 3 -> //View registered camps
                     user.displayMyCamps();
             case 4 -> { //Register
-                //TODO fix student view all camps; doesn't show
                 user.viewAllCamps();
-                //TODO move this to a "Camp Registration Menu"
-                //TODO prevent users from withdrawing when they don't have any camps
-                //TODO prevent users from registering when no camps exist
                 System.out.println();
                 System.out.println("Enter name of camp to register for: ");
                 userInput = sc.nextLine();
-                ((Participant) user).register(userInput);
+
+                participant.register(user, userInput);
             }
             case 5 -> { //Withdraw
                 //Only participants may withdraw from camps
                 System.out.println("Enter name of camp to withdraw from: ");
                 userInput = sc.nextLine();
-                ((Participant) user).deregister(userInput);
+                participant.deregister(user, userInput);
             }
             case 6 -> dashboard.setState(new Enquirer());
-            case 7 -> dashboard.setState(new Suggester());
-            case 8 -> dashboard.setState(new Replier());
         }
+        sc.close();
     }
 }

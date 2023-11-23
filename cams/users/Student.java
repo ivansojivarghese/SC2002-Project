@@ -3,17 +3,21 @@ package cams.users;
 import java.util.*;
 
 import cams.Camp;
+import cams.dashboards.CommitteeMenuState;
 import cams.dashboards.DashboardState;
 import cams.dashboards.StudentMenuState;
 import cams.post_types.*;
 import cams.database.UnifiedCampRepository;
 import cams.util.Faculty;
 
-public class Student extends User implements Participant { // student class
+public class Student extends User { // student class
     private String myCommittee;
 
     public DashboardState getMenuState() {
-        return new StudentMenuState();
+        if(this.isCommittee())
+            return new CommitteeMenuState();
+        else
+            return new StudentMenuState();
     }
 
     //returns false if student's myCommmittee variable is NA
@@ -46,6 +50,14 @@ public class Student extends User implements Participant { // student class
             }
         }
         return myEnquiries;
+    }
+
+    public boolean removeCamp(String campName){
+        //Prevent user from withdrawing if they are in the Committee
+        if(this.myCommittee.equalsIgnoreCase(campName))
+            return false;
+        super.removeCamp(campName);
+        return true;
     }
 
     //Refinement of displayMyCamps() method in User superclass
@@ -104,27 +116,11 @@ public class Student extends User implements Participant { // student class
         return mySuggestions;
     }
 
-    //IMPLEMENT Participant
-    public void deregister(String campName){
-        ParticipantActions action = new DeregisteringParticipant();
-        if(!campName.equalsIgnoreCase(this.getCommittee())) {
-            action.manageRegistration(this, campName);
-        }
-        else
-            System.out.println("Camp committee members cannot withdraw from their camp.");
-    }
-
-    public void register(String campName){
-        ParticipantActions action = new RegisteringParticipant();
-        action.manageRegistration(this, campName);
-    }
-
-
     //only staff can edit camps, students cannot edit camps. shld never implement/create methods that are not used.
     /*
 	@Override
 	public void editMyCamps() {
 		// TODO Auto-generated method stub
-		
+
 	}*/
 }

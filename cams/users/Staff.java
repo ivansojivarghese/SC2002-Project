@@ -3,7 +3,6 @@ package cams.users;
 import cams.Camp;
 import cams.dashboards.DashboardState;
 import cams.dashboards.StaffMenuState;
-import cams.dashboards.StudentMenuState;
 import cams.database.CampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
@@ -13,13 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Staff extends User{
-    private Organiser organiser;
-    public Staff() {}
-
     public Staff(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
-        this.setPassword("password");
-        this.organiser = new StaffOrganiserActions();
     }
 
     public DashboardState getMenuState() {

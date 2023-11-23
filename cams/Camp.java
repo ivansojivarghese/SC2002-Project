@@ -3,6 +3,7 @@ package cams;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import cams.post_types.*;
 import cams.users.CampDetails;
@@ -24,6 +25,7 @@ public class Camp {
 	private List<Post> suggestions;
 	private List<String> attendees;
 	private HashMap<String, Integer> committee;
+	private HashSet<String> bannedUsers;
 
 	//Best practice to always have an empty constructor
 	public Camp(){}
@@ -40,10 +42,12 @@ public class Camp {
 		this.description = builder.description;
 		this.inCharge = builder.inCharge;
 		this.facultyRestriction = builder.facultyRestriction;
+		this.visible = builder.visible;
 		this.enquiries = builder.enquiries;
 		this.suggestions = builder.suggestions;
 		this.attendees = builder.attendees;
 		this.committee = builder.committee;
+		this.bannedUsers = builder.bannedUsers;
 	}
 
 	public static class Builder {
@@ -62,6 +66,7 @@ public class Camp {
 		private List<Post> suggestions;
 		private List<String> attendees;
 		private HashMap<String, Integer> committee;
+		private HashSet<String> bannedUsers;
 
 		public Builder() {
 			// Default values can be set here
@@ -69,6 +74,7 @@ public class Camp {
 			this.enquiries = new ArrayList<>();
 			this.attendees = new ArrayList<>();
 			this.committee = new HashMap<>();
+			this.bannedUsers = new HashSet<>();
 		}
 
 		public Builder campName(String campName) {
@@ -165,6 +171,14 @@ public class Camp {
 				.setDescription(details.getDescription())
 				.setLocation(details.getLocation());
 		// Assuming each of these methods returns 'this' for method chaining
+	}
+
+	public void addBannedUser(String UserID){
+		this.bannedUsers.add(UserID);
+	}
+
+	public boolean isBanned(String UserID){
+		return this.bannedUsers.contains(UserID);
 	}
 
 	//Getters and Setters

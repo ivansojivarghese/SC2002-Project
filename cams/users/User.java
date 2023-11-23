@@ -56,8 +56,9 @@ public abstract class User {
     public void addCamp(Camp camp) {
         this.myCamps.add(camp.getCampName());
     }
-    public void removeCamp(String campName){
+    public boolean removeCamp(String campName){
         this.myCamps.remove(campName);
+        return false;
     }
 
     public String getName() {

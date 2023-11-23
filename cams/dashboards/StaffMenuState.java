@@ -1,17 +1,11 @@
 package cams.dashboards;
-
-import cams.Camp;
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Approver;
-import cams.database.CampRepository;
 import cams.users.*;
-import cams.util.Faculty;
-import cams.database.UnifiedCampRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.InputMismatchException;
-import java.util.List;
 import java.util.Scanner;
 
 public class StaffMenuState implements DashboardState {
@@ -44,53 +38,52 @@ public class StaffMenuState implements DashboardState {
             System.out.println("(6) Create a new Camp");
             System.out.println("(7) Respond to camp suggestions");
             System.out.println("(8) Respond to camp enquiries");
+            System.out.println("(9) View Participants/Committee Members for a camp");
         }
-        System.out.printf("SELECT AN ACTION: ");
-        option = sc.nextInt();
-        int index;
-        sc.nextLine(); //consume new line
+        //GET user choice
+        while(true) {
+            try {
+                System.out.print("SELECT AN ACTION: ");
+                option = sc.nextInt();
+                sc.nextLine(); //consume new line
+                break;
+            }
+            catch (InputMismatchException e){
+                System.out.println("Invalid input, please enter an integer.");
+            }
+        }
         System.out.println();
 
-        switch (option){
-            case 1:
+        switch (option) {
+            case 1 -> {
                 String newPassword;
-
-                System.out.printf("Enter new password: ");
+                System.out.print("Enter new password: ");
                 newPassword = sc.next();
                 user.setPassword(newPassword);
                 System.out.println("Password successfully changed!");
-                break;
-
-            case 2:
-                dashboard.logout();
-                break;
-            case 3:
-                user.displayMyCamps();
-                break;
-            case 4:
+            }
+            case 2 -> dashboard.logout();
+            case 3 -> user.displayMyCamps();
+            case 4 ->
                 //TODO maybe put this method for viewing available camps in camp repo instead? for better encapsulation
                 //Users should be able to see all camps available to their facultyRestriction, irregardless of timing clashes
                 //so they can choose to withdraw to attend other camps
-                user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
-                break;
+                    user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
+
             //TODO implement camp editing (case 5)
-            case 5: // DELETE, AND TOGGLE camps
-                dashboard.setState(new OrganiserMenu());
-                break;
-                
-            case 6:
+            case 5 -> // DELETE, AND TOGGLE camps
+                    dashboard.setState(new OrganiserMenu());
+            case 6 -> {
                 //TODO abstract all of this away into the camp organiser interface? or just leave it here?
                 int value;
                 int visible;
-
                 CampDetails campDetails = new CampDetails();
-                CampRepository repo = UnifiedCampRepository.getInstance();
 
                 //Use TRY-CATCH block with WHILE loop for getting valid input
                 //GET Camp Name
-                while(true){
+                while (true) {
                     System.out.println("You are creating a new Camp.");
-                    System.out.printf("Name of Camp: ");
+                    System.out.print("Name of Camp: ");
                     campDetails.setCampName(sc.nextLine());
 
                     if (organiser.isCampNameUnique(campDetails.getCampName())) {
@@ -99,15 +92,14 @@ public class StaffMenuState implements DashboardState {
                     System.out.println("This name already exists. Please enter a different name.");
                 }
                 //Get start and end dates
-                while(true) {
+                while (true) {
                     try {
                         //INPUT START DATE
-                        System.out.printf("Enter start date (dd-MM-yyyy): ");
+                        System.out.print("Enter start date (dd-MM-yyyy): ");
                         input = sc.nextLine();
                         campDetails.setStartDate(LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
-                        if(!campDetails.getStartDate().isAfter(LocalDate.now()))
-                        {
+                        if (!campDetails.getStartDate().isAfter(LocalDate.now())) {
                             System.out.println("Start date of camp must be after the date of creation.");
                             continue;
                         }
@@ -116,7 +108,7 @@ public class StaffMenuState implements DashboardState {
 
                         while (true) {
                             //INPUT end date
-                            System.out.printf("Enter end date (dd-MM-yyyy): ");
+                            System.out.print("Enter end date (dd-MM-yyyy): ");
                             input = sc.nextLine();
 
                             campDetails.setEndDate(LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
@@ -134,19 +126,18 @@ public class StaffMenuState implements DashboardState {
                     }
                 }
                 //Get closing date of registration
-                while(true) {
+                while (true) {
                     try {
-                        System.out.printf("Enter registration closing date (dd-MM-yyyy): ");
+                        System.out.print("Enter registration closing date (dd-MM-yyyy): ");
                         input = sc.nextLine();
                         campDetails.setClosingDate(LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
                         //Closing date of registration must be before the start of the camp and after today
-                        if(campDetails.getClosingDate().isBefore(campDetails.getStartDate()) &&
-                           campDetails.getClosingDate().isAfter(LocalDate.now())){
+                        if (campDetails.getClosingDate().isBefore(campDetails.getStartDate()) &&
+                                campDetails.getClosingDate().isAfter(LocalDate.now())) {
                             System.out.println("Closing Date: " + campDetails.getClosingDate());
                             break;
-                        }
-                        else {
+                        } else {
                             System.out.println("Closing date for registration must be after today and before the camp begins.");
                         }
                     } catch (Exception e) {
@@ -156,7 +147,7 @@ public class StaffMenuState implements DashboardState {
 
                 //Get facultyRestriction
                 while (true) {
-                    System.out.printf("Camp is (1) open to the whole of NTU OR (2) only to your faculty: ");
+                    System.out.print("Camp is (1) open to the whole of NTU OR (2) only to your faculty: ");
                     input = sc.nextLine(); //Use nextLine instead of nextInt to prevent integer mismatch exception
                     if ("1".equals(input) || "2".equals(input)) {
                         value = Integer.parseInt(input); // Convert to integer
@@ -164,63 +155,59 @@ public class StaffMenuState implements DashboardState {
                         if (value == 1 || value == 2) {
                             //If user chooses to open only to facultyRestriction, set facultyRestriction accordingly.
                             //Otherwise, maintain the default facultyRestriction value (Open to all)
-                            if(value == 2){
+                            if (value == 2) {
                                 campDetails.setFacultyRestriction(user.getFaculty());
                             }
                             System.out.println("Camp is available to " + campDetails.getFacultyRestriction().toString());
                             break;
-                        }
-                        else {
+                        } else {
                             System.out.println("Invalid input. Please enter 1 or 2.");
                         }
                     }
                 }
 
                 //GET location
-                System.out.printf("Camp location: ");
+                System.out.print("Camp location: ");
                 campDetails.setLocation(sc.nextLine().strip());
 
                 //GET number of slots for attendees
                 while (true) {
-                    try{
-                        System.out.printf("No. of attendee slots available: ");
+                    try {
+                        System.out.print("No. of attendee slots available: ");
                         campDetails.setAttendeeSlots(sc.nextInt());
                         sc.nextLine(); //consume newline
-                        if(campDetails.getAttendeeSlots() < 10 || campDetails.getAttendeeSlots() > 5000){
+                        if (campDetails.getAttendeeSlots() < 10 || campDetails.getAttendeeSlots() > 5000) {
                             System.out.println("Camp must have minimum of 10 and maximum of 5000 attendee slots.");
                             continue;
                         }
                         break;
-                    }
-                    catch (InputMismatchException e){
+                    } catch (InputMismatchException e) {
                         System.out.println("Invalid input. Please enter an integer.");
                     }
                 }
 
                 //GET number of slots for committee
                 while (true) {
-                    try{
-                        System.out.printf("No. of committee member slots available (Max 10): ");
+                    try {
+                        System.out.print("No. of committee member slots available (Max 10): ");
                         campDetails.setCommitteeSlots(sc.nextInt());
                         sc.nextLine(); //consume newline
 
-                        if(campDetails.getCommitteeSlots() < 1)
+                        if (campDetails.getCommitteeSlots() < 1)
                             System.out.println("Invalid number. Please create at least one slot. Try again.");
 
-                        else if(campDetails.getCommitteeSlots() > 10)
+                        else if (campDetails.getCommitteeSlots() > 10)
                             System.out.println("Maximum 10 committee members allowed. Try again.");
 
                         else break;
-                    }
-                    catch (InputMismatchException e){
+                    } catch (InputMismatchException e) {
                         System.out.println("Invalid input. Please enter an integer.");
                     }
                 }
 
                 //GET description
-                System.out.printf("Please provide a description of the camp: ");
+                System.out.print("Please provide a description of the camp: ");
                 campDetails.setDescription(sc.nextLine());
-
                 do {
                     System.out.println("Should the Camp be visible? [1: YES, 0: NO]");
                     visible = sc.nextInt();
@@ -236,15 +223,13 @@ public class StaffMenuState implements DashboardState {
 
                 //Business logic of camp creation completed through abstracted Organiser interface
                 organiser.createCamp(campDetails);
-
                 System.out.println("Camp created successfully!");
-                break;
-            case 7:
-                dashboard.setState(new Approver());
-                break;
-            case 8:
-                dashboard.setState(new Replier());
-                break;
+            }
+            case 7 -> dashboard.setState(new Approver());
+            case 8 -> dashboard.setState(new Replier());
+            case 9 -> {
+            } //TODO implement view list of participants/committee members for a camp
+            default -> System.out.println("Invalid input.");
         }
     }
 

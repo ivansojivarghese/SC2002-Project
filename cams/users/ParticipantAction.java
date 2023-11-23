@@ -4,9 +4,36 @@ import cams.Camp;
 import cams.database.UnifiedCampRepository;
 import cams.util.Date;
 
-public class RegisteringParticipant implements ParticipantActions {
+public class ParticipantAction implements Participant{
     @Override
-    public void manageRegistration(User user, String campName) {
+    //TODO prevent users from registering from deregistered camps using the banned list of each camp
+    public void deregister(User user, String campName) {
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        Camp camp = repo.retrieveCamp(campName);
+
+        if(camp == null)
+        {
+            System.out.println("Camp does not exist.");
+            return;
+        }
+        if(!user.getMyCamps().contains(campName)) {
+            System.out.println("Unable to withdraw from a camp you did not register for.");
+            return;
+        }
+        // If the conditional statement returns false, the user was prevented from de-registering for some reason
+        // If it returns true, the camp was removed from the user's list of registered camps
+        if(!user.removeCamp(campName)){
+            System.out.println("You are not allowed to withdraw from this camp.");
+            return;
+        }
+        //Remove user from camp list of attendees
+        camp.removeAttendee(user.getUserID());
+
+        System.out.println("Successfully deregistered.");
+    }
+
+    @Override
+    public void register(User user, String campName) {
         //TODO prevent participants for registering for camps that are closed OR over
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         if (repo.getSize() == 0) {
@@ -22,10 +49,16 @@ public class RegisteringParticipant implements ParticipantActions {
         boolean datesClash = Date.checkClashes(user, selectedCamp);
         // check for clashes in dates with other camps
         boolean availableSlot = selectedCamp.getRemainingAttendeeSlots() > 0;
+        boolean isBanned = selectedCamp.isBanned(user.getUserID());
 
         //FAILURE outcomes
         if (Registered) {
             System.out.println("Camp is already registered.");
+            return;
+        }
+        if(isBanned)
+        {
+            System.out.println("You are banned from registering for this camp.");
             return;
         }
         if (datesClash) {
