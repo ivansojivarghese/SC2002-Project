@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class UnifiedCampRepository {
+public class UnifiedCampRepository implements CampRepository {
     //Use of Singleton design pattern to ensure only one instance exists
     //Allows for better access
     private static UnifiedCampRepository instance;
@@ -17,6 +17,15 @@ public class UnifiedCampRepository {
     private UnifiedCampRepository(){
         this.Camps = new HashMap<String, Camp>();
     }
+    public static UnifiedCampRepository getInstance() {
+        // If the instance is null, create a new one
+        if (instance == null) {
+            instance = new UnifiedCampRepository();
+        }
+        // Return the existing/new instance
+        return instance;
+    }
+
     public List<Camp> filterCampByFaculty(Faculty faculty){
         List<Camp> filteredCamps = new ArrayList<>();
         for(Camp camp : this.Camps.values())
@@ -43,21 +52,19 @@ public class UnifiedCampRepository {
         campName = campName.toUpperCase().replaceAll("\\s", "");
         return Camps.get(campName);
     }
-    
+
+    public boolean Exists(String campName){
+        if (this.retrieveCamp(campName) == null) {
+            return false;
+        }
+        return true;
+    }
+
     public void deleteCamp(String campName) { // delete the camp
     	this.Camps.remove(campName);
     }
 
     public int getSize(){
         return this.Camps.size();
-    }
-
-    public static UnifiedCampRepository getInstance() {
-        // If the instance is null, create a new one
-        if (instance == null) {
-            instance = new UnifiedCampRepository();
-        }
-        // Return the existing/new instance
-        return instance;
     }
 }

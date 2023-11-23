@@ -8,13 +8,14 @@ import cams.database.UnifiedCampRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Staff extends User implements Organiser{
-
+public class Staff extends User{
+    private Organiser organiser;
     public Staff() {}
 
     public Staff(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
         this.setPassword("password");
+        this.organiser = new StaffOrganiserActions();
     }
 
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff
@@ -65,23 +66,5 @@ public class Staff extends User implements Organiser{
         if(index == 0)
             System.out.println("No camps created.");
         return index;
-    }
-
-    public void deleteCamp(String campName){
-        OrganiserActions action = new CampDeleter();
-        action.manageCamp(this, campName);
-    }
-    public void editCamp(String campName){
-        OrganiserActions action = new CampEditor();
-        action.manageCamp(this, campName);
-    }
-    public void createCamp(String campName){
-        OrganiserActions action = new CampCreator();
-        action.manageCamp(this, campName);
-    }
-
-    public void assignCamp(String UserID, String campName){
-        OrganiserActions action = new Assigner();
-        action.manageCamp(this, campName);
     }
 }

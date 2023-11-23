@@ -1,9 +1,9 @@
 package cams.dashboards;
 
 import cams.Camp;
+import cams.database.CampRepository;
+import cams.users.*;
 import cams.util.Faculty;
-import cams.users.Staff;
-import cams.users.User;
 import cams.database.UnifiedCampRepository;
 
 import java.time.LocalDate;
@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class StaffMenuState implements DashboardState {
+    private final Organiser organiser = new StaffOrganiserActions();
     //> FACULTY INFO.
     //> CHANGE PASSWORD
     //> LOGOUT (BACK TO LOG IN PAGE)
@@ -39,7 +40,7 @@ public class StaffMenuState implements DashboardState {
             System.out.println("(4) View all Camps");
             System.out.println("(5) Edit your Camp(s)");
             System.out.println("(6) Create a new Camp");
-            System.out.println("(7) Reply to my camps' suggestions");
+            System.out.println("(7) Respond to camp suggestions");
             System.out.println("(8) Respond to camp enquiries");
         }
         System.out.printf("SELECT AN ACTION: ");
@@ -79,27 +80,18 @@ public class StaffMenuState implements DashboardState {
                 //TODO abstract all of this away into the camp organiser interface? or just leave it here?
                 int value;
                 int visible;
-                String campName;
-                LocalDate startDate;
-                LocalDate endDate;
-                LocalDate closingDate;
-                String location;
-                int attendeeSlots;
-                int committeeSlots;
-                String description;
-                String inCharge = user.getUserID();
-                Faculty facultyRestriction = Faculty.ALL;
-                boolean visibility = false;
+
+                CampDetails campDetails = new CampDetails();
+                CampRepository repo = UnifiedCampRepository.getInstance();
 
                 //Use TRY-CATCH block with WHILE loop for getting valid input
                 //GET Camp Name
                 while(true){
                     System.out.println("You are creating a new Camp.");
                     System.out.printf("Name of Camp: ");
-                    campName = sc.nextLine();
+                    campDetails.setCampName(sc.nextLine());
 
-                    UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-                    if (repo.retrieveCamp(campName) == null) {
+                    if (organiser.isCampNameUnique(campDetails.getCampName())) {
                         break; // Break the loop if the name doesn't exist in the map
                     }
                     System.out.println("This name already exists. Please enter a different name.");
@@ -110,25 +102,26 @@ public class StaffMenuState implements DashboardState {
                         //INPUT START DATE
                         System.out.printf("Enter start date (dd-MM-yyyy): ");
                         input = sc.nextLine();
-                        startDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                        campDetails.setStartDate(LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
-                        if(!startDate.isAfter(LocalDate.now()))
+                        if(!campDetails.getStartDate().isAfter(LocalDate.now()))
                         {
                             System.out.println("Start date of camp must be after the date of creation.");
                             continue;
                         }
 
-                        System.out.println("Start Date: " + startDate);
+                        System.out.println("Start Date: " + campDetails.getStartDate());
 
                         while (true) {
                             //INPUT end date
                             System.out.printf("Enter end date (dd-MM-yyyy): ");
                             input = sc.nextLine();
 
-                            endDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-                            System.out.println("End Date: " + endDate);
+                            campDetails.setEndDate(LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+                            System.out.println("End Date: " + campDetails.getEndDate());
 
-                            if (startDate.isEqual(endDate) || endDate.isAfter(startDate)) {
+                            if (campDetails.getStartDate().isEqual(campDetails.getEndDate()) ||
+                                campDetails.getEndDate().isAfter(campDetails.getEndDate())) {
                                 break;
                             } else {
                                 System.out.println("End Date is before Start Date. Please re-enter End Date.");
@@ -144,11 +137,12 @@ public class StaffMenuState implements DashboardState {
                     try {
                         System.out.printf("Enter registration closing date (dd-MM-yyyy): ");
                         input = sc.nextLine();
-                        closingDate = LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+                        campDetails.setClosingDate(LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
 
                         //Closing date of registration must be before the start of the camp and after today
-                        if(closingDate.isBefore(startDate) && closingDate.isAfter(LocalDate.now())){
-                            System.out.println("Closing Date: " + closingDate);
+                        if(campDetails.getClosingDate().isBefore(campDetails.getStartDate()) &&
+                           campDetails.getClosingDate().isAfter(LocalDate.now())){
+                            System.out.println("Closing Date: " + campDetails.getClosingDate());
                             break;
                         }
                         else {
@@ -170,9 +164,9 @@ public class StaffMenuState implements DashboardState {
                             //If user chooses to open only to facultyRestriction, set facultyRestriction accordingly.
                             //Otherwise, maintain the default facultyRestriction value (Open to all)
                             if(value == 2){
-                                facultyRestriction = user.getFaculty();
+                                campDetails.setFacultyRestriction(user.getFaculty());
                             }
-                            System.out.println("Camp is available to " + facultyRestriction.toString());
+                            System.out.println("Camp is available to " + campDetails.getFacultyRestriction().toString());
                             break;
                         }
                         else {
@@ -183,15 +177,15 @@ public class StaffMenuState implements DashboardState {
 
                 //GET location
                 System.out.printf("Camp location: ");
-                location = sc.nextLine().strip();
+                campDetails.setLocation(sc.nextLine().strip());
 
                 //GET number of slots for attendees
                 while (true) {
                     try{
                         System.out.printf("No. of attendee slots available: ");
-                        attendeeSlots = sc.nextInt();
+                        campDetails.setAttendeeSlots(sc.nextInt());
                         sc.nextLine(); //consume newline
-                        if(attendeeSlots < 10 || attendeeSlots > 5000){
+                        if(campDetails.getAttendeeSlots() < 10 || campDetails.getAttendeeSlots() > 5000){
                             System.out.println("Camp must have minimum of 10 and maximum of 5000 attendee slots.");
                             continue;
                         }
@@ -206,13 +200,13 @@ public class StaffMenuState implements DashboardState {
                 while (true) {
                     try{
                         System.out.printf("No. of committee member slots available (Max 10): ");
-                        committeeSlots = sc.nextInt();
+                        campDetails.setCommitteeSlots(sc.nextInt());
                         sc.nextLine(); //consume newline
 
-                        if(committeeSlots < 1)
+                        if(campDetails.getCommitteeSlots() < 1)
                             System.out.println("Invalid number. Please create at least one slot. Try again.");
 
-                        else if(committeeSlots > 10)
+                        else if(campDetails.getCommitteeSlots() > 10)
                             System.out.println("Maximum 10 committee members allowed. Try again.");
 
                         else break;
@@ -224,35 +218,20 @@ public class StaffMenuState implements DashboardState {
 
                 //GET description
                 System.out.printf("Please provide a description of the camp: ");
-                description = sc.nextLine();
+                campDetails.setDescription(sc.nextLine());
 
                 do {
                     System.out.println("Should the Camp be visible? [1: YES, 0: NO]");
                     visible = sc.nextInt();
                     if (visible == 1) {
-                        visibility = true;
+                        campDetails.setVisibility(true);
                     } else if (visible == 0) {
-                        visibility = false;
+                        campDetails.setVisibility(false);
                     }
                 } while (visible != 1 && visible != 0);
 
-                //Use a builder for better readability
-                Camp newCamp = new Camp.Builder()
-                    .campName(campName)
-                    .startDate(startDate)
-                    .endDate(endDate)
-                    .closingDate(closingDate)
-                    .location(location)
-                    .attendeeSlots(attendeeSlots)
-                    .committeeSlots(committeeSlots)
-                    .description(description)
-                    .inCharge(user.getUserID())
-                    .facultyRestriction(facultyRestriction)
-                    .visible(visibility)
-                    .build();
-                UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-                repo.addCamp(newCamp);
-                user.addCamp(newCamp);
+                //Business logic of camp creation completed through abstracted Organiser interface
+                organiser.createCamp(campDetails);
 
                 System.out.println("Camp created successfully!");
                 break;

@@ -3,8 +3,9 @@ package cams.users;
 import cams.Camp;
 
 public interface Organiser {
-    public void createCamp(String campName);
-    public void editCamp(String campName);
+    public void createCamp(CampDetails details);
+    public void editCamp(String campName, CampDetails details);
     public void deleteCamp(String campName);
     public void assignCamp(String UserID, String campName);
+    public boolean isCampNameUnique(String campName);
 }

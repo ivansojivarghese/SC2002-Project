@@ -16,9 +16,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class UnifiedUserRepository {
-    // Use simple logger instead of Apache Log4j2 as it is overkill for a simple App
-    // The following line hides error due to Log4j2 logging implementation not found
+public class UnifiedUserRepository implements UserRepository {
     private static UnifiedUserRepository instance;
     private HashMap<String, User> users;
 

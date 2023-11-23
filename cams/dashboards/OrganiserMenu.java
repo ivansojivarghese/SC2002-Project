@@ -1,5 +1,7 @@
 package cams.dashboards;
 import cams.Camp;
+import cams.users.Organiser;
+import cams.users.StaffOrganiserActions;
 import cams.users.User;
 import cams.database.UnifiedCampRepository;
 import cams.util.Faculty;
@@ -9,35 +11,46 @@ import java.util.List;
 import java.util.Scanner;
 
 public class OrganiserMenu implements DashboardState{
+    private final Organiser organiser;
+
+    OrganiserMenu(){
+        this.organiser = new StaffOrganiserActions();
+    }
     @Override
     public void display(Dashboard dashboard) {
 
         Scanner sc = new Scanner(System.in);
         User user = dashboard.getAuthenticatedUser();
 
+        //Variables to store options
         String userInput = "";
         int index = -1, option;
 
         //SELECT camp to edit
-        Camp selectedCamp = null;
+        String selectedCamp = "";
 
         //DISPLAYS list of user's camp and gets number of camps
-        int numberOfCamps = user.displayMyCamps();
-
-        if (numberOfCamps == 0) //if no camps to edit
+        if (user.displayMyCamps() == 0) //if no camps to edit
         {
             dashboard.loggedIn();
             return;
         }
 
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-
-        do {
+        while(true) {
             try {
                 System.out.printf("Select a Camp to edit through its index number: ");
                 index = sc.nextInt();
+                selectedCamp = user.getMyCamps().get(index);
 
-                selectedCamp = repo.retrieveCamp(user.getMyCamps().get(index));
+                //If camp exists
+                if(!organiser.isCampNameUnique(selectedCamp)){
+                    break;
+                }
+                else {
+                    System.out.println("Camp selected not found, returning to main menu.");
+                    dashboard.loggedIn();
+                    return;
+                }
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input.");
             }
@@ -45,9 +58,9 @@ public class OrganiserMenu implements DashboardState{
                 System.out.println("Camp selected not found.");
                 return;
             }
-        } while (index < 0 || index >= numberOfCamps);
+        }
 
-        System.out.println("SELECTED CAMP: " + selectedCamp.getCampName());
+        System.out.println("SELECTED CAMP: " + selectedCamp);
 
         System.out.println("Camp Editing Menu");
         System.out.println("(0) Assign a student to the camp");
