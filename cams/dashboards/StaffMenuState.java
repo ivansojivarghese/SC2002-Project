@@ -1,6 +1,8 @@
 package cams.dashboards;
 
 import cams.Camp;
+import cams.dashboards.enquiry_menus.Replier;
+import cams.dashboards.suggestion_menus.Approver;
 import cams.database.CampRepository;
 import cams.users.*;
 import cams.util.Faculty;
@@ -73,7 +75,7 @@ public class StaffMenuState implements DashboardState {
                 break;
             //TODO implement camp editing (case 5)
             case 5: // DELETE, AND TOGGLE camps
-                dashboard.organiserMenu();
+                dashboard.setState(new OrganiserMenu());
                 break;
                 
             case 6:
@@ -238,10 +240,10 @@ public class StaffMenuState implements DashboardState {
                 System.out.println("Camp created successfully!");
                 break;
             case 7:
-                dashboard.approverMenu();
+                dashboard.setState(new Approver());
                 break;
             case 8:
-                dashboard.replierMenu();
+                dashboard.setState(new Replier());
                 break;
         }
     }

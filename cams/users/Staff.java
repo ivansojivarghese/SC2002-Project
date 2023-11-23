@@ -1,6 +1,9 @@
 package cams.users;
 
 import cams.Camp;
+import cams.dashboards.DashboardState;
+import cams.dashboards.StaffMenuState;
+import cams.dashboards.StudentMenuState;
 import cams.database.CampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
@@ -17,6 +20,10 @@ public class Staff extends User{
         super(name, userID, faculty);
         this.setPassword("password");
         this.organiser = new StaffOrganiserActions();
+    }
+
+    public DashboardState getMenuState() {
+        return new StaffMenuState();
     }
 
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff

@@ -9,7 +9,7 @@ import java.util.InputMismatchException;
 import java.util.Objects;
 import java.util.Scanner;
 
-public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI, DashboardState {
+public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI {
     public ReplierUI() {
     }
 

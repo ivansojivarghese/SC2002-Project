@@ -1,5 +1,8 @@
 package cams.dashboards;
 
+import cams.dashboards.enquiry_menus.Enquirer;
+import cams.dashboards.enquiry_menus.Replier;
+import cams.dashboards.suggestion_menus.Suggester;
 import cams.users.Participant;
 import cams.users.Student;
 import cams.users.User;
@@ -37,59 +40,43 @@ public class StudentMenuState implements DashboardState{
             System.out.println("(7) View suggestions menu");
             System.out.println("(8) Reply to enquiries for my camp");
         }
-        System.out.printf("SELECT AN ACTION: ");
+        System.out.print("SELECT AN ACTION: ");
         option = sc.nextInt();
         sc.nextLine(); //consume new line
         System.out.println();
 
-        switch (option){
-            case 1: //change password
+        switch (option) {
+            case 1 -> { //change password
                 String newPassword;
-
                 System.out.println("Enter new password (Case Sensitive):");
                 newPassword = sc.nextLine();
                 user.setPassword(newPassword);
                 System.out.println("Password successfully changed!");
-                break;
-
-            case 2: //logout
-                dashboard.logout();
-                break;
-            case 3: //View registered camps
-                user.displayMyCamps();
-                break;
-            case 4: //Register
+            }
+            case 2 -> //logout
+                    dashboard.logout();
+            case 3 -> //View registered camps
+                    user.displayMyCamps();
+            case 4 -> { //Register
                 //TODO fix student view all camps; doesn't show
-                user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
-                //Only participants may register for camps
+                user.viewAllCamps();
                 //TODO move this to a "Camp Registration Menu"
                 //TODO prevent users from withdrawing when they don't have any camps
                 //TODO prevent users from registering when no camps exist
                 System.out.println();
-                if(user instanceof Participant){
-                    System.out.println("Enter name of camp to register for: ");
-                    userInput = sc.nextLine();
-                    ((Participant) user).register(userInput);
-                }
-                break;
-
-            case 5: //Withdraw
+                System.out.println("Enter name of camp to register for: ");
+                userInput = sc.nextLine();
+                ((Participant) user).register(userInput);
+            }
+            case 5 -> { //Withdraw
                 //Only participants may withdraw from camps
-                if(user instanceof Participant) {
-                    System.out.println("Enter name of camp to withdraw from: ");
-                    userInput = sc.nextLine();
-                    ((Participant) user).deregister(userInput);
-                }
-                break;
-            case 6:
-                dashboard.enquirerMenu();
-                break;
-            case 7:
-                dashboard.suggesterMenu();
-                break;
-            case 8:
-                dashboard.replierMenu();
-                break;
+                System.out.println("Enter name of camp to withdraw from: ");
+                userInput = sc.nextLine();
+                ((Participant) user).deregister(userInput);
+            }
+            case 6 -> dashboard.setState(new Enquirer());
+            case 7 -> dashboard.setState(new Suggester());
+            case 8 -> dashboard.setState(new Replier());
         }
     }
 }

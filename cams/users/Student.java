@@ -1,16 +1,20 @@
 package cams.users;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import cams.Camp;
+import cams.dashboards.DashboardState;
+import cams.dashboards.StudentMenuState;
 import cams.post_types.*;
 import cams.database.UnifiedCampRepository;
 import cams.util.Faculty;
 
 public class Student extends User implements Participant { // student class
     private String myCommittee;
+
+    public DashboardState getMenuState() {
+        return new StudentMenuState();
+    }
 
     //returns false if student's myCommmittee variable is NA
     public boolean isCommittee() {
@@ -29,28 +33,6 @@ public class Student extends User implements Participant { // student class
     	super(name, userID, faculty);
         this.setCommittee("NA");
     }
-
-    /*
-    public void setPassword(int identity, String password) {
-    	studentArr[identity].password = password;
-    }
- 
-    // Student class constructor
-    Student(String name, String userID, String faculty, String password, int identity)
-    {
-        this.name = name;
-        this.userID = userID;
-        this.faculty = faculty;
-        if (password == null) {        	
-        	this.password = "password";
-        } else {        	
-        	setPassword(identity, password);
-        }
-    }
-
-    public List<Post> getMyEnquiries(){
-        return this.myEnquiries;
-    }*/
 
     public List<Post> getEnquiries() {
         List<Post> myEnquiries = new ArrayList<>();
@@ -84,16 +66,25 @@ public class Student extends User implements Participant { // student class
     //Displays camp information for all camps visible and available to the user
     public void viewAllCamps() {
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        for(Camp c : repo.filterCampByFaculty(Faculty.ALL)){
-            if(!c.getVisible())
-                continue;
-            System.out.println("_________________________________");
-            c.display();
+
+        // Get camps from both categories in a hashset of unique values to avoid duplicates
+        Set<Camp> allCamps = new HashSet<>();
+        allCamps.addAll(repo.filterCampByFaculty(Faculty.ALL));
+        allCamps.addAll(repo.filterCampByFaculty(this.getFaculty()));
+
+        if (allCamps.isEmpty()) {
+            System.out.println("No camps available.");
+            return;
         }
-        for(Camp c : repo.filterCampByFaculty(this.getFaculty())){
-            if(!c.getVisible())
+
+        for (Camp c : allCamps) {
+            //If camp is not visible, skip
+            if (!c.getVisible()) {
                 continue;
+            }
+            //Print divider
             System.out.println("_________________________________");
+            //Display camp
             c.display();
         }
     }

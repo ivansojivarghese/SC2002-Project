@@ -8,7 +8,7 @@ import cams.users.User;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI, DashboardState {
+public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
     public EnquirerUI() {
     }
 

@@ -9,7 +9,7 @@ import cams.users.User;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public abstract class SuggesterUI extends SuggestionViewerUI implements PostViewerUI, DashboardState {
+public abstract class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
     public void display(Dashboard dashboard){
         Scanner userInput = new Scanner(System.in);
         User user = dashboard.getAuthenticatedUser();

@@ -10,7 +10,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-public abstract class EnquiryViewerUI implements PostViewerUI, DashboardState {
+public abstract class EnquiryViewerUI implements PostViewerUI {
     public EnquiryViewerUI(){}
     public void display(Dashboard dashboard){
         User user = dashboard.getAuthenticatedUser();

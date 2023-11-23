@@ -1,5 +1,6 @@
 package cams.users;
 import cams.Camp;
+import cams.dashboards.DashboardState;
 import cams.database.UnifiedCampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
@@ -14,6 +15,8 @@ public abstract class User {
     private String password;
     private Faculty faculty;
     private List<String> myCamps;
+
+    public abstract DashboardState getMenuState();
 
     public Boolean validateLogin(String password){
         return Objects.equals(password, this.password);

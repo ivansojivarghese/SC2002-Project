@@ -8,7 +8,7 @@ import cams.users.User;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public abstract class ApproverUI extends SuggestionViewerUI implements PostApproverUI, DashboardState {
+public abstract class ApproverUI extends SuggestionViewerUI implements PostApproverUI {
     public void display(Dashboard dashboard){
         Scanner userInput = new Scanner(System.in);
         User user = dashboard.getAuthenticatedUser();
