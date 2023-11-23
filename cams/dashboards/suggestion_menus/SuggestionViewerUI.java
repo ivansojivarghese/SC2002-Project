@@ -16,16 +16,14 @@ public class SuggestionViewerUI {
         view(user);
 
         System.out.println("(-1) Back");
-        System.out.printf("SELECT AN ACTION: ");
+        System.out.print("SELECT AN ACTION: ");
         try {
             choice = userInput.nextInt();
 
-            switch (choice) {
-                case -1:
-                    dashboard.loggedIn();
-                default:
-                    System.out.println("Invalid input.");
+            if (choice == -1) {
+                dashboard.loggedIn();
             }
+            System.out.println("Invalid input.");
         }
         catch (InputMismatchException e){
             System.out.println("Invalid input. Please enter a number.");
@@ -47,6 +45,6 @@ public class SuggestionViewerUI {
             currentPost.displayContent();
             System.out.println("__________________________");
         }
-        return 1;
+        return mySuggestions.size();
     }
 }

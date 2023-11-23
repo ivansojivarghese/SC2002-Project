@@ -5,9 +5,8 @@ public class Enquiry extends Message{
     public String getContent() {
         return content;
     }
-    public Boolean setContent(String content){
+    public void setContent(String content){
         this.content = content;
-        return true;
     }
 
     @Override

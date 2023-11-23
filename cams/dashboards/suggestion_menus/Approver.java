@@ -5,17 +5,18 @@ import cams.post_types.Message;
 import cams.post_types.Post;
 import cams.users.User;
 
-public class Approver extends ApproverUI {
+import java.util.InputMismatchException;
 
+public class Approver extends ApproverUI {
     @Override
-    public int approve(User user, int postIndex, String isApproved) {
+    public boolean approve(User user, int postIndex, String isApproved) {
         Post currentPost = user.getSuggestions().get(postIndex);
         Boolean boolApproved = validateInput(isApproved);
         if(boolApproved == null)
-            return -1; //incorrect input
+            throw new InputMismatchException("Invalid input.");
         Message approval = new Approval(boolApproved);
         currentPost.addContent(approval);
-        return 1; //successful
+        return true;
     }
     public Boolean validateInput(String approved){
         if ("1".equalsIgnoreCase(approved) || "yes".equalsIgnoreCase(approved) ||

@@ -8,32 +8,39 @@ public class Enquirer extends EnquirerUI{
     public Enquirer() {
     }
 
-    public int submit(String campName, String userID, String text){
+    public boolean submit(String campName, String userID, String text){
         Post newPost = PostFactory.createPost(PostType.ENQUIRY);
         Enquiry newEnquiry = (Enquiry) newPost.getFirstMessage();
-        if(newEnquiry.setContent(text) && newEnquiry.setPostedBy(userID) && newPost.setCamp(campName))
-            return 1; //successful
-        return 0; //unsuccessful
+        newEnquiry.setContent(text);
+        newEnquiry.setPostedBy(userID);
+        newPost.setCamp(campName);
+        return true;
     }
 
-    public int edit(User user, int postIndex, String content){
-        if(user == null)
-            return 0; //user does not exist
+    public boolean edit(User user, int postIndex, String content){
+        if(user == null){
+            System.out.println("User does not exist.");
+            return false;
+        }
         Post currentPost = user.getEnquiries().get(postIndex);
         currentPost.getFirstMessage().setContent(content);
-        return 1;
+        return true;
     }
-    public int delete(User user, int postIndex){
-        if(user == null)
-            return 0; //user does not exist
+    public boolean delete(User user, int postIndex){
+        if(user == null) {
+            System.out.println("User does not exist.");
+            return false;
+        }
 
         Post currentPost = user.getEnquiries().get(postIndex);
-        if(currentPost.isReplied())
-            return -1; //reply exists
+        if(currentPost.isReplied()){
+            System.out.println("Unable to delete posts with replies.");
+            return false;
+        }
 
         Camp camp = currentPost.getCamp();
         camp.removePost(PostType.ENQUIRY, currentPost);
         //User does not store their posts
-        return 1;
+        return true;
     }
 }

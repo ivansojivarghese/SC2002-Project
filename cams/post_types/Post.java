@@ -58,18 +58,10 @@ public class Post {
 
     public String getCampName(){return campName;}
 
-    public Boolean setCamp(String campName) {
-        CampRepository repo = UnifiedCampRepository.getInstance();
-        Camp camp = repo.retrieveCamp(campName);
-        if(camp == null) //if camp does not exist
-            return false;
-
+    public void setCamp(String campName) {
         if(getCamp() != null) { //if post already has a camp, prevent changing camp
-            return false;
+            throw new UnsupportedOperationException("Post already has a camp");
         }
         this.campName = campName; //set new camp
-        camp.addEnquiry(this);
-
-        return true;
     }
 }

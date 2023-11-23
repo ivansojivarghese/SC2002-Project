@@ -20,19 +20,15 @@ public abstract class EnquiryViewerUI implements PostViewerUI, DashboardState {
         if (view(user) == 0)
             System.out.println("No enquiries to display");
         System.out.println("(-1) Back");
-        System.out.printf("SELECT AN ACTION: ");
+        System.out.print("SELECT AN ACTION: ");
 
         try {
             choice = userInput.nextInt();
 
-            switch (choice) {
-                case -1:
-                    //Return to loggedIn menu
-                    dashboard.loggedIn();
-                    break;
-                default:
-                    System.out.println("Invalid input.");
-                    break;
+            if (choice == -1) {//Return to loggedIn menu
+                dashboard.loggedIn();
+            } else {
+                System.out.println("Invalid input.");
             }
         }
         catch (InputMismatchException e){
@@ -55,6 +51,6 @@ public abstract class EnquiryViewerUI implements PostViewerUI, DashboardState {
             currentPost.displayContent();
             System.out.println("__________________________");
         }
-        return 1;
+        return myEnquiries.size();
     }
 }

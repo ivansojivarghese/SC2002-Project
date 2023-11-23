@@ -11,8 +11,7 @@ public class Suggestion extends Message{
         return this.content;
     }
 
-    public Boolean setContent(String content){
+    public void setContent(String content){
         this.content = content;
-        return true;
     }
 }

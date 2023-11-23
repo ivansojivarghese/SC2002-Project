@@ -3,7 +3,6 @@ package cams.dashboards.enquiry_menus;
 import cams.dashboards.Dashboard;
 import cams.dashboards.DashboardState;
 import cams.dashboards.post_menus.PostReplierUI;
-import cams.post_types.Post;
 import cams.users.User;
 
 import java.util.InputMismatchException;
@@ -25,18 +24,17 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
             System.out.println("(1) Reply to an enquiry");
         }
         System.out.println("(-1) Back");
-        System.out.printf("SELECT AN ACTION: ");
+        System.out.print("SELECT AN ACTION: ");
         try {
             choice = userInput.nextInt();
             userInput.nextLine(); //Consume the new line
             switch (choice) {
                 //Set dashboard to loggedIn menu state
-                case -1:
-                    dashboard.loggedIn();
-                    break;
+                case -1 -> dashboard.loggedIn();
+
                 //Reply to an enquiry
-                case 1:
-                    String content = "";
+                case 1 -> {
+                    String content;
                     do {
                         System.out.println("Enter index of enquiry to reply: ");
                         choice = userInput.nextInt();
@@ -45,13 +43,14 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
                         System.out.println("Input reply: ");
                         content = userInput.nextLine();
                     }
-                    while(Objects.equals(content.strip(), ""));
-                    if (reply(user, postIndex, content) == 1)
-                        System.out.println("Success!");
-                    else{
-                        System.out.println("Reply already exist, unable to reply again!");
+                    while (Objects.equals(content.strip(), ""));
+                    try {
+                        if (reply(user, postIndex, content))
+                            System.out.println("Success!");
+                    } catch (Exception e) {
+                        System.out.println("Error: " + e.getMessage());
                     }
-                    break;
+                }
             }
         }
         catch (InputMismatchException e){
@@ -61,5 +60,5 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
     }
 
     @Override
-    public abstract int reply(User user, int postIndex, String reply);
+    public abstract boolean reply(User user, int postIndex, String reply);
 }

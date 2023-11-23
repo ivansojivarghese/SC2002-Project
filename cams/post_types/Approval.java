@@ -29,7 +29,8 @@ public class Approval extends Message{
         return true;
     }
 
-    public Boolean setContent(String approved) {return true;}
+    public void setContent(String approved) {
+    }
 
     @Override
     public void displayContent() {

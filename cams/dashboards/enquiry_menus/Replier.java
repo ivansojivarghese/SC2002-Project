@@ -7,12 +7,14 @@ import cams.users.User;
 
 public class Replier extends ReplierUI{
     @Override
-    public int reply(User user, int postIndex, String content) {
+    public boolean reply(User user, int postIndex, String content) {
         Post post = user.getEnquiries().get(postIndex);
-        if(post.isReplied())
-            return 0;
+        if(post.isReplied()) {
+            System.out.println("Reply already exist, unable to add reply!");
+            return false;
+        }
         Message reply = new Reply(user.getUserID(), content);
         post.addContent(reply);
-        return 1;
+        return true;
     }
 }
