@@ -46,18 +46,20 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI, Da
                     System.out.println("Name of camp you are enquiring about: ");
                     String campName = userInput.nextLine();
 
-                    System.out.println("Input new content: ");
+                    System.out.println("Input query: ");
                     content = userInput.nextLine();
 
                     if(submit(campName, user.getUserID(), content) == 1)
                         System.out.println("Success!");
+                    else
+                        System.out.println("Failed to submit, please ensure a valid Camp Name!");
                     break;
 
                 case 2: //Edit an enquiry
                     System.out.println("Enter index of enquiry to edit: ");
                     postIndex = userInput.nextInt();
 
-                    System.out.println("Input new content: ");
+                    System.out.println("Input modified query: ");
                     content = userInput.nextLine();
                     if (edit(user, postIndex, content) == 1)
                         System.out.println("Success!");

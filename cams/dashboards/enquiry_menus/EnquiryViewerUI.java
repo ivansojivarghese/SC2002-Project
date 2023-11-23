@@ -17,7 +17,6 @@ public abstract class EnquiryViewerUI implements PostViewerUI, DashboardState {
         Scanner userInput = new Scanner(System.in);
         int choice;
 
-
         if (view(user) == 0)
             System.out.println("No enquiries to display");
         System.out.println("(-1) Back");
@@ -52,7 +51,7 @@ public abstract class EnquiryViewerUI implements PostViewerUI, DashboardState {
         }
         for (int i = 0; i < myEnquiries.size(); i++) {
             currentPost = myEnquiries.get(i);
-            System.out.println(i + ": ");
+            System.out.println("Index" + i + ": ");
             currentPost.displayContent();
             System.out.println("__________________________");
         }

@@ -7,6 +7,7 @@ import cams.post_types.Post;
 import cams.users.User;
 
 import java.util.InputMismatchException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI, DashboardState {
@@ -35,13 +36,21 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
                     break;
                 //Reply to an enquiry
                 case 1:
-                    System.out.println("Enter index of enquiry to reply: ");
-                    choice = userInput.nextInt();
-                    postIndex = choice;
-                    System.out.println("Input reply: ");
-                    String content = userInput.nextLine();
+                    String content = "";
+                    do {
+                        System.out.println("Enter index of enquiry to reply: ");
+                        choice = userInput.nextInt();
+                        userInput.nextLine(); //consume new line character
+                        postIndex = choice;
+                        System.out.println("Input reply: ");
+                        content = userInput.nextLine();
+                    }
+                    while(Objects.equals(content.strip(), ""));
                     if (reply(user, postIndex, content) == 1)
                         System.out.println("Success!");
+                    else{
+                        System.out.println("Reply already exist, unable to reply again!");
+                    }
                     break;
             }
         }

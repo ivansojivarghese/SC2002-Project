@@ -10,7 +10,7 @@ public class Replier extends ReplierUI{
     public int reply(User user, int postIndex, String content) {
         Post post = user.getEnquiries().get(postIndex);
         if(post.isReplied())
-            return -1;
+            return 0;
         Message reply = new Reply(user.getUserID(), content);
         post.addContent(reply);
         return 1;

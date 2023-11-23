@@ -59,6 +59,7 @@ public class StudentMenuState implements DashboardState{
                 user.displayMyCamps();
                 break;
             case 4: //Register
+                //TODO fix student view all camps; doesn't show
                 user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
                 //Only participants may register for camps
                 //TODO move this to a "Camp Registration Menu"
