@@ -42,9 +42,10 @@ public class StudentMenuState implements DashboardState{
             }
         } while(option < 1 || option > 6);
         System.out.println();
-        sc.close();
 
-        menuLogic(option);
+        menuLogic(option, sc);
+
+        sc.close();
     }
     protected void mainMenu(){
         // Code to display options
@@ -66,9 +67,8 @@ public class StudentMenuState implements DashboardState{
         System.out.println("(6) View enquiries menu");
     }
 
-    protected void menuLogic(int option){
+    protected void menuLogic(int option, Scanner sc){
         String userInput;
-        Scanner sc = new Scanner(System.in);
 
         switch (option) {
             case 1 -> { //change password

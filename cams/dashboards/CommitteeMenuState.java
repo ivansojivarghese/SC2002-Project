@@ -32,11 +32,11 @@ public class CommitteeMenuState extends StudentMenuState{
                 System.out.println("Invalid input, please enter an integer.");
             }
         } while(option < 1 || option > 9);
-
         System.out.println();
-        sc.close();
 
-        menuLogic(option);
+        menuLogic(option, sc);
+
+        sc.close();
     }
 
     @Override
@@ -49,11 +49,10 @@ public class CommitteeMenuState extends StudentMenuState{
         System.out.println("(9) Generate report for my camp");
     }
 
-    protected void menuLogic(int option){
+    protected void menuLogic(int option, Scanner sc){
         String userInput;
-        Scanner sc = new Scanner(System.in);
 
-        super.menuLogic(option);
+        super.menuLogic(option, sc);
 
         switch (option){
             case 7 -> dashboard.setState(new Suggester());
