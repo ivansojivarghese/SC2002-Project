@@ -69,16 +69,30 @@ public class Student extends User implements Participant { // student class
     //Refinement of displayMyCamps() method in User superclass
     public int displayMyCamps(){
         System.out.println("My registered camps: ");
-        int index = super.displayMyCamps();
+        int index = 0;
+        try {
+            index = super.displayMyCamps();
+        }
+        catch (NullPointerException e){
+            System.out.println("No camps registered.");
+        }
         if(index == 0)
             System.out.println("No camps registered.");
         return index;
     }
 
-    //TODO implement this method to return all camps available to user
+    //Displays camp information for all camps visible and available to the user
     public void viewAllCamps() {
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        for(Camp c : repo.filterCampByFaculty(Faculty.ALL)){
+            if(!c.getVisible())
+                continue;
+            System.out.println("_________________________________");
+            c.display();
+        }
         for(Camp c : repo.filterCampByFaculty(this.getFaculty())){
+            if(!c.getVisible())
+                continue;
             System.out.println("_________________________________");
             c.display();
         }

@@ -5,6 +5,7 @@ import cams.database.UnifiedCampRepository;
 
 public class DeregisteringParticipant implements ParticipantActions{
     @Override
+    //TODO prevent users from registering from deregistered camps using the banned list of each camp
     public void manageRegistration(User user, String campName) {
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         Camp camp = repo.retrieveCamp(campName);

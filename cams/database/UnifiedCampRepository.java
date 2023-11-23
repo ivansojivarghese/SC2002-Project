@@ -54,14 +54,11 @@ public class UnifiedCampRepository implements CampRepository {
     }
 
     public boolean Exists(String campName){
-        if (this.retrieveCamp(campName) == null) {
-            return false;
-        }
-        return true;
+        return this.retrieveCamp(campName) != null;
     }
 
     public void deleteCamp(String campName) { // delete the camp
-    	this.Camps.remove(campName);
+    	this.Camps.remove(campName.toUpperCase().replaceAll("\\s", ""));
     }
 
     public int getSize(){

@@ -31,6 +31,7 @@ class Login { //Class is package-private
             System.out.println("Wrong password! Please try again.");
             return null;
         }
+        //TODO if user is logging in for the first time, prompt to change password (i.e. if password == password)
         return user;
     }
 }

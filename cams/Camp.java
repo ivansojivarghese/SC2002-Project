@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import cams.post_types.*;
+import cams.users.CampDetails;
 import cams.util.Faculty;
 
 public class Camp {
@@ -152,47 +153,66 @@ public class Camp {
 
 	}
 
+	public void updateDetails(CampDetails details) {
+		this.setCampName(details.getCampName())
+				.setAttendeeSlots(details.getAttendeeSlots())
+				.setCommitteeSlots(details.getCommitteeSlots())
+				.setVisible(details.isVisible())
+				.setFacultyRestriction(details.getFacultyRestriction())
+				.setEndDate(details.getEndDate())
+				.setStartDate(details.getStartDate())
+				.setClosingDate(details.getClosingDate())
+				.setDescription(details.getDescription())
+				.setLocation(details.getLocation());
+		// Assuming each of these methods returns 'this' for method chaining
+	}
+
 	//Getters and Setters
 	public String getCampName() {
 		return campName;
 	}
-	public void setCampName(String campName) {
-		this.campName = campName;
+	public Camp setCampName(String campName) {
+		this.campName = campName; return this;
 	}
 
 	public LocalDate getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(LocalDate startDate) {
+	public Camp setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
+		return this;
 	}
 
 	public LocalDate getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(LocalDate endDate) {
+	public Camp setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+		return this;
 	}
 
 	public LocalDate getClosingDate() {
 		return closingDate;
 	}
-	public void setClosingDate(LocalDate closingDate) {
+	public Camp setClosingDate(LocalDate closingDate) {
 		this.closingDate = closingDate;
+		return this;
 	}
 
 	public String getLocation() {
 		return location;
 	}
-	public void setLocation(String location) {
+	public Camp setLocation(String location) {
 		this.location = location;
+		return this;
 	}
 
 	public int getAttendeeSlots() {
 		return this.attendeeSlots;
 	}
-	public void setAttendeeSlots(int attendeeSlots) {
+	public Camp setAttendeeSlots(int attendeeSlots) {
 		this.attendeeSlots = attendeeSlots;
+		return this;
 	}
 
 	/* don't need this just use the get remaining functions
@@ -225,8 +245,9 @@ public class Camp {
 		return committeeSlots;
 	}
 
-	public void setCommitteeSlots(int committeeSlots) {
+	public Camp setCommitteeSlots(int committeeSlots) {
 		this.committeeSlots = committeeSlots;
+		return this;
 	}
 
 	public void addCommittee(String userID) {
@@ -270,29 +291,33 @@ public class Camp {
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
+	public Camp setDescription(String description) {
 		this.description = description;
+		return this;
 	}
 
 	public String getInCharge() {
 		return inCharge;
 	}
-	public void setInCharge(String inCharge) {
+	public Camp setInCharge(String inCharge) {
 		this.inCharge = inCharge;
+		return this;
 	}
 
 	public boolean getVisible() {
 		return visible;
 	}
-	public void setVisible(boolean visible) {
+	public Camp setVisible(boolean visible) {
 		this.visible = visible;
+		return this;
     }
 
 	public Faculty getFacultyRestriction() {
 		return facultyRestriction;
 	}
-	public void setFacultyRestriction(Faculty faculty) {
+	public Camp setFacultyRestriction(Faculty faculty) {
 		this.facultyRestriction = faculty;
+		return this;
 	}
 
 	public void setEnquiries(List<Post> enquiries) {

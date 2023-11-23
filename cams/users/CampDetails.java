@@ -91,7 +91,7 @@ public class CampDetails {
         this.facultyRestriction = facultyRestriction;
     }
 
-    public boolean isVisibility() {
+    public boolean isVisible() {
         return visibility;
     }
 

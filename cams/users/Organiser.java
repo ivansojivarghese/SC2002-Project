@@ -8,4 +8,6 @@ public interface Organiser {
     public void deleteCamp(String campName);
     public void assignCamp(String UserID, String campName);
     public boolean isCampNameUnique(String campName);
+    public CampDetails getCampDetails(String campName);
+    public int getNumAttendees(String campName);
 }

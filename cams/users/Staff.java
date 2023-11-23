@@ -1,6 +1,7 @@
 package cams.users;
 
 import cams.Camp;
+import cams.database.CampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
 import cams.database.UnifiedCampRepository;
@@ -36,7 +37,7 @@ public class Staff extends User{
     //TODO implement this method to return all camps
     @Override
     public void viewAllCamps() {
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        CampRepository repo = UnifiedCampRepository.getInstance();
         for(Camp c : repo.allCamps()){
             System.out.println("_________________________________");
             c.display();
@@ -61,8 +62,13 @@ public class Staff extends User{
 
     //Refinement of displayMyCamps() method in User superclass
     public int displayMyCamps(){
+        int index = 0;
         System.out.println("My Created Camps: ");
-        int index = super.displayMyCamps();
+        try {
+            index = super.displayMyCamps();
+        }catch (NullPointerException e){
+            System.out.println("No camps created.");
+        }
         if(index == 0)
             System.out.println("No camps created.");
         return index;

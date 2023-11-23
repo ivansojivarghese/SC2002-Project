@@ -1,8 +1,10 @@
 package cams.post_types;
 
 import cams.Camp;
+import cams.database.CampRepository;
 import cams.database.UnifiedCampRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Post {
@@ -12,8 +14,8 @@ public class Post {
     private List<Message> content;
 
     public Post(){
-        this.campName = null;
-        this.content = null;
+        this.campName = "";
+        this.content = new ArrayList<>();
         this.postType = null;
     }
 
@@ -57,13 +59,13 @@ public class Post {
     public String getCampName(){return campName;}
 
     public Boolean setCamp(String campName) {
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        CampRepository repo = UnifiedCampRepository.getInstance();
         Camp camp = repo.retrieveCamp(campName);
         if(camp == null) //if camp does not exist
             return false;
 
-        if(getCamp() != null) { //if post already has a camp, remove the current post from the camp
-            removeFromCamp();
+        if(getCamp() != null) { //if post already has a camp, prevent changing camp
+            return false;
         }
         this.campName = campName; //set new camp
         camp.addEnquiry(this);

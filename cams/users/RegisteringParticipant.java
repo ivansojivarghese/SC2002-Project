@@ -14,7 +14,10 @@ public class RegisteringParticipant implements ParticipantActions {
             return;
         }
         Camp selectedCamp = repo.retrieveCamp(campName);
-
+        if(selectedCamp == null) {
+            System.out.println("Camp does not exist.");
+            return;
+        }
         boolean Registered = user.getMyCamps().contains(selectedCamp.getCampName()); // check if user has registered for camp already
         boolean datesClash = Date.checkClashes(user, selectedCamp);
         // check for clashes in dates with other camps

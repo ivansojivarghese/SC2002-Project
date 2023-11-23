@@ -21,18 +21,16 @@ public abstract class User {
 
     public abstract void viewAllCamps();
     public int displayMyCamps() {
-        int index = -1;
-        try {
-            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-            for (String c : this.getMyCamps()) {
-                System.out.println("_________________________________");
-                System.out.println("Index: " + index++);
-                Camp camp = repo.retrieveCamp(c);
-                camp.display();
-            }
-        }
-        catch (NullPointerException e){
-            index = 0;
+        int index = 0;
+
+        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        if(this.getMyCamps() == null)
+            throw new NullPointerException("No camps to display");
+        for (String c : this.getMyCamps()) {
+            System.out.println("_________________________________");
+            System.out.println("Index: " + index++);
+            Camp camp = repo.retrieveCamp(c);
+            camp.display();
         }
         return index;
     }

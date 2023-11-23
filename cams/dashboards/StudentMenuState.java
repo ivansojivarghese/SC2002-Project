@@ -46,8 +46,8 @@ public class StudentMenuState implements DashboardState{
             case 1: //change password
                 String newPassword;
 
-                System.out.println("Enter new password:");
-                newPassword = sc.next();
+                System.out.println("Enter new password (Case Sensitive):");
+                newPassword = sc.nextLine();
                 user.setPassword(newPassword);
                 System.out.println("Password successfully changed!");
                 break;
@@ -61,9 +61,13 @@ public class StudentMenuState implements DashboardState{
             case 4: //Register
                 user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
                 //Only participants may register for camps
+                //TODO move this to a "Camp Registration Menu"
+                //TODO prevent users from withdrawing when they don't have any camps
+                //TODO prevent users from registering when no camps exist
+                System.out.println();
                 if(user instanceof Participant){
                     System.out.println("Enter name of camp to register for: ");
-                    userInput = sc.next();
+                    userInput = sc.nextLine();
                     ((Participant) user).register(userInput);
                 }
                 break;
@@ -72,7 +76,7 @@ public class StudentMenuState implements DashboardState{
                 //Only participants may withdraw from camps
                 if(user instanceof Participant) {
                     System.out.println("Enter name of camp to withdraw from: ");
-                    userInput = sc.next();
+                    userInput = sc.nextLine();
                     ((Participant) user).deregister(userInput);
                 }
                 break;

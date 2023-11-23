@@ -120,11 +120,10 @@ public class StaffMenuState implements DashboardState {
                             campDetails.setEndDate(LocalDate.parse(input, DateTimeFormatter.ofPattern("dd-MM-yyyy")));
                             System.out.println("End Date: " + campDetails.getEndDate());
 
-                            if (campDetails.getStartDate().isEqual(campDetails.getEndDate()) ||
-                                campDetails.getEndDate().isAfter(campDetails.getEndDate())) {
-                                break;
-                            } else {
+                            if (campDetails.getEndDate().isBefore(campDetails.getStartDate())) {
                                 System.out.println("End Date is before Start Date. Please re-enter End Date.");
+                            } else {
+                                break;
                             }
                         }
                         break;
@@ -155,7 +154,7 @@ public class StaffMenuState implements DashboardState {
 
                 //Get facultyRestriction
                 while (true) {
-                    System.out.printf("Camp is (1) open to the whole of NTU OR (2) only to your facultyRestriction: ");
+                    System.out.printf("Camp is (1) open to the whole of NTU OR (2) only to your faculty: ");
                     input = sc.nextLine(); //Use nextLine instead of nextInt to prevent integer mismatch exception
                     if ("1".equals(input) || "2".equals(input)) {
                         value = Integer.parseInt(input); // Convert to integer
@@ -229,6 +228,9 @@ public class StaffMenuState implements DashboardState {
                         campDetails.setVisibility(false);
                     }
                 } while (visible != 1 && visible != 0);
+
+                //Set staff in charge of camp to be current staff
+                campDetails.setInCharge(user.getUserID());
 
                 //Business logic of camp creation completed through abstracted Organiser interface
                 organiser.createCamp(campDetails);

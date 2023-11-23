@@ -21,6 +21,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI, Da
         User user = dashboard.getAuthenticatedUser();
         //Displays user's enquiries and returns 1 if user has enquiries, else returns 0
         boolean hasEnquiries = view(user) > 0;
+        System.out.println();
 
         //Attempt to display enquiries
         //If display fails provide a different menu
