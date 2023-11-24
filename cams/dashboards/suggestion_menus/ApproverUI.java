@@ -3,6 +3,7 @@ package cams.dashboards.suggestion_menus;
 import cams.dashboards.Dashboard;
 import cams.dashboards.post_menus.PostApproverUI;
 import cams.users.User;
+import cams.util.UserInput;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -15,42 +16,29 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
         int postIndex;
         String userInput;
 
-        boolean hasSuggestion = view(user) > 0;
+        int numSuggestions = view(user);
 
-        if(hasSuggestion)
+        if(numSuggestions > 0) {
             System.out.println("(1) Approve/Reject Suggestion");
+            System.out.println("(0) Back");
+        }
         else {
             System.out.println("No suggestions to display");
             dashboard.loggedIn();
             return;
         }
-        System.out.println("(0) Back");
 
-        while(true) {
-            try {
-                System.out.print("SELECT AN ACTION: ");
-                userInput = sc.nextLine().strip();
-                option = Integer.parseInt(userInput);
-                if(option >= 0 && option <= 1)
-                    break;
-                System.out.println("Invalid input, please try again.");
-            }
-            catch (Exception e){
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
+        option = UserInput.getIntegerInput(0, 1, "SELECT AN ACTION: ");
 
         try {
             switch (option) {
                 case 0 -> dashboard.loggedIn();
                 case 1 -> {
-                    System.out.println("Enter index of Suggestion: ");
-                    postIndex = sc.nextInt();
-                    sc.nextLine();
-                    System.out.println("Input 0 to reject, or 1 to approve: ");
-                    String content = sc.nextLine();
+                    postIndex = UserInput.getIntegerInput(0, numSuggestions-1, "Enter index of suggestion: ");
+                    boolean isApproved = UserInput.getBoolInput("Enter 0 to reject, or 1 to approve: ");
+
                     try {
-                        if (approve(user, postIndex, content))
+                        if (approve(user, postIndex, isApproved))
                             System.out.println("Success!");
                     } catch (Exception e) {
                         System.out.println("Unsuccessful: " + e.getMessage());
@@ -64,5 +52,5 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
         }
     }
 
-    public abstract boolean approve(User user, int postIndex, String isApproved);
+    public abstract boolean approve(User user, int postIndex, boolean isApproved);
 }

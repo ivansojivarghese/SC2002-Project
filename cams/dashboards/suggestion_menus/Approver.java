@@ -9,27 +9,10 @@ import java.util.InputMismatchException;
 
 public class Approver extends ApproverUI {
     @Override
-    public boolean approve(User user, int postIndex, String isApproved) {
+    public boolean approve(User user, int postIndex, boolean isApproved) {
         Post currentPost = user.getSuggestions().get(postIndex);
-        Boolean boolApproved = validateInput(isApproved);
-        if(boolApproved == null){
-            System.out.println("Invalid input.");
-            return false;
-        }
-        Message approval = new Approval(boolApproved);
+        Message approval = new Approval(isApproved);
         currentPost.addContent(approval);
         return true;
-    }
-    public Boolean validateInput(String approved){
-        if ("1".equalsIgnoreCase(approved) || "yes".equalsIgnoreCase(approved) ||
-                "true".equalsIgnoreCase(approved)) {
-            return true;
-        }
-        else if ("0".equalsIgnoreCase(approved) || "no".equalsIgnoreCase(approved) ||
-                "false".equalsIgnoreCase(approved)) {
-            return false;
-        }
-        else
-            return null;
     }
 }

@@ -1,11 +1,15 @@
 package cams.dashboards;
+
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Approver;
-import cams.users.*;
+import cams.users.CampDetails;
+import cams.users.Organiser;
+import cams.users.StaffOrganiserActions;
+import cams.users.User;
+import cams.util.UserInput;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StaffMenuState implements DashboardState {
@@ -18,6 +22,7 @@ public class StaffMenuState implements DashboardState {
         //Use string to store user's menu selection because it is safer
         int option;
         String input;
+        boolean bool;
         Scanner sc = new Scanner(System.in);
         User user = dashboard.getAuthenticatedUser();
 
@@ -33,7 +38,6 @@ public class StaffMenuState implements DashboardState {
         System.out.println("(2) Logout");
         System.out.println("(3) View my Camps");
 
-
         System.out.println("(4) View all Camps");
         System.out.println("(5) Edit your Camp(s)");
         System.out.println("(6) Create a new Camp");
@@ -42,19 +46,7 @@ public class StaffMenuState implements DashboardState {
         System.out.println("(9) View Participants/Committee Members for a camp");
 
         //GET user choice
-        while(true) {
-            try {
-                System.out.print("SELECT AN ACTION: ");
-                input = sc.nextLine().strip();
-                option = Integer.parseInt(input);
-                if(option >= 1 && option <= 9)
-                    break;
-                System.out.println("Invalid input, please try again.");
-            }
-            catch (Exception e){
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
+        option = UserInput.getIntegerInput(0, 9, "SELECT ACTION: ");
         System.out.println();
 
         switch (option) {
@@ -75,8 +67,6 @@ public class StaffMenuState implements DashboardState {
                     dashboard.setState(new OrganiserMenu());
             case 6 -> {
                 //TODO abstract all of this away into the camp organiser interface? or just leave it here?
-                int value;
-                int visible;
                 CampDetails campDetails = new CampDetails();
 
                 //Use TRY-CATCH block with WHILE loop for getting valid input
@@ -146,77 +136,35 @@ public class StaffMenuState implements DashboardState {
                 }
 
                 //Get facultyRestriction
-                while (true) {
-                    System.out.print("Camp is (1) open to the whole of NTU OR (2) only to your faculty: ");
-                    input = sc.nextLine(); //Use nextLine instead of nextInt to prevent integer mismatch exception
-                    if ("1".equals(input) || "2".equals(input)) {
-                        value = Integer.parseInt(input); // Convert to integer
-
-                        if (value == 1 || value == 2) {
-                            //If user chooses to open only to facultyRestriction, set facultyRestriction accordingly.
-                            //Otherwise, maintain the default facultyRestriction value (Open to all)
-                            if (value == 2) {
-                                campDetails.setFacultyRestriction(user.getFaculty());
-                            }
-                            System.out.println("Camp is available to " + campDetails.getFacultyRestriction().toString());
-                            break;
-                        } else {
-                            System.out.println("Invalid input. Please enter 1 or 2.");
-                        }
-                    }
+                bool = UserInput.getBoolInput("Camp is (0) open to the whole of NTU OR (1) only to your faculty: "); //Use nextLine instead of nextInt to prevent integer mismatch exception
+                if (bool) {
+                    //If user chooses to open only to facultyRestriction, set facultyRestriction accordingly.
+                    //Otherwise, maintain the default facultyRestriction value (Open to all)
+                    campDetails.setFacultyRestriction(user.getFaculty());
                 }
+                System.out.println("Camp is available to " + campDetails.getFacultyRestriction().toString());
 
                 //GET location
                 System.out.print("Camp location: ");
                 campDetails.setLocation(sc.nextLine().strip());
 
                 //GET number of slots for attendees
-                while (true) {
-                    try {
-                        System.out.print("No. of attendee slots available: ");
-                        campDetails.setAttendeeSlots(sc.nextInt());
-                        sc.nextLine(); //consume newline
-                        if (campDetails.getAttendeeSlots() < 10 || campDetails.getAttendeeSlots() > 5000) {
-                            System.out.println("Camp must have minimum of 10 and maximum of 5000 attendee slots.");
-                            continue;
-                        }
-                        break;
-                    } catch (InputMismatchException e) {
-                        System.out.println("Invalid input. Please enter an integer.");
-                    }
-                }
+                System.out.println("Camp must have minimum of 10 and maximum of 5000 attendee slots.");
+                option = UserInput.getIntegerInput(10, 5000, "No. of attendee slots available: ");
+                campDetails.setAttendeeSlots(option);
 
                 //GET number of slots for committee
-                while (true) {
-                    try {
-                        System.out.print("No. of committee member slots available (Max 10): ");
-                        campDetails.setCommitteeSlots(sc.nextInt());
-                        sc.nextLine(); //consume newline
-
-                        if (campDetails.getCommitteeSlots() < 1)
-                            System.out.println("Invalid number. Please create at least one slot. Try again.");
-
-                        else if (campDetails.getCommitteeSlots() > 10)
-                            System.out.println("Maximum 10 committee members allowed. Try again.");
-
-                        else break;
-                    } catch (InputMismatchException e) {
-                        System.out.println("Invalid input. Please enter an integer.");
-                    }
-                }
+                System.out.println("Camp must have minimum of 1 and maximum of 10 committee slots.");
+                option = UserInput.getIntegerInput(10, 5000, "No. of committee member slots available (Max 10): ");
+                campDetails.setCommitteeSlots(option);
 
                 //GET description
                 System.out.print("Please provide a description of the camp: ");
                 campDetails.setDescription(sc.nextLine());
-                do {
-                    System.out.println("Should the Camp be visible? [1: YES, 0: NO]");
-                    visible = sc.nextInt();
-                    if (visible == 1) {
-                        campDetails.setVisibility(true);
-                    } else if (visible == 0) {
-                        campDetails.setVisibility(false);
-                    }
-                } while (visible != 1 && visible != 0);
+
+                //SET visibility
+                bool = UserInput.getBoolInput("Should the Camp be visible? [1: YES, 0: NO]");
+                campDetails.setVisibility(bool);
 
                 //Set staff in charge of camp to be current staff
                 campDetails.setInCharge(user.getUserID());

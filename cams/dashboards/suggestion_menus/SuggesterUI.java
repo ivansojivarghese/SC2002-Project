@@ -4,6 +4,7 @@ import cams.dashboards.Dashboard;
 import cams.dashboards.post_menus.PostViewerUI;
 import cams.users.Student;
 import cams.users.User;
+import cams.util.UserInput;
 
 import java.util.Scanner;
 
@@ -16,28 +17,21 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
         int option;
         int postIndex;
 
-        boolean hasSuggestion = view(user) > 0;
+        int numSuggestions = view(user);
 
-        System.out.println("(1) Submit a new suggestion");
-        if(hasSuggestion){
+        if(numSuggestions > 0){
+            System.out.println("(1) Submit a new suggestion");
             System.out.println("(2) Edit a suggestion");
             System.out.println("(3) Delete a suggestions");
+            System.out.println("(0) Back");
+            //GET user input for menu action
+            option = UserInput.getIntegerInput(0, 3, "SELECT AN ACTION: ");
         }
-        System.out.println("(0) Back");
-
-        //GET user input for menu action
-        while(true) {
-            try {
-                System.out.print("SELECT AN ACTION: ");
-                userInput = sc.nextLine().strip();
-                option = Integer.parseInt(userInput);
-                if(option >= 0 && option <= 3)
-                    break;
-                System.out.println("Invalid input, please try again.");
-            }
-            catch (Exception e){
-                System.out.println("Error: " + e.getMessage());
-            }
+        else {
+            System.out.println("(1) Submit a new suggestion");
+            System.out.println("(0) Back");
+            //GET user input for menu action
+            option = UserInput.getIntegerInput(0, 1, "SELECT AN ACTION: ");
         }
 
         //SELECT menu choice
@@ -56,8 +50,7 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
                 }
             }
             case 2 -> { //submit a new enquiry
-                System.out.println("Enter index of suggestion to edit: ");
-                option = sc.nextInt();
+                option = UserInput.getIntegerInput(0, numSuggestions-1, "Enter index of suggestion to edit: ");
                 postIndex = option;
                 System.out.println("Input new content: ");
                 content = sc.nextLine();
@@ -69,8 +62,7 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
                 }
             }
             case 3 -> {
-                System.out.println("Enter index of suggestion to delete: ");
-                option = sc.nextInt();
+                option = UserInput.getIntegerInput(0, numSuggestions-1, "Enter index of suggestion to delete: ");
                 postIndex = option;
                 try {
                     if (delete(user, postIndex))

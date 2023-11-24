@@ -3,6 +3,7 @@ package cams.dashboards.enquiry_menus;
 import cams.dashboards.Dashboard;
 import cams.dashboards.post_menus.PosterUI;
 import cams.users.User;
+import cams.util.UserInput;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -19,36 +20,25 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
         String content;
         User user = dashboard.getAuthenticatedUser();
         //Displays user's enquiries and returns 1 if user has enquiries, else returns 0
-        boolean hasEnquiries = view(user) > 0;
+        int numEnquiries = view(user);
         System.out.println();
 
         //Attempt to display enquiries
         //If display fails provide a different menu
-        System.out.println("(1) Submit a new enquiry");
-        if(hasEnquiries) {
+        if(numEnquiries > 0) {
+            System.out.println("(1) Submit a new enquiry");
             System.out.println("(2) Edit an enquiry");
             System.out.println("(3) Delete an enquiry");
+            System.out.println("(0) Back to user dashboard");
+            option = UserInput.getIntegerInput(0, 3, "SELECT AN ACTION: ");
         }
         else {
-            System.out.println("No enquiries to display");
-            dashboard.loggedIn();
-            return;
-        }
-        System.out.println("(0) Back to user dashboard");
+            System.out.println("(1) Submit a new enquiry");
+            System.out.println("(0) Back to user dashboard");
+            option = UserInput.getIntegerInput(0, 1, "SELECT AN ACTION: ");
 
-        while(true) {
-            try {
-                System.out.print("SELECT AN ACTION: ");
-                userInput = sc.nextLine().strip();
-                option = Integer.parseInt(userInput);
-                if(option >= 0 && option <= 3)
-                    break;
-                System.out.println("Invalid input, please try again.");
-            }
-            catch (Exception e){
-                System.out.println("Error: " + e.getMessage());
-            }
         }
+
         try{
             switch (option) {
                 case 0 ->
@@ -67,8 +57,8 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
                     }
                 }
                 case 2 -> { //Edit an enquiry
-                    System.out.println("Enter index of enquiry to edit: ");
-                    postIndex = sc.nextInt();
+                    option = UserInput.getIntegerInput(0, numEnquiries-1, "Enter index of enquiry to edit: ");
+                    postIndex = option;
                     System.out.println("Input modified query: ");
                     content = sc.nextLine();
                     try {
@@ -79,8 +69,8 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
                     }
                 }
                 case 3 -> { //Delete an enquiry
-                    System.out.println("Enter index of enquiry to delete: ");
-                    postIndex = sc.nextInt();
+                    option = UserInput.getIntegerInput(0, numEnquiries-1, "Enter index of enquiry to delete: ");
+                    postIndex = option;
                     try {
                         if (delete(user, postIndex))
                             System.out.println("Success!");
@@ -88,12 +78,10 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
                         System.out.println("Unsuccessful: " + e.getMessage());
                     }
                 }
-                default -> System.out.println("Invalid integer input.");
             }
         }
-        catch (InputMismatchException e){
-            System.out.println("Invalid input. Please enter a number.");
-            sc.nextLine();  // Consume the invalid input
+        catch (Exception e){
+            System.out.println("Error: " + e.getMessage());
         }
         //At the end of the display method, the main APP will redisplay the set menu
     }

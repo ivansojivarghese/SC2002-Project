@@ -5,6 +5,7 @@ import cams.users.Participant;
 import cams.users.ParticipantAction;
 import cams.users.Student;
 import cams.users.User;
+import cams.util.UserInput;
 
 import java.util.Scanner;
 
@@ -30,19 +31,7 @@ public class StudentMenuState implements DashboardState{
         this.mainMenu();
 
         //GET user choice
-        while(true) {
-            try {
-                System.out.print("SELECT AN ACTION: ");
-                input = sc.nextLine().strip();
-                option = Integer.parseInt(input);
-                if(option >= 1 && option <= 6)
-                    break;
-                System.out.println("Invalid input, please try again.");
-            }
-            catch (Exception e){
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
+        option = UserInput.getIntegerInput(1, 6, "SELECT ACTION: ");
         System.out.println();
 
         menuLogic(option);

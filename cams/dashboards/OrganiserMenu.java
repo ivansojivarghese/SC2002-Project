@@ -4,6 +4,7 @@ import cams.users.Organiser;
 import cams.users.StaffOrganiserActions;
 import cams.users.User;
 import cams.util.Faculty;
+import cams.util.UserInput;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -17,11 +18,11 @@ public class OrganiserMenu implements DashboardState{
     @Override
     public void display(Dashboard dashboard) {
 
-        Scanner sc = new Scanner(System.in);
         User user = dashboard.getAuthenticatedUser();
 
         //Variables to store options
         String userInput;
+        boolean bool;
         int option;
 
         //SELECT camp to edit
@@ -36,32 +37,25 @@ public class OrganiserMenu implements DashboardState{
             return;
         }
 
-        while(true) {
-            try {
-                System.out.print("Select a Camp to edit through its index number: ");
-                userInput = sc.nextLine().strip();
-                option = Integer.parseInt(userInput);
-                if(!(option >= 0 && option <= numCamps))
-                    continue;
-                selectedCamp = user.getMyCamps().get(option);
+        //GET Choice
+        option = UserInput.getIntegerInput(0, numCamps-1, "Select a Camp to edit through its index number: ");
+        selectedCamp = user.getMyCamps().get(option);
 
-                //If camp exists
-                if(!organiser.isCampNameUnique(selectedCamp)){
-                    break;
-                }
-                else {
-                    System.out.println("Camp selected not found, returning to main menu.");
-                    dashboard.loggedIn();
-                    return;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Invalid input.");
-            }
-            catch (NullPointerException e) {
-                System.out.println("Camp selected not found.");
+        try {
+            //If camp exists
+            if(organiser.isCampNameUnique(selectedCamp)){
+                System.out.println("Camp selected not found, returning to main menu.");
+                dashboard.loggedIn();
                 return;
             }
+        } catch (InputMismatchException e) {
+            System.out.println("Invalid input.");
         }
+        catch (NullPointerException e) {
+            System.out.println("Camp selected not found.");
+            return;
+        }
+
         System.out.println();
         System.out.println("______________________________________________________________");
         System.out.println("                         EDITING CAMP                          ");
@@ -80,19 +74,7 @@ public class OrganiserMenu implements DashboardState{
         System.out.println("(8) Change start and end date of camp");
         System.out.println("(9) Delete camp");
 
-        while(true) {
-            try {
-                System.out.print("SELECT ACTION: ");
-                userInput = sc.nextLine().strip();
-                option = Integer.parseInt(userInput);
-                if(option >= 0 && option <= 9)
-                    break;
-                System.out.println("Invalid input, please try again.");
-            }
-            catch (Exception e){
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
+        option = UserInput.getIntegerInput(0, 9, "SELECT ACTION: ");
 
         switch (option) {
             case 0 -> {
@@ -102,13 +84,10 @@ public class OrganiserMenu implements DashboardState{
             }
             //TODO Change camp name
             case 2 -> { //Toggle visibility
-                do {
-                    System.out.println("Camp is visible: " + String.valueOf(details.isVisible()).toUpperCase());
-                    System.out.println("Only visible camps can be viewed by potential participants.");
-                    System.out.println("Change visible to " + String.valueOf(!details.isVisible()).toUpperCase() + "? (Y / N)");
-                    userInput = sc.next();
-                } while (!userInput.equalsIgnoreCase("y") && !userInput.equalsIgnoreCase("n"));
-                if (userInput.equalsIgnoreCase("y")) {
+                System.out.println("Camp is visible: " + String.valueOf(details.isVisible()).toUpperCase());
+                System.out.println("Only visible camps can be viewed by potential participants.");
+                bool = UserInput.getBoolInput("Change visible to " + String.valueOf(!details.isVisible()).toUpperCase() + "? (Y / N)");
+                if (bool) {
                     System.out.println("Proceeding to change visibility to " + String.valueOf(!details.isVisible()).toUpperCase() + ".");
                     details.setVisibility(!details.isVisible());
                     organiser.editCamp(selectedCamp, details);
@@ -135,11 +114,9 @@ public class OrganiserMenu implements DashboardState{
                     System.out.println("Camps with participants cannot be deleted.");
                     return;
                 }
-                do {
-                    System.out.println("Are you sure you want to delete " + selectedCamp + " ? (Y / N)");
-                    userInput = sc.next();
-                } while (!userInput.equalsIgnoreCase("y") && !userInput.equalsIgnoreCase("n"));
-                if (userInput.equalsIgnoreCase("y")) {
+
+                bool = UserInput.getBoolInput("Are you sure you want to delete " + selectedCamp + " ? (Y / N)");
+                if (bool) {
                     organiser.deleteCamp(selectedCamp);
                     System.out.println("This Camp has been deleted.");
                 } else {

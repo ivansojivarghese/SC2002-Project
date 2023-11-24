@@ -1,14 +1,11 @@
 package cams.dashboards;
 
 import cams.users.User;
-
-import java.util.Scanner;
+import cams.util.UserInput;
 
 public class LogoutState implements DashboardState{
     @Override
     public void display(Dashboard dashboard) {
-        Scanner sc = new Scanner(System.in);
-        String input;
         int option;
         User authenticatedUser = null;
 
@@ -16,20 +13,8 @@ public class LogoutState implements DashboardState{
         System.out.println("Welcome to the Camp Application and Management System (CAMs).");
         System.out.println("1: Login");
         System.out.println("0: Quit");
+        option = UserInput.getIntegerInput(0, 1, "SELECT AN ACTION: ");
 
-        while(true) {
-            try {
-                System.out.print("SELECT AN ACTION: ");
-                input = sc.nextLine().strip();
-                option = Integer.parseInt(input);
-                if(option >= 0 && option <= 1)
-                    break;
-                System.out.println("Invalid input, please try again.");
-            }
-            catch (Exception e){
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
         try {
             switch (option) {
                 case 0 -> {

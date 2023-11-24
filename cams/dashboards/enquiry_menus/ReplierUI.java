@@ -3,6 +3,7 @@ package cams.dashboards.enquiry_menus;
 import cams.dashboards.Dashboard;
 import cams.dashboards.post_menus.PostReplierUI;
 import cams.users.User;
+import cams.util.UserInput;
 
 import java.util.InputMismatchException;
 import java.util.Objects;
@@ -19,30 +20,19 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
         int option;
         int postIndex;
 
-        boolean hasEnquiry = view(user) > 0;
-        if(hasEnquiry) {
+        int numEnquiries = view(user);
+        if(numEnquiries > 0) {
             System.out.println("(1) Reply to an enquiry");
+            System.out.println("(0) Back");
         }
         else {
             System.out.println("No enquiries to display");
             dashboard.loggedIn();
             return;
         }
-        System.out.println("(0) Back");
 
-        while(true) {
-            try {
-                System.out.print("SELECT AN ACTION: ");
-                input = sc.nextLine().strip();
-                option = Integer.parseInt(input);
-                if(option >= 0 && option <= 1)
-                    break;
-                System.out.println("Invalid input, please try again.");
-            }
-            catch (Exception e){
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
+        option = UserInput.getIntegerInput(0, 1, "SELECT AN ACTION: ");
+
         try {
             switch (option) {
                 //Set dashboard to loggedIn menu state
@@ -51,11 +41,9 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
                 //Reply to an enquiry
                 case 1 -> {
                     String content;
+                    option = UserInput.getIntegerInput(0, numEnquiries-1, "Enter index of enquiry to reply: ");
+                    postIndex = option;
                     do {
-                        System.out.println("Enter index of enquiry to reply: ");
-                        option = sc.nextInt();
-                        sc.nextLine(); //consume new line character
-                        postIndex = option;
                         System.out.println("Input reply: ");
                         content = sc.nextLine();
                     }

@@ -2,6 +2,8 @@ package cams.dashboards;
 
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Suggester;
+import cams.util.UserInput;
+
 import java.util.Scanner;
 
 public class CommitteeMenuState extends StudentMenuState{
@@ -21,20 +23,7 @@ public class CommitteeMenuState extends StudentMenuState{
         this.mainMenu();
 
         //GET user choice
-        while(true) {
-            try {
-                System.out.print("SELECT AN ACTION: ");
-                input = sc.nextLine().strip();
-                option = Integer.parseInt(input);
-                if(option >= 1 && option <= 9)
-                    break;
-                System.out.println("Invalid input, please try again.");
-            }
-            catch (Exception e){
-                System.out.println("Error: " + e.getMessage());
-            }
-        }
-
+        option = UserInput.getIntegerInput(0, 9, "SELECT AN ACTION: ");
         System.out.println();
 
         menuLogic(option);
