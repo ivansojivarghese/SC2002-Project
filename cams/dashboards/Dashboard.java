@@ -2,7 +2,6 @@ package cams.dashboards;
 import cams.users.User;
 
 public class Dashboard {
-
 	private DashboardState currentState;
 	private boolean quit = false;
 	private User authenticatedUser;

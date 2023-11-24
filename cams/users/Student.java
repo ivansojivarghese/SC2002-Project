@@ -77,7 +77,7 @@ public class Student extends User { // student class
     }
 
     //Displays camp information for all camps visible and available to the user
-    public void viewAllCamps() {
+    public int viewAllCamps() {
         CampRepository repo = UnifiedCampRepository.getInstance();
 
         // Get camps from both categories in a hashset of unique values to avoid duplicates
@@ -87,7 +87,7 @@ public class Student extends User { // student class
 
         if (allCamps.isEmpty()) {
             System.out.println("No camps available.");
-            return;
+            return 0;
         }
 
         for (Camp c : allCamps) {
@@ -100,6 +100,7 @@ public class Student extends User { // student class
             //Display camp
             c.display();
         }
+        return allCamps.size();
     }
 
     @Override

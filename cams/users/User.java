@@ -22,7 +22,7 @@ public abstract class User {
         return Objects.equals(password, this.password);
     }
 
-    public abstract void viewAllCamps();
+    public abstract int viewAllCamps();
     public int displayMyCamps() {
         int index = 0;
 

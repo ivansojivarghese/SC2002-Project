@@ -68,10 +68,7 @@ public class StaffMenuState implements DashboardState {
             case 2 -> dashboard.logout();
             case 3 -> user.displayMyCamps();
             case 4 ->
-                //TODO maybe put this method for viewing available camps in camp repo instead? for better encapsulation
-                //Users should be able to see all camps available to their facultyRestriction, irregardless of timing clashes
-                //so they can choose to withdraw to attend other camps
-                    user.viewAllCamps(); //maybe put this method for viewing available camps in camp repo instead
+                    user.viewAllCamps();
 
             //TODO implement camp editing (case 5)
             case 5 -> // DELETE, AND TOGGLE camps

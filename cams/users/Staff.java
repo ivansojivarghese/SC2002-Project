@@ -9,7 +9,9 @@ import cams.util.Faculty;
 import cams.database.UnifiedCampRepository;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Staff extends User{
     public Staff(String name, String userID, Faculty faculty) {
@@ -37,12 +39,19 @@ public class Staff extends User{
 
     //TODO implement this method to return all camps
     @Override
-    public void viewAllCamps() {
+    public int viewAllCamps() {
         CampRepository repo = UnifiedCampRepository.getInstance();
-        for(Camp c : repo.allCamps()){
+        Set<Camp> allCamps = new HashSet<>(repo.allCamps());
+
+        if(allCamps.isEmpty()) {
+            System.out.println("No camps available.");
+            return 0;
+        }
+        for(Camp c : allCamps){
             System.out.println("_________________________________");
             c.display();
         }
+        return allCamps.size();
     }
 
     @Override
