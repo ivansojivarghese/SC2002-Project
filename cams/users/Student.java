@@ -17,6 +17,7 @@ import cams.util.SerializeUtility;
 public class Student extends User implements Committable, Serializable { // student class
     @Serial
     private static final long serialVersionUID = 555657101575497102L; //crc32b Hash of "User" converted to ASCII
+    private static final String folderName = "users";
     private String myCommittee;
 
     public String getFileName() {
@@ -38,7 +39,7 @@ public class Student extends User implements Committable, Serializable { // stud
 
     public void setCommittee(String committee) {
         myCommittee = committee;
-        SerializeUtility.saveObject(this, getFileName());
+        SerializeUtility.saveObject(this, folderName, this.getFileName());
     }
 
     public String getCommittee(){
@@ -48,7 +49,7 @@ public class Student extends User implements Committable, Serializable { // stud
     public Student(String name, String userID, Faculty faculty) {
     	super(name, userID, faculty);
         this.setCommittee("NA");
-        SerializeUtility.saveObject(this, getFileName());
+        SerializeUtility.saveObject(this, folderName, this.getFileName());
     }
 
     public List<Post> getEnquiries() {
@@ -70,7 +71,7 @@ public class Student extends User implements Committable, Serializable { // stud
         if(this.myCommittee.equalsIgnoreCase(campName))
             return false;
         super.removeCamp(campName);
-        SerializeUtility.saveObject(this, getFileName());
+        SerializeUtility.saveObject(this, folderName, this.getFileName());
         return true;
     }
 

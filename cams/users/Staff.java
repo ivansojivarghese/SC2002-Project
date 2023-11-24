@@ -19,10 +19,10 @@ import java.util.Set;
 public class Staff extends User implements Serializable {
     @Serial
     private static final long serialVersionUID = 565197102100995754L; //crc32b Hash of "Staff" converted to ASCII
-
+    private static final String folderName = "users";
     public Staff(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
-        SerializeUtility.saveObject(this, this.getFileName());
+        SerializeUtility.saveObject(this, folderName, this.getFileName());
     }
 
     public DashboardState getMenuState() {

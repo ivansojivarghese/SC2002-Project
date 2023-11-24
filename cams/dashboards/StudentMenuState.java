@@ -83,6 +83,7 @@ public class StudentMenuState implements DashboardState{
                 userInput = sc.nextLine();
 
                 participant.register(user, userInput);
+                dashboard.loggedIn(); //refresh dashboard logged in state in case user has become committee member
             }
             case 5 -> { //Withdraw
                 //Only participants may withdraw from camps

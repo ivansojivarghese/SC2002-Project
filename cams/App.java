@@ -12,13 +12,21 @@ public class App {
 		UnifiedCampRepository unifiedCampRepository = UnifiedCampRepository.getInstance();
 		UnifiedUserRepository unifiedUserRepository = UnifiedUserRepository.getInstance();
 
-		// declaring user (staff and students) information from Excel file
-		if (unifiedUserRepository.isEmpty()) { // DECLARE ONCE
-			if(!(unifiedUserRepository.initialiseData("staff_list.xlsx", UserType.STAFF) &&
-				unifiedUserRepository.initialiseData("student_list.xlsx", UserType.STUDENT)))
+		System.out.println("Initialising user data files...");
+		// If failed to initialise serializable data and running repository is empty
+		if(!unifiedUserRepository.initialiseData() && unifiedUserRepository.isEmpty()) {
+			System.out.println("User data files not found, creating data files...");
+			// THEN DECLARE user (staff and students) information from Excel file ONCE
+			if (!(unifiedUserRepository.initialiseData("staff_list.xlsx", UserType.STAFF) &&
+					unifiedUserRepository.initialiseData("student_list.xlsx", UserType.STUDENT))) {
 				//IF failed to initialise
+				System.out.println("Failed to create user data files!");
 				return;
+			}
 		}
+		System.out.println("Initialising camp data files...");
+		if(!unifiedCampRepository.initialiseData() && unifiedCampRepository.isEmpty())
+			System.out.println("No camps have been created.");
 
 		//Proceed to login page
 		Dashboard dashboard = new Dashboard();

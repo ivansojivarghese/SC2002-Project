@@ -1,4 +1,5 @@
 package cams.database;
+import cams.Camp;
 import cams.users.Staff;
 import cams.users.Student;
 import cams.users.User;
@@ -13,11 +14,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import cams.util.SerializeUtility;
+
+import java.io.Serializable;
 import java.util.HashMap;
 
 public class UnifiedUserRepository implements UserRepository {
     private static UnifiedUserRepository instance;
     private HashMap<String, User> users;
+    private static final String fileLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator + "users";
 
     //prevent construction outside the class
     private UnifiedUserRepository(){
@@ -46,6 +51,35 @@ public class UnifiedUserRepository implements UserRepository {
         return instance;
     }
 
+    //Loads serializable objects into the program by storing them in the hashmap
+    public boolean initialiseData(){
+        File folder = new File(fileLocation);
+        File[] listOfFiles = folder.listFiles();
+        //If folder cannot be accessed return false
+        if (listOfFiles == null) {
+            System.out.println("Error: Unable to access user database.");
+            return false;
+        }
+        //If there are no serializable objects to load return false
+        if (listOfFiles.length == 0) {
+            return false;
+        }
+        //If there are serializable objects to load
+        //Iterate through each file in the folder and load it into the repository
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                Serializable object = SerializeUtility.loadObject(file.getAbsolutePath());
+                if(!(object instanceof User)){
+                    System.out.println("Serializable found is not of type User, skipping object.");
+                    continue;
+                }
+                User user = (User) object;
+                this.users.put(user.getUserID(), user);
+            }
+        }
+        return true;
+    }
+    //Initialises user objects from Excel files, and automatically serialises the objects
     public boolean initialiseData(String filename, UserType userType) {
         try {
             File file = new File(System.getProperty("user.dir") + File.separator + "cams" + File.separator + "util" + File.separator + filename);
@@ -84,6 +118,7 @@ public class UnifiedUserRepository implements UserRepository {
         }
         catch (FileNotFoundException e) {
             System.out.println("User data files not found, unable to initialise user database.");
+            return false;
         }
         catch (Exception e){
             System.out.println("Unknown error in initialising user data files.");
@@ -91,5 +126,4 @@ public class UnifiedUserRepository implements UserRepository {
         }
         return true;
     }
-
 }
