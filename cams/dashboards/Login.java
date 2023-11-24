@@ -32,15 +32,21 @@ class Login { //Class is package-private
             return null;
         }
 
-        //If user is logging in for the first time (i.e. if password == password), prompt to change password
-        do{
+        if(password.equalsIgnoreCase("password")) {
+            //If user is logging in for the first time (i.e. if password == password), prompt to change password
             System.out.println("You are using the default password.");
-            System.out.println("Please enter new password (Case Sensitive):");
-            password = sc.nextLine().strip();
-        } while(password.equalsIgnoreCase("password"));
-
-        user.setPassword(password);
-        System.out.println("Password successfully changed!");
+            while (true) {
+                System.out.println("Please enter new password (Case Sensitive):");
+                password = sc.nextLine().strip();
+                if((password.equalsIgnoreCase("password") || password.isBlank() || password.length() < 8))
+                    System.out.println("Password must not be blank and must have at least 8 characters.");
+                else{
+                    break;
+                }
+            }
+            user.setPassword(password);
+            System.out.println("Password successfully changed!");
+        }
 
         return user;
     }
