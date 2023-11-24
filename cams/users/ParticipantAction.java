@@ -1,7 +1,6 @@
 package cams.users;
 
 import cams.Camp;
-import cams.dashboards.Committable;
 import cams.database.UnifiedCampRepository;
 import cams.util.Date;
 
