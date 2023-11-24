@@ -13,11 +13,9 @@ import cams.users.CampDetails;
 import cams.util.Faculty;
 import cams.util.SerializeUtility;
 
-import static cams.util.SerializeUtility.saveObject;
-
 public class Camp implements Serializable {
-	@Serial
-	private static final long serialVersionUID = 5449975410110048101L; //crc32b Hash of "Camp" converted to ASCII
+    @Serial
+    private static final long serialVersionUID = 5449975410110048101L; //crc32b Hash of "Camp" converted to ASCII
 	private String campName;
 	private LocalDate startDate;
 	private LocalDate endDate;
@@ -168,6 +166,8 @@ public class Camp implements Serializable {
 		public Camp build() {
 			return new Camp(this);
 		}
+
+
 	}
 
 	public void updateDetails(CampDetails details) {
@@ -293,14 +293,17 @@ public class Camp implements Serializable {
 		return this;
 	}
 
-	public void addCommittee(String userID) {
+	public int addCommittee(String userID) {
 		if(this.getRemainingCommitteeSlots() > 0){
 			System.out.println("User has been added to the camp committee!");
 			this.committee.put(userID, 0); //Put UserID with points initialised to 0 into the committee
 			SerializeUtility.saveObject(this, getFileName());
+			return 1;
 		}
 		else
 			System.out.println("Camp Committee is full.");
+			return 0;
+		// 
 	}
 	public void removeCommittee(String userID){
 		if(checkForMember(userID)){
