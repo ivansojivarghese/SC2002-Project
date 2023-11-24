@@ -22,7 +22,7 @@ public abstract class User implements Serializable {
     private List<String> myCamps;
 
     public abstract DashboardState getMenuState();
-    protected abstract String getFileName();
+    public abstract String getFileName();
 
     public Boolean validateLogin(String password){
         return Objects.equals(password, this.password);
@@ -48,8 +48,9 @@ public abstract class User implements Serializable {
 
     public User(){}
     public User(String name, String userID, Faculty faculty){
-        this.setName(name);
+        //Must set UserID before all else to ensure proper saving of file
         this.setUserID(userID);
+        this.setName(name);
         this.setFaculty(faculty);
         this.setPassword("password");
         this.myCamps = new ArrayList<>();
@@ -79,12 +80,13 @@ public abstract class User implements Serializable {
     }
 
     public String getUserID() {
-        return userID;
+        return this.userID;
     }
 
     public void setUserID(String userID) {
         //UserID is always set to uppercase
         this.userID = userID.toUpperCase();
+        SerializeUtility.saveObject(this, getFileName());
     }
 
     public String getPassword() {

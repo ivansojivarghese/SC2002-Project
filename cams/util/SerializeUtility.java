@@ -2,17 +2,21 @@ package cams.util;
 import java.io.*;
 
 public class SerializeUtility {
+    private static final String fileLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
     public static void saveObject(Serializable object, String fileName) {
-        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName))) {
+        try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileLocation + fileName))) {
             out.writeObject(object);
-        } catch (IOException e) {
+        }
+        catch (FileNotFoundException e){
+                System.out.println("File not Found:" + e.getMessage());
+        }
+        catch (IOException e) {
             System.out.println("Error:" + e.getMessage());
         }
     }
 
     public static boolean deleteFile(String fileName) {
         try{
-            String fileLocation = System.getProperty("user.dir") + File.separator + "cams" + File.separator + "util" + File.separator;
             File file = new File(fileLocation + fileName);
             if (!file.exists()) {
                 System.out.println("File does not exist.");
@@ -28,7 +32,7 @@ public class SerializeUtility {
     }
 
     public Serializable loadObject(String fileName) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))) {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileLocation + fileName))) {
             return (Serializable) in.readObject();
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("Error: " + e.getMessage());

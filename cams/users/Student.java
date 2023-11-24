@@ -19,7 +19,7 @@ public class Student extends User implements Committable, Serializable { // stud
     private static final long serialVersionUID = 555657101575497102L; //crc32b Hash of "User" converted to ASCII
     private String myCommittee;
 
-    protected String getFileName() {
+    public String getFileName() {
         return "Student_" + this.getUserID().replaceAll("\\s+", "_") + ".ser";
     }
 

@@ -7,6 +7,7 @@ import cams.database.CampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
 import cams.database.UnifiedCampRepository;
+import cams.util.SerializeUtility;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -21,14 +22,16 @@ public class Staff extends User implements Serializable {
 
     public Staff(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
+        SerializeUtility.saveObject(this, this.getFileName());
     }
 
     public DashboardState getMenuState() {
         return new StaffMenuState();
     }
 
-    protected String getFileName() {
+    public String getFileName() {
         return "Staff_" + this.getUserID().replaceAll("\\s+", "_") + ".ser";
+        //TODO error?
     }
 
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff

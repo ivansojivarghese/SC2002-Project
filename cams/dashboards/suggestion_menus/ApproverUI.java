@@ -23,7 +23,6 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
             System.out.println("(0) Back");
         }
         else {
-            System.out.println("No suggestions to display");
             dashboard.loggedIn();
             return;
         }

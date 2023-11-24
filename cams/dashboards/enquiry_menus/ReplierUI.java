@@ -26,7 +26,6 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
             System.out.println("(0) Back");
         }
         else {
-            System.out.println("No enquiries to display");
             dashboard.loggedIn();
             return;
         }
