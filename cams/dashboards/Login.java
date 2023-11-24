@@ -24,6 +24,7 @@ class Login { //Class is package-private
 
         System.out.print("Enter your password (Case Sensitive): ");
         password = sc.next(); // get Password
+        sc.nextLine(); //consume new line
         if(user.validateLogin(password)){
             System.out.println("Logging in successfully...");
         }
@@ -36,8 +37,8 @@ class Login { //Class is package-private
             //If user is logging in for the first time (i.e. if password == password), prompt to change password
             System.out.println("You are using the default password.");
             while (true) {
-                System.out.println("Please enter new password (Case Sensitive):");
-                password = sc.nextLine().strip();
+                System.out.print("Please enter new password (Case Sensitive): ");
+                password = sc.nextLine();
                 if((password.equalsIgnoreCase("password") || password.isBlank() || password.length() < 8))
                     System.out.println("Password must not be blank and must have at least 8 characters.");
                 else{
