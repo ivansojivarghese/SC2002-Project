@@ -28,8 +28,10 @@ public class ParticipantAction implements Participant{
         }
         //Remove user from camp list of attendees
         camp.removeAttendee(user.getUserID());
+        
+        camp.addBannedUser(user.getUserID()); // lifetime ban on user
 
-        System.out.println("Successfully deregistered.");
+        System.out.println("Successfully deregistered. You may not register for this Camp again.");
     }
 
     @Override
@@ -74,6 +76,11 @@ public class ParticipantAction implements Participant{
         selectedCamp.addAttendee(user.getUserID()); //add attendee to camp
         user.addCamp(selectedCamp); //add camp to attendee
         System.out.println("Successfully registered.");
+         
+    	selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
+    	
+    	Student student = (Student) user;
+    	student.setCommittee(campName);
     }
 
 }
