@@ -6,7 +6,6 @@ import cams.users.ParticipantAction;
 import cams.users.Student;
 import cams.users.User;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class StudentMenuState implements DashboardState{
@@ -23,7 +22,7 @@ public class StudentMenuState implements DashboardState{
         this.user = dashboard.getAuthenticatedUser();
 
         //Initialise variables and scanner for user input
-        int option = 0;
+        int option;
         String input;
         Scanner sc = new Scanner(System.in);
 

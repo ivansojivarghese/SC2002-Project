@@ -4,9 +4,7 @@ import cams.dashboards.Dashboard;
 import cams.post_types.Post;
 import cams.users.User;
 
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 public class SuggestionViewerUI {
     public void display(Dashboard dashboard){

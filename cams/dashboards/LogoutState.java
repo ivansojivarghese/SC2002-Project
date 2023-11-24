@@ -20,7 +20,7 @@ public class LogoutState implements DashboardState{
         while(true) {
             try {
                 System.out.print("SELECT AN ACTION: ");
-                input = sc.nextLine().strip();;
+                input = sc.nextLine().strip();
                 option = Integer.parseInt(input);
                 if(option >= 0 && option <= 1)
                     break;
@@ -36,13 +36,11 @@ public class LogoutState implements DashboardState{
                     System.out.println("Program terminating...");
                     System.out.println("______________________________________________________________");
                     dashboard.setQuit(true);
-                    break;
                 }
                 case 1 -> {
                     System.out.println("Attempting Login...");
                     System.out.println("______________________________________________________________");
                     authenticatedUser = Login.loginAttempt();
-                    break;
                 }
             }
 

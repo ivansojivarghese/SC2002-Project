@@ -2,7 +2,6 @@ package cams.dashboards;
 
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Suggester;
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class CommitteeMenuState extends StudentMenuState{
@@ -14,8 +13,8 @@ public class CommitteeMenuState extends StudentMenuState{
         this.dashboard = dashboard;
 
         //Initialise variables and scanner for user input
-        int option = 0;
-        String input = "";
+        int option;
+        String input;
         Scanner sc = new Scanner(System.in);
 
         // Display options of the main menu

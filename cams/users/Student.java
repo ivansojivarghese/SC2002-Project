@@ -6,6 +6,7 @@ import cams.Camp;
 import cams.dashboards.CommitteeMenuState;
 import cams.dashboards.DashboardState;
 import cams.dashboards.StudentMenuState;
+import cams.database.CampRepository;
 import cams.post_types.*;
 import cams.database.UnifiedCampRepository;
 import cams.util.Faculty;
@@ -20,7 +21,7 @@ public class Student extends User { // student class
             return new StudentMenuState();
     }
 
-    //returns false if student's myCommmittee variable is NA
+    //returns false if student's myCommittee variable is NA
     public boolean isCommittee() {
         return !myCommittee.equalsIgnoreCase("NA");
     }
@@ -40,7 +41,7 @@ public class Student extends User { // student class
 
     public List<Post> getEnquiries() {
         List<Post> myEnquiries = new ArrayList<>();
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        CampRepository repo = UnifiedCampRepository.getInstance();
         for (String campName : this.getMyCamps()) {
             Camp camp = repo.retrieveCamp(campName);
             for (Post post : camp.getEnquiries()) {
@@ -77,7 +78,7 @@ public class Student extends User { // student class
 
     //Displays camp information for all camps visible and available to the user
     public void viewAllCamps() {
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        CampRepository repo = UnifiedCampRepository.getInstance();
 
         // Get camps from both categories in a hashset of unique values to avoid duplicates
         Set<Camp> allCamps = new HashSet<>();

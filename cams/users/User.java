@@ -46,7 +46,7 @@ public abstract class User {
         this.setUserID(userID);
         this.setFaculty(faculty);
         this.setPassword("password");
-        this.myCamps = new ArrayList<String>();
+        this.myCamps = new ArrayList<>();
     }
 
     public List<String> getMyCamps() {

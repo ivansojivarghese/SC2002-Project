@@ -13,7 +13,7 @@ class Login { //Class is package-private
         User user;
 
         System.out.println("                            LOGIN                             ");
-        System.out.printf("Enter your User ID: ");
+        System.out.print("Enter your User ID: ");
         LoginID = sc.next(); // get USER ID
 
         user = UnifiedUserRepository.getInstance().retrieveUser(LoginID); // check on USER ID
@@ -22,7 +22,7 @@ class Login { //Class is package-private
             return null;
         }
 
-        System.out.printf("Enter your password (Case Sensitive): ");
+        System.out.print("Enter your password (Case Sensitive): ");
         Password = sc.next(); // get Password
         if(user.validateLogin(Password)){
             System.out.println("Logging in successfully...");

@@ -1,7 +1,6 @@
 package cams.dashboards.enquiry_menus;
 
 import cams.dashboards.Dashboard;
-import cams.dashboards.DashboardState;
 import cams.dashboards.post_menus.PosterUI;
 import cams.users.User;
 
@@ -40,7 +39,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
         while(true) {
             try {
                 System.out.print("SELECT AN ACTION: ");
-                userInput = sc.nextLine().strip();;
+                userInput = sc.nextLine().strip();
                 option = Integer.parseInt(userInput);
                 if(option >= 0 && option <= 3)
                     break;

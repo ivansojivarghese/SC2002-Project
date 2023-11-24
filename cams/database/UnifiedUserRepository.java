@@ -13,7 +13,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UnifiedUserRepository implements UserRepository {
@@ -22,7 +21,7 @@ public class UnifiedUserRepository implements UserRepository {
 
     //prevent construction outside the class
     private UnifiedUserRepository(){
-        this.users = new HashMap<String, User>();
+        this.users = new HashMap<>();
     }
 
     public void addUser(User user){
@@ -47,8 +46,7 @@ public class UnifiedUserRepository implements UserRepository {
         return instance;
     }
 
-    public boolean intialiseData(String filename, UserType userType) {
-        ArrayList<User> data = new ArrayList<>();
+    public boolean initialiseData(String filename, UserType userType) {
 
         try {
             File file = new File(System.getProperty("user.dir") + "\\cams\\util\\" + filename);
@@ -67,27 +65,19 @@ public class UnifiedUserRepository implements UserRepository {
                     if (cellValue.isEmpty()) continue;
 
                     switch (cell.getColumnIndex()) {
-                        case 0:
-                            name = cellValue;
-                            break;
-                        case 1:
+                        case 0 -> name = cellValue;
+                        case 1 -> {
                             email = cellValue;
                             userID = email.substring(0, email.indexOf("@"));
-                            break;
-                        case 2:
-                            faculty = Faculty.valueOf(cellValue);
-                            break;
+                        }
+                        case 2 -> faculty = Faculty.valueOf(cellValue);
                     }
                 }
 
                 if (userID.isEmpty()) continue;
                 switch (userType) {
-                    case STUDENT:
-                        this.addUser(new Student(name, userID, faculty)); // Student constructor
-                        break;
-                    case STAFF:
-                        this.addUser(new Staff(name, userID, faculty)); // Staff constructor
-                        break;
+                    case STUDENT -> this.addUser(new Student(name, userID, faculty)); // Student constructor
+                    case STAFF -> this.addUser(new Staff(name, userID, faculty)); // Staff constructor
                 }
             }
 

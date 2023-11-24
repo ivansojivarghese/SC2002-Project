@@ -12,8 +12,10 @@ public class Approver extends ApproverUI {
     public boolean approve(User user, int postIndex, String isApproved) {
         Post currentPost = user.getSuggestions().get(postIndex);
         Boolean boolApproved = validateInput(isApproved);
-        if(boolApproved == null)
-            throw new InputMismatchException("Invalid input.");
+        if(boolApproved == null){
+            System.out.println("Invalid input.");
+            return false;
+        }
         Message approval = new Approval(boolApproved);
         currentPost.addContent(approval);
         return true;

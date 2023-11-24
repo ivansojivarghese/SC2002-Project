@@ -15,7 +15,7 @@ public class UnifiedCampRepository implements CampRepository {
 
     //prevent construction outside the class
     private UnifiedCampRepository(){
-        this.Camps = new HashMap<String, Camp>();
+        this.Camps = new HashMap<>();
     }
     public static UnifiedCampRepository getInstance() {
         // If the instance is null, create a new one

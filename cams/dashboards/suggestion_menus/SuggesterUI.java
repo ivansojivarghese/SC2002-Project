@@ -1,12 +1,10 @@
 package cams.dashboards.suggestion_menus;
 
 import cams.dashboards.Dashboard;
-import cams.dashboards.DashboardState;
 import cams.dashboards.post_menus.PostViewerUI;
 import cams.users.Student;
 import cams.users.User;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public abstract class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
@@ -15,7 +13,7 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
         User user = dashboard.getAuthenticatedUser();
         String content;
         String userInput;
-        int option = 0;
+        int option;
         int postIndex;
 
         boolean hasSuggestion = view(user) > 0;

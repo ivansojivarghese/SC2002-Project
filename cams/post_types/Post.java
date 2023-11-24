@@ -52,7 +52,7 @@ public class Post {
 
     //Getters and Setters
     public Camp getCamp() {
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
+        CampRepository repo = UnifiedCampRepository.getInstance();
         return repo.retrieveCamp(this.campName);
     }
 

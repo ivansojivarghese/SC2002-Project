@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import cams.post_types.*;
+import cams.post_types.Post;
+import cams.post_types.PostType;
 import cams.users.CampDetails;
 import cams.util.Faculty;
 
@@ -267,7 +268,7 @@ public class Camp {
 	public void addCommittee(String userID) {
 		if(this.getRemainingCommitteeSlots() > 0){
 			System.out.println("User has been added to the camp committee!");
-			this.committee.put(userID, 0); //Put UserID with points intialised to 0 into the committee
+			this.committee.put(userID, 0); //Put UserID with points initialised to 0 into the committee
 		}
 		else
 			System.out.println("Camp Committee is full.");
@@ -344,14 +345,10 @@ public class Camp {
 	public List<Post> getSuggestions(){ return this.suggestions; }
 
 	public void removePost(PostType postType, Post post){
-		switch (postType) {
-			case ENQUIRY:
-				this.getEnquiries().remove(post);
-				break;
-			case SUGGESTION:
-				this.getSuggestions().remove(post);
-				break;
-		}
+        switch (postType) {
+            case ENQUIRY -> this.getEnquiries().remove(post);
+            case SUGGESTION -> this.getSuggestions().remove(post);
+        }
 	}
 
 	//Prints formatted camp information to user

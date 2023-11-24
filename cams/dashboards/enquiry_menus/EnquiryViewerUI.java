@@ -5,9 +5,7 @@ import cams.dashboards.post_menus.PostViewerUI;
 import cams.post_types.Post;
 import cams.users.User;
 
-import java.util.InputMismatchException;
 import java.util.List;
-import java.util.Scanner;
 
 public abstract class EnquiryViewerUI implements PostViewerUI {
     public EnquiryViewerUI(){}

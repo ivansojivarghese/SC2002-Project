@@ -1,7 +1,4 @@
 package cams.dashboards;
-
-import cams.dashboards.enquiry_menus.*;
-import cams.dashboards.suggestion_menus.*;
 import cams.users.User;
 
 public class Dashboard {

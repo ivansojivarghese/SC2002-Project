@@ -21,11 +21,11 @@ public class OrganiserMenu implements DashboardState{
         User user = dashboard.getAuthenticatedUser();
 
         //Variables to store options
-        String userInput = "";
+        String userInput;
         int option;
 
         //SELECT camp to edit
-        String selectedCamp = "";
+        String selectedCamp;
 
         //DISPLAYS list of user's camp and gets number of camps
         int numCamps = user.displayMyCamps();
@@ -114,7 +114,6 @@ public class OrganiserMenu implements DashboardState{
                     organiser.editCamp(selectedCamp, details);
                 }
                 dashboard.loggedIn();
-                return;
             }
             case 3 -> { // toggle faculty restriction
                 System.out.println("Camp was previously open to " + details.getFacultyRestriction() + ".");
@@ -126,7 +125,6 @@ public class OrganiserMenu implements DashboardState{
                 organiser.editCamp(selectedCamp, details);
                 System.out.println("Camp is now open to " + details.getFacultyRestriction() + ".");
                 dashboard.loggedIn();
-                return;
             }
 
             //TODO other functionalities
@@ -148,12 +146,10 @@ public class OrganiserMenu implements DashboardState{
                     System.out.println("Abandoning delete action, returning to main menu...");
                 }
                 dashboard.loggedIn();
-                return;
             }
             default -> {
                 System.out.println("Invalid input.");
                 dashboard.loggedIn();
-                return;
             }
         }
     }
