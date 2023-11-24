@@ -49,8 +49,7 @@ public class UnifiedUserRepository implements UserRepository {
     public boolean initialiseData(String filename, UserType userType) {
 
         try {
-            File file = new File(System.getProperty("user.dir") + File.separator + "cams" + File.separator + "util" + File.separator + filename);
-
+            File file = new File(System.getProperty("user.dir") + "\\cams\\util\\" + filename);
             FileInputStream fis = new FileInputStream(file);
             XSSFWorkbook wb = new XSSFWorkbook(fis);
             XSSFSheet sheet = wb.getSheetAt(0);

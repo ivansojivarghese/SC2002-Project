@@ -8,6 +8,8 @@ import java.util.List;
 import cams.post_types.Post;
 import cams.post_types.PostType;
 import cams.users.CampDetails;
+import cams.users.Student;
+import cams.users.User;
 import cams.util.Faculty;
 
 public class Camp {
