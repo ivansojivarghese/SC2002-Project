@@ -231,6 +231,7 @@ public class StaffMenuState implements DashboardState {
             case 7 -> dashboard.setState(new Approver());
             case 8 -> dashboard.setState(new Replier());
             case 9 -> {
+            	
             } //TODO implement view list of participants/committee members for a camp
         }
     }

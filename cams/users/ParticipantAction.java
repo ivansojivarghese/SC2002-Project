@@ -28,8 +28,10 @@ public class ParticipantAction implements Participant{
         }
         //Remove user from camp list of attendees
         camp.removeAttendee(user.getUserID());
+        
+        camp.addBannedUser(user.getUserID()); // lifetime ban on user
 
-        System.out.println("Successfully deregistered.");
+        System.out.println("Successfully deregistered. You may not register for this Camp again.");
     }
 
     @Override
