@@ -5,6 +5,7 @@ import cams.database.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.post_types.*;
 import cams.users.User;
+import cams.util.SerializeUtility;
 
 public class Suggester extends SuggesterUI{
     @Override
@@ -33,6 +34,11 @@ public class Suggester extends SuggesterUI{
         }
         Post currentPost = user.getSuggestions().get(postIndex);
         currentPost.getFirstMessage().setContent(content);
+
+        CampRepository repo = UnifiedCampRepository.getInstance();
+        Camp camp = repo.retrieveCamp(currentPost.getCampName());
+        //Save changes
+        SerializeUtility.saveObject(camp, camp.getFolderName(), camp.getFileName());
         return true;
     }
 
@@ -49,8 +55,10 @@ public class Suggester extends SuggesterUI{
         }
 
         CampRepository repo = UnifiedCampRepository.getInstance();
-        repo.retrieveCamp(currentPost.getCampName()).removePost(PostType.SUGGESTION, currentPost);
-        //User does not store their posts
+        Camp camp = repo.retrieveCamp(currentPost.getCampName());
+        camp.removePost(PostType.SUGGESTION, currentPost);
+        //Save changes; posts are stored in camp, user does not store posts
+        SerializeUtility.saveObject(camp, camp.getFolderName(), camp.getFileName());
         return true;
     }
 }

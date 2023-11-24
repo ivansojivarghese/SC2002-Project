@@ -5,6 +5,7 @@ import cams.database.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.post_types.*;
 import cams.users.User;
+import cams.util.SerializeUtility;
 
 public class Enquirer extends EnquirerUI{
     public Enquirer() {
@@ -29,6 +30,11 @@ public class Enquirer extends EnquirerUI{
         }
         Post currentPost = user.getEnquiries().get(postIndex);
         currentPost.getFirstMessage().setContent(content);
+
+        CampRepository repo = UnifiedCampRepository.getInstance();
+        Camp camp = repo.retrieveCamp(currentPost.getCampName());
+        //Save changes
+        SerializeUtility.saveObject(camp, camp.getFolderName(), camp.getFileName());
         return true;
     }
     public boolean delete(User user, int postIndex){
@@ -42,10 +48,11 @@ public class Enquirer extends EnquirerUI{
             System.out.println("Unable to delete posts with replies.");
             return false;
         }
-        //Remove post from user repo
         CampRepository repo = UnifiedCampRepository.getInstance();
-        repo.retrieveCamp(currentPost.getCampName()).removePost(PostType.ENQUIRY, currentPost);
-        //User does not store their posts
+        Camp camp = repo.retrieveCamp(currentPost.getCampName());
+        camp.removePost(PostType.ENQUIRY, currentPost);
+        //Save changes; posts are stored in camp, user does not store posts
+        SerializeUtility.saveObject(camp, camp.getFolderName(), camp.getFileName());
         return true;
     }
 }

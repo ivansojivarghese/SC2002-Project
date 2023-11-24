@@ -34,10 +34,10 @@ public class Camp implements Serializable {
 	private HashMap<String, Integer> committee;
 	private HashSet<String> bannedUsers;
 
-	private String getFileName() {
+	public String getFileName() {
 		return "Camp_" + this.campName.replaceAll("\\s+", "_") + ".ser";
 	}
-
+	public String getFolderName(){return folderName;}
 	//Best practice to always have an empty constructor
 	public Camp(){}
 
