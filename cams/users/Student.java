@@ -1,5 +1,7 @@
 package cams.users;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.*;
 
 import cams.Camp;
@@ -10,9 +12,16 @@ import cams.database.CampRepository;
 import cams.post_types.*;
 import cams.database.UnifiedCampRepository;
 import cams.util.Faculty;
+import cams.util.SerializeUtility;
 
-public class Student extends User implements Committable { // student class
+public class Student extends User implements Committable, Serializable { // student class
+    @Serial
+    private static final long serialVersionUID = 555657101575497102L; //crc32b Hash of "User" converted to ASCII
     private String myCommittee;
+
+    protected String getFileName() {
+        return "Student_" + this.getUserID().replaceAll("\\s+", "_") + ".ser";
+    }
 
     //Returns the correct menu depending on whether student is a committee member or not
     public DashboardState getMenuState() {
@@ -29,6 +38,7 @@ public class Student extends User implements Committable { // student class
 
     public void setCommittee(String committee) {
         myCommittee = committee;
+        SerializeUtility.saveObject(this, getFileName());
     }
 
     public String getCommittee(){
@@ -38,6 +48,7 @@ public class Student extends User implements Committable { // student class
     public Student(String name, String userID, Faculty faculty) {
     	super(name, userID, faculty);
         this.setCommittee("NA");
+        SerializeUtility.saveObject(this, getFileName());
     }
 
     public List<Post> getEnquiries() {
@@ -59,6 +70,7 @@ public class Student extends User implements Committable { // student class
         if(this.myCommittee.equalsIgnoreCase(campName))
             return false;
         super.removeCamp(campName);
+        SerializeUtility.saveObject(this, getFileName());
         return true;
     }
 

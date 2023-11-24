@@ -4,12 +4,17 @@ import cams.dashboards.DashboardState;
 import cams.database.UnifiedCampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
+import cams.util.SerializeUtility;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class User {
+public abstract class User implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 50100974955575555L; //crc32b Hash of "User" converted to ASCII
     private String name;
     private String userID;
     private String password;
@@ -17,6 +22,7 @@ public abstract class User {
     private List<String> myCamps;
 
     public abstract DashboardState getMenuState();
+    protected abstract String getFileName();
 
     public Boolean validateLogin(String password){
         return Objects.equals(password, this.password);
@@ -55,10 +61,12 @@ public abstract class User {
 
     public void addCamp(Camp camp) {
         this.myCamps.add(camp.getCampName());
+        SerializeUtility.saveObject(this, this.getFileName());
     }
     public boolean removeCamp(String campName){
         this.myCamps.remove(campName);
-        return false;
+        SerializeUtility.saveObject(this, this.getFileName());
+        return true;
     }
 
     public String getName() {
@@ -67,6 +75,7 @@ public abstract class User {
 
     public void setName(String name) {
     	this.name = name;
+        SerializeUtility.saveObject(this, getFileName());
     }
 
     public String getUserID() {
@@ -85,6 +94,7 @@ public abstract class User {
     public void setPassword(String password) {
         //Set password without any leading or trailing space to prevent user error
         this.password = password.strip();
+        SerializeUtility.saveObject(this, getFileName());
     }
 
     public Faculty getFaculty() {
@@ -93,5 +103,6 @@ public abstract class User {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
+        SerializeUtility.saveObject(this, getFileName());
     }
 }

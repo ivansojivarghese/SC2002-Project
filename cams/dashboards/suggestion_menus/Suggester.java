@@ -48,8 +48,8 @@ public class Suggester extends SuggesterUI{
             return false; //reply exists
         }
 
-        Camp camp = currentPost.getCamp();
-        camp.removePost(PostType.SUGGESTION, currentPost);
+        CampRepository repo = UnifiedCampRepository.getInstance();
+        repo.retrieveCamp(currentPost.getCampName()).removePost(PostType.SUGGESTION, currentPost);
         //User does not store their posts
         return true;
     }

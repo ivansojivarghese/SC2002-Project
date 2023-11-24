@@ -1,8 +1,6 @@
 package cams.post_types;
 
 import cams.Camp;
-import cams.database.CampRepository;
-import cams.database.UnifiedCampRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,24 +40,11 @@ public class Post {
         return content.size() > 1;
     }
 
-    public void removeFromCamp() {
-        //if post is already in a camp, remove the current post from the camp
-        Camp camp = this.getCamp();
-        if(camp != null) {
-            camp.removePost(this.postType, this);
-        }
-    }
-
     //Getters and Setters
-    public Camp getCamp() {
-        CampRepository repo = UnifiedCampRepository.getInstance();
-        return repo.retrieveCamp(this.campName);
-    }
-
     public String getCampName(){return campName;}
 
     public void setCamp(String campName) {
-        if(getCamp() != null) { //if post already has a camp, prevent changing camp
+        if(!this.getCampName().isEmpty()) { //if post already has a camp, prevent changing camp
             throw new UnsupportedOperationException("Post already has a camp");
         }
         this.campName = campName; //set new camp

@@ -1,6 +1,8 @@
 package cams.dashboards.enquiry_menus;
 
 import cams.Camp;
+import cams.database.CampRepository;
+import cams.database.UnifiedCampRepository;
 import cams.post_types.*;
 import cams.users.User;
 
@@ -14,6 +16,9 @@ public class Enquirer extends EnquirerUI{
         newEnquiry.setContent(text);
         newEnquiry.setPostedBy(userID);
         newPost.setCamp(campName);
+
+        CampRepository repo = UnifiedCampRepository.getInstance();
+        repo.retrieveCamp(campName).addEnquiry(newPost);
         return true;
     }
 
@@ -37,9 +42,9 @@ public class Enquirer extends EnquirerUI{
             System.out.println("Unable to delete posts with replies.");
             return false;
         }
-
-        Camp camp = currentPost.getCamp();
-        camp.removePost(PostType.ENQUIRY, currentPost);
+        //Remove post from user repo
+        CampRepository repo = UnifiedCampRepository.getInstance();
+        repo.retrieveCamp(currentPost.getCampName()).removePost(PostType.ENQUIRY, currentPost);
         //User does not store their posts
         return true;
     }

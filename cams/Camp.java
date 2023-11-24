@@ -1,5 +1,7 @@
 package cams;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,11 +10,14 @@ import java.util.List;
 import cams.post_types.Post;
 import cams.post_types.PostType;
 import cams.users.CampDetails;
-import cams.users.Student;
-import cams.users.User;
 import cams.util.Faculty;
+import cams.util.SerializeUtility;
 
-public class Camp {
+import static cams.util.SerializeUtility.saveObject;
+
+public class Camp implements Serializable {
+	@Serial
+	private static final long serialVersionUID = 5449975410110048101L; //crc32b Hash of "Camp" converted to ASCII
 	private String campName;
 	private LocalDate startDate;
 	private LocalDate endDate;
@@ -29,6 +34,10 @@ public class Camp {
 	private List<String> attendees;
 	private HashMap<String, Integer> committee;
 	private HashSet<String> bannedUsers;
+
+	private String getFileName() {
+		return "Camp_" + this.campName.replaceAll("\\s+", "_") + ".ser";
+	}
 
 	//Best practice to always have an empty constructor
 	public Camp(){}
@@ -51,6 +60,7 @@ public class Camp {
 		this.attendees = builder.attendees;
 		this.committee = builder.committee;
 		this.bannedUsers = builder.bannedUsers;
+		SerializeUtility.saveObject(this, getFileName());
 	}
 
 	public static class Builder {
@@ -158,26 +168,26 @@ public class Camp {
 		public Camp build() {
 			return new Camp(this);
 		}
-
-
 	}
 
 	public void updateDetails(CampDetails details) {
+		// Each of these methods returns 'this' for method chaining
 		this.setCampName(details.getCampName())
-				.setAttendeeSlots(details.getAttendeeSlots())
-				.setCommitteeSlots(details.getCommitteeSlots())
-				.setVisible(details.isVisible())
-				.setFacultyRestriction(details.getFacultyRestriction())
-				.setEndDate(details.getEndDate())
-				.setStartDate(details.getStartDate())
-				.setClosingDate(details.getClosingDate())
-				.setDescription(details.getDescription())
-				.setLocation(details.getLocation());
-		// Assuming each of these methods returns 'this' for method chaining
+			.setAttendeeSlots(details.getAttendeeSlots())
+			.setCommitteeSlots(details.getCommitteeSlots())
+			.setVisible(details.isVisible())
+			.setFacultyRestriction(details.getFacultyRestriction())
+			.setEndDate(details.getEndDate())
+			.setStartDate(details.getStartDate())
+			.setClosingDate(details.getClosingDate())
+			.setDescription(details.getDescription())
+			.setLocation(details.getLocation());
+		SerializeUtility.saveObject(this, getFileName());
 	}
 
 	public void addBannedUser(String UserID){
 		this.bannedUsers.add(UserID);
+		SerializeUtility.saveObject(this, getFileName());
 	}
 
 	public boolean isBanned(String UserID){
@@ -189,7 +199,12 @@ public class Camp {
 		return campName;
 	}
 	public Camp setCampName(String campName) {
-		this.campName = campName; return this;
+		String oldFileName = getFileName();
+		this.campName = campName;
+		String newFileName = getFileName();
+		SerializeUtility.deleteFile(oldFileName);
+		SerializeUtility.saveObject(this, newFileName);
+		return this;
 	}
 
 	public LocalDate getStartDate() {
@@ -197,6 +212,7 @@ public class Camp {
 	}
 	public Camp setStartDate(LocalDate startDate) {
 		this.startDate = startDate;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
 	}
 
@@ -205,6 +221,7 @@ public class Camp {
 	}
 	public Camp setEndDate(LocalDate endDate) {
 		this.endDate = endDate;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
 	}
 
@@ -213,6 +230,7 @@ public class Camp {
 	}
 	public Camp setClosingDate(LocalDate closingDate) {
 		this.closingDate = closingDate;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
 	}
 
@@ -221,6 +239,7 @@ public class Camp {
 	}
 	public Camp setLocation(String location) {
 		this.location = location;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
 	}
 
@@ -229,6 +248,7 @@ public class Camp {
 	}
 	public Camp setAttendeeSlots(int attendeeSlots) {
 		this.attendeeSlots = attendeeSlots;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
 	}
 
@@ -248,11 +268,16 @@ public class Camp {
 	}
 	public void setAttendees(List<String> attendees) {
 		this.attendees = attendees;
+		SerializeUtility.saveObject(this, getFileName());
 	}
 	public void addAttendee(String userID) {
 		this.attendees.add(userID);
+		SerializeUtility.saveObject(this, getFileName());
 	}
-	public void removeAttendee(String userID){this.attendees.remove(userID);}
+	public void removeAttendee(String userID){
+		this.attendees.remove(userID);
+		SerializeUtility.saveObject(this, getFileName());
+	}
 
 	public List<String> getCommittee() {
 		return new ArrayList<>(committee.keySet());
@@ -264,6 +289,7 @@ public class Camp {
 
 	public Camp setCommitteeSlots(int committeeSlots) {
 		this.committeeSlots = committeeSlots;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
 	}
 
@@ -271,6 +297,7 @@ public class Camp {
 		if(this.getRemainingCommitteeSlots() > 0){
 			System.out.println("User has been added to the camp committee!");
 			this.committee.put(userID, 0); //Put UserID with points initialised to 0 into the committee
+			SerializeUtility.saveObject(this, getFileName());
 		}
 		else
 			System.out.println("Camp Committee is full.");
@@ -279,6 +306,7 @@ public class Camp {
 		if(checkForMember(userID)){
 			System.out.println("User has been removed from the camp committee!");
 			this.committee.remove(userID);
+			SerializeUtility.saveObject(this, getFileName());
 		}
 		else
 			System.out.println("User is in the camp committee.");
@@ -310,6 +338,7 @@ public class Camp {
 	}
 	public Camp setDescription(String description) {
 		this.description = description;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
 	}
 
@@ -318,6 +347,7 @@ public class Camp {
 	}
 	public Camp setInCharge(String inCharge) {
 		this.inCharge = inCharge;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
 	}
 
@@ -326,6 +356,7 @@ public class Camp {
 	}
 	public Camp setVisible(boolean visible) {
 		this.visible = visible;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
     }
 
@@ -334,16 +365,23 @@ public class Camp {
 	}
 	public Camp setFacultyRestriction(Faculty faculty) {
 		this.facultyRestriction = faculty;
+		SerializeUtility.saveObject(this, getFileName());
 		return this;
 	}
 
 	public void setEnquiries(List<Post> enquiries) {
 		this.enquiries = enquiries;
 	}
-	public void addEnquiry(Post post){ this.enquiries.add(post); }
+	public void addEnquiry(Post post){
+		this.enquiries.add(post);
+		SerializeUtility.saveObject(this, getFileName());
+	}
 	public List<Post> getEnquiries(){ return this.enquiries; }
 
-	public void setSuggestions(List<Post> suggestions) { this.suggestions = suggestions; }
+	public void setSuggestions(List<Post> suggestions) {
+		this.suggestions = suggestions;
+		SerializeUtility.saveObject(this, getFileName());
+	}
 	public List<Post> getSuggestions(){ return this.suggestions; }
 
 	public void removePost(PostType postType, Post post){
@@ -351,6 +389,7 @@ public class Camp {
             case ENQUIRY -> this.getEnquiries().remove(post);
             case SUGGESTION -> this.getSuggestions().remove(post);
         }
+		SerializeUtility.saveObject(this, getFileName());
 	}
 
 	//Prints formatted camp information to user

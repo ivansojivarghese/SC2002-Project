@@ -8,18 +8,27 @@ import cams.post_types.Post;
 import cams.util.Faculty;
 import cams.database.UnifiedCampRepository;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Staff extends User{
+public class Staff extends User implements Serializable {
+    @Serial
+    private static final long serialVersionUID = 565197102100995754L; //crc32b Hash of "Staff" converted to ASCII
+
     public Staff(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
     }
 
     public DashboardState getMenuState() {
         return new StaffMenuState();
+    }
+
+    protected String getFileName() {
+        return "Staff_" + this.getUserID().replaceAll("\\s+", "_") + ".ser";
     }
 
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff
