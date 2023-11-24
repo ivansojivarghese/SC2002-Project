@@ -1,6 +1,7 @@
 package cams.users;
 
 import cams.Camp;
+import cams.dashboards.Committable;
 import cams.database.UnifiedCampRepository;
 import cams.util.Date;
 
@@ -76,10 +77,10 @@ public class ParticipantAction implements Participant{
         selectedCamp.addAttendee(user.getUserID()); //add attendee to camp
         user.addCamp(selectedCamp); //add camp to attendee
         System.out.println("Successfully registered.");
-         
-    	selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
 
-        ((Student)user).setCommittee(campName);
+        if(user instanceof Committable) {
+            selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
+            ((Committable) user).setCommittee(campName);
+        }
     }
-
 }

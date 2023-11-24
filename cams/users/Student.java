@@ -3,6 +3,7 @@ package cams.users;
 import java.util.*;
 
 import cams.Camp;
+import cams.dashboards.Committable;
 import cams.dashboards.CommitteeMenuState;
 import cams.dashboards.DashboardState;
 import cams.dashboards.StudentMenuState;
@@ -11,9 +12,10 @@ import cams.post_types.*;
 import cams.database.UnifiedCampRepository;
 import cams.util.Faculty;
 
-public class Student extends User { // student class
+public class Student extends User implements Committable { // student class
     private String myCommittee;
 
+    //Returns the correct menu depending on whether student is a committee member or not
     public DashboardState getMenuState() {
         if(this.isCommittee())
             return new CommitteeMenuState();
@@ -117,12 +119,4 @@ public class Student extends User { // student class
         }
         return mySuggestions;
     }
-
-    //only staff can edit camps, students cannot edit camps. shld never implement/create methods that are not used.
-    /*
-	@Override
-	public void editMyCamps() {
-		// TODO Auto-generated method stub
-
-	}*/
 }
