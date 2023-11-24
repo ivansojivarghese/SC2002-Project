@@ -267,13 +267,16 @@ public class Camp {
 		return this;
 	}
 
-	public void addCommittee(String userID) {
+	public int addCommittee(String userID) {
 		if(this.getRemainingCommitteeSlots() > 0){
 			System.out.println("User has been added to the camp committee!");
 			this.committee.put(userID, 0); //Put UserID with points initialised to 0 into the committee
+			return 1;
 		}
 		else
 			System.out.println("Camp Committee is full.");
+			return 0;
+		// 
 	}
 	public void removeCommittee(String userID){
 		if(checkForMember(userID)){
