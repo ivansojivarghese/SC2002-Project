@@ -155,7 +155,7 @@ public class StaffMenuState implements DashboardState {
 
                 //GET number of slots for committee
                 System.out.println("Camp must have minimum of 1 and maximum of 10 committee slots.");
-                option = UserInput.getIntegerInput(10, 5000, "No. of committee member slots available (Max 10): ");
+                option = UserInput.getIntegerInput(1, 10, "No. of committee member slots available (Max 10): ");
                 campDetails.setCommitteeSlots(option);
 
                 //GET description
