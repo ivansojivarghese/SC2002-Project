@@ -78,9 +78,8 @@ public class ParticipantAction implements Participant{
         System.out.println("Successfully registered.");
          
     	selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
-    	
-    	Student student = (Student) user;
-    	student.setCommittee(campName);
+
+        ((Student)user).setCommittee(campName);
     }
 
 }

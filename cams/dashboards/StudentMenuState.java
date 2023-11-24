@@ -27,6 +27,8 @@ public class StudentMenuState implements DashboardState{
         String input;
         Scanner sc = new Scanner(System.in);
 
+        //Display User information
+        this.userInfo();
         // Display options of the main menu
         this.mainMenu();
 
@@ -36,15 +38,17 @@ public class StudentMenuState implements DashboardState{
 
         menuLogic(option);
     }
-    protected void mainMenu(){
+
+    protected void userInfo(){
         // Code to display options
         System.out.println("                          DASHBOARD                           ");
         System.out.println("______________________________________________________________");
-        Student student = (Student) user;
+
         System.out.println("STUDENT Name: " + user.getName());
         System.out.println("Username: " + user.getUserID());
         System.out.println("Faculty: " + user.getFaculty());
-        System.out.println("Committee Member: " + student.getCommittee());
+    }
+    protected void mainMenu(){
         System.out.println("______________________________________________________________");
         System.out.println("                             MENU                              ");
         System.out.println("(1) Change your password");

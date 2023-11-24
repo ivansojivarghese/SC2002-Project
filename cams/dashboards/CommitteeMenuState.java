@@ -2,23 +2,29 @@ package cams.dashboards;
 
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Suggester;
+import cams.users.Student;
+import cams.users.User;
 import cams.util.UserInput;
 
 import java.util.Scanner;
 
 public class CommitteeMenuState extends StudentMenuState{
     private Dashboard dashboard;
+    private User user;
     public CommitteeMenuState(){
     }
     public void display(Dashboard dashboard) {
         //Initialise Dashboard and User variable
         this.dashboard = dashboard;
+        this.user = dashboard.getAuthenticatedUser();
 
         //Initialise variables and scanner for user input
         int option;
         String input;
         Scanner sc = new Scanner(System.in);
 
+        //Display User information
+        this.userInfo();
         // Display options of the main menu
         this.mainMenu();
 
@@ -29,6 +35,17 @@ public class CommitteeMenuState extends StudentMenuState{
         menuLogic(option);
     }
 
+    @Override
+    protected void userInfo(){
+        // Code to display options
+        System.out.println("                          DASHBOARD                           ");
+        System.out.println("______________________________________________________________");
+
+        System.out.println("STUDENT Name: " + user.getName());
+        System.out.println("Username: " + user.getUserID());
+        System.out.println("Faculty: " + user.getFaculty());
+        System.out.println("Committee Member of: " + ((Student) user).getCommittee());
+    }
     @Override
     protected void mainMenu() {
         //Displays the student main menu
