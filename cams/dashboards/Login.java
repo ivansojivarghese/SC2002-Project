@@ -9,7 +9,7 @@ class Login { //Class is package-private
     public static User loginAttempt(){
         Scanner sc = new Scanner(System.in);
         String LoginID;
-        String Password;
+        String password;
         User user;
 
         System.out.println("                            LOGIN                             ");
@@ -23,15 +23,25 @@ class Login { //Class is package-private
         }
 
         System.out.print("Enter your password (Case Sensitive): ");
-        Password = sc.next(); // get Password
-        if(user.validateLogin(Password)){
+        password = sc.next(); // get Password
+        if(user.validateLogin(password)){
             System.out.println("Logging in successfully...");
         }
         else {
             System.out.println("Wrong password! Please try again.");
             return null;
         }
-        //TODO if user is logging in for the first time, prompt to change password (i.e. if password == password)
+
+        //If user is logging in for the first time (i.e. if password == password), prompt to change password
+        do{
+            System.out.println("You are using the default password.");
+            System.out.println("Please enter new password (Case Sensitive):");
+            password = sc.nextLine().strip();
+        } while(password.equalsIgnoreCase("password"));
+
+        user.setPassword(password);
+        System.out.println("Password successfully changed!");
+
         return user;
     }
 }
