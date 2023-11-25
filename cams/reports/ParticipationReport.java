@@ -75,14 +75,49 @@ public class ParticipationReport implements ReportGenerator {
                 }
             });
 
-            int option = 0;
-
-            // After retrieving attendees and committee members, apply sorting methods
-            List<String> sortedAttendeesAndCommitteeNames = Filter.ascendingSort(attendeesAndCommittee.stream()
-                    .map(User::getName)
-                    .collect(Collectors.toList()));
 
 
+
+            // Display sorting options
+            System.out.println("Select Sorting Method:");
+            System.out.println("1. Ascending Sort");
+            System.out.println("2. Descending Sort");
+            System.out.println("3. Points Sort");
+            System.out.println("4. Role Sort");
+
+// Get user input
+            System.out.print("Enter your choice: ");
+            Scanner scanner = new Scanner(System.in);
+            int sortingOption = scanner.nextInt();
+
+// After retrieving attendees and committee members, apply sorting methods based on user's choice
+            List<String> sortedAttendeesAndCommitteeNames;
+            switch (sortingOption) {
+                case 1:
+                    sortedAttendeesAndCommitteeNames = Filter.ascendingSort(attendeesAndCommittee.stream()
+                            .map(User::getName)
+                            .collect(Collectors.toList()));
+                    break;
+                case 2:
+                    sortedAttendeesAndCommitteeNames = Filter.descendingSort(attendeesAndCommittee.stream()
+                            .map(User::getName)
+                            .collect(Collectors.toList()));
+                    break;
+                case 3:
+                    sortedAttendeesAndCommitteeNames = Filter.pointsSort(attendeesAndCommittee, committee);
+                    break;
+                case 4:
+                    sortedAttendeesAndCommitteeNames = Filter.roleSort(attendeesAndCommittee, committee);
+                    break;
+                default:
+                    // Handle invalid option, default to ascending sort
+                    System.out.println("You selected an invalid option, defaulting to ascending sort!");
+                    sortedAttendeesAndCommitteeNames = Filter.ascendingSort(attendeesAndCommittee.stream()
+                            .map(User::getName)
+                            .collect(Collectors.toList()));
+            }
+
+            scanner.nextLine();
 
             // Populate data rows for sorted attendees and committee members
             int rowNum = 11;
@@ -105,7 +140,6 @@ public class ParticipationReport implements ReportGenerator {
 
             // Allow the user to input the file name
             System.out.print("Enter the file name (without extension): ");
-            Scanner scanner = new Scanner(System.in);
             String fileName = scanner.nextLine().trim();
 
             // Modify the outputPath to use a relative path to the "outputs" folder

@@ -1,8 +1,9 @@
 package cams.reports;
 
 import cams.Camp;
-import cams.users.User;
 import cams.database.UnifiedUserRepository;
+import cams.filters.Filter;
+import cams.users.User;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -11,8 +12,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class PerformanceReport implements ReportGenerator {
     @Override
@@ -60,16 +62,61 @@ public class PerformanceReport implements ReportGenerator {
             // Access committee directly from the camp instance
             HashMap<String, Integer> committee = camp.getCommittee();
 
-            // Populate data rows for committee members
+            // Retrieve committee members from the camp instance
+            List<User> committeeMembers = committee.keySet().stream()
+                    .map(userId -> UnifiedUserRepository.getInstance().retrieveUser(userId))
+                    .collect(Collectors.toList());
+
+            // Display sorting options
+            System.out.println("Select Sorting Method:");
+            System.out.println("1. Ascending Sort");
+            System.out.println("2. Descending Sort");
+            System.out.println("3. Points Sort");
+
+            // Get user input
+            System.out.print("Enter your choice: ");
+            int sortingOption = scanner.nextInt();
+
+            // After retrieving attendees and committee members, apply sorting methods based on user's choice
+            List<String> sortedCommittee;
+            switch (sortingOption) {
+                case 1:
+                    sortedCommittee = Filter.ascendingSort(committeeMembers.stream()
+                            .map(User::getName)
+                            .collect(Collectors.toList()));
+                    break;
+                case 2:
+                    sortedCommittee = Filter.descendingSort(committeeMembers.stream()
+                            .map(User::getName)
+                            .collect(Collectors.toList()));
+                    break;
+                case 3:
+                    sortedCommittee = Filter.pointsSort(committeeMembers, committee);
+                    break;
+                default:
+                    // Handle invalid option, default to ascending sort
+                    System.out.println("You selected an invalid option, defaulting to ascending sort!");
+                    sortedCommittee = Filter.ascendingSort(committeeMembers.stream()
+                            .map(User::getName)
+                            .collect(Collectors.toList()));
+            }
+
+            scanner.nextLine();
+
+            // Populate data rows for sorted committee members
             int rowNum = 11;
-            for (Map.Entry<String, Integer> entry : committee.entrySet()) {
-                User user = UnifiedUserRepository.getInstance().retrieveUser(entry.getKey());
+            for (String userName : sortedCommittee) {
+                User user = committeeMembers.stream()
+                        .filter(u -> u.getName().equals(userName))
+                        .findFirst()
+                        .orElse(null);
+
                 if (user != null) {
                     Row row = sheet.createRow(rowNum++);
                     row.createCell(0).setCellValue(user.getUserID());
                     row.createCell(1).setCellValue(user.getName());
                     row.createCell(2).setCellValue(user.getFaculty().toString());
-                    row.createCell(3).setCellValue(entry.getValue());
+                    row.createCell(3).setCellValue(committee.getOrDefault(user.getUserID(), 0));
                 }
             }
 
@@ -90,5 +137,4 @@ public class PerformanceReport implements ReportGenerator {
             e.printStackTrace();
         }
     }
-
 }

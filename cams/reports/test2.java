@@ -43,8 +43,8 @@ public class test2 {
 
         // Add committee members to the camp
         HashMap<String, Integer> committeeMembers = new HashMap<>();
-        committeeMembers.put(student1.getUserID(), 60);
-        committeeMembers.put(student3.getUserID(), 45);
+        committeeMembers.put(student1.getUserID(), 22);
+        committeeMembers.put(student3.getUserID(), 18);
         committeeMembers.put(staff1.getUserID(), 35);
 
         // Set committee members for the camp
