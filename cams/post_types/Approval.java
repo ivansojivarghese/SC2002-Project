@@ -1,6 +1,8 @@
 package cams.post_types;
 
-public class Approval extends Message{
+import java.io.Serializable;
+
+public class Approval extends Message implements Serializable {
     private Boolean content;
 
     public Approval(){}

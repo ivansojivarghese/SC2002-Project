@@ -3,6 +3,7 @@ package cams;
 import cams.dashboards.Dashboard;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
+import cams.util.InputScanner;
 import cams.util.UserType;
 
 public class App {
@@ -27,6 +28,9 @@ public class App {
 		System.out.println("Initialising camp data files...");
 		if(!unifiedCampRepository.initialiseData() && unifiedCampRepository.isEmpty())
 			System.out.println("No camps have been created.");
+
+		//Initialise Scanner
+		InputScanner.getInstance();
 
 		//Proceed to login page
 		Dashboard dashboard = new Dashboard();

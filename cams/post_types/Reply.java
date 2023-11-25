@@ -1,6 +1,8 @@
 package cams.post_types;
 
-public class Reply extends Message {
+import java.io.Serializable;
+
+public class Reply extends Message implements Serializable {
     public Reply(String userID, String content) {
         this.setContent(content);
         this.setPostedBy(userID);

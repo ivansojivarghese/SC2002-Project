@@ -57,6 +57,8 @@ public class Student extends User implements Committable, Serializable { // stud
         CampRepository repo = UnifiedCampRepository.getInstance();
         for (String campName : this.getMyCamps()) {
             Camp camp = repo.retrieveCamp(campName);
+            if(camp == null)
+                continue;
             for (Post post : camp.getEnquiries()) {
                 if (Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
                     myEnquiries.add(post);
@@ -123,6 +125,8 @@ public class Student extends User implements Committable, Serializable { // stud
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         for (String campName : this.getMyCamps()) {
             Camp camp = repo.retrieveCamp(campName);
+            if(camp == null)
+                continue;
             for (Post post : camp.getSuggestions()) {
                 if (Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
                     mySuggestions.add(post);

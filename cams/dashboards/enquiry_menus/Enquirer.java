@@ -12,14 +12,18 @@ public class Enquirer extends EnquirerUI{
     }
 
     public boolean submit(String campName, String userID, String text){
+        CampRepository repo = UnifiedCampRepository.getInstance();
+        Camp camp = repo.retrieveCamp(campName);
+        if(camp == null){
+            System.out.println("Selected camp does not exist.");
+            return false;
+        }
         Post newPost = PostFactory.createPost(PostType.ENQUIRY);
         Enquiry newEnquiry = (Enquiry) newPost.getFirstMessage();
         newEnquiry.setContent(text);
         newEnquiry.setPostedBy(userID);
         newPost.setCamp(campName);
-
-        CampRepository repo = UnifiedCampRepository.getInstance();
-        repo.retrieveCamp(campName).addEnquiry(newPost);
+        camp.addEnquiry(newPost);
         return true;
     }
 

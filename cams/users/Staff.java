@@ -40,6 +40,8 @@ public class Staff extends User implements Serializable {
             UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
             for (String campName : this.getMyCamps()) {
                 Camp camp = repo.retrieveCamp(campName);
+                if(camp == null)
+                    continue;
                 myEnquiries.addAll(camp.getEnquiries());
             }
         }
@@ -73,6 +75,8 @@ public class Staff extends User implements Serializable {
             UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
             for (String campName : this.getMyCamps()) {
                 Camp camp = repo.retrieveCamp(campName);
+                if(camp == null)
+                    continue;
                 mySuggestions.addAll(camp.getSuggestions());
             }
         }
@@ -88,7 +92,7 @@ public class Staff extends User implements Serializable {
         System.out.println("My Created Camps: ");
         try {
             index = super.displayMyCamps();
-        }catch (NullPointerException e){
+        } catch (NullPointerException e){
             System.out.println("No camps created.");
         }
         if(index == 0)

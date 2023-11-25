@@ -1,6 +1,8 @@
 package cams.post_types;
 
-public class Enquiry extends Message{
+import java.io.Serializable;
+
+public class Enquiry extends Message implements Serializable {
     private String content;
     public String getContent() {
         return content;

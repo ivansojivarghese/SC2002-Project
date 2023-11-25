@@ -3,7 +3,6 @@ package cams.dashboards;
 import cams.dashboards.enquiry_menus.Enquirer;
 import cams.users.Participant;
 import cams.users.ParticipantAction;
-import cams.users.Student;
 import cams.users.User;
 import cams.util.UserInput;
 

@@ -3,11 +3,7 @@ package cams.dashboards;
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Suggester;
 import cams.users.Committable;
-import cams.users.Student;
-import cams.users.User;
 import cams.util.UserInput;
-
-import java.util.Scanner;
 
 public class CommitteeMenuState extends StudentMenuState{
     public CommitteeMenuState(){
