@@ -23,11 +23,11 @@ public class Enquirer extends EnquirerUI{
      * Submits an enquiry about a specific camp.
      *
      * @param campName The name of the camp to which the enquiry is addressed.
-     * @param userID   The ID of the user making the enquiry.
+     * @param user   The user making the enquiry.
      * @param text     The content of the enquiry.
      * @return true if the submission is successful, false if the camp does not exist.
      */
-    public boolean submit(String campName, String userID, String text){
+    public boolean submit(String campName, User user, String text){
         Camp camp = campRepository.retrieveCamp(campName);
         if(camp == null){
             System.out.println("Selected camp does not exist.");
@@ -37,7 +37,7 @@ public class Enquirer extends EnquirerUI{
         Post newPost = PostFactory.createPost(PostType.ENQUIRY);
         Enquiry newEnquiry = (Enquiry) newPost.getFirstMessage();
         newEnquiry.setContent(text);
-        newEnquiry.setPostedBy(userID);
+        newEnquiry.setPostedBy(user.getUserID());
         newPost.setCamp(campName);
         camp.addEnquiry(newPost);
         return true;

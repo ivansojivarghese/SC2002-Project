@@ -311,6 +311,15 @@ public class Camp implements Serializable {
 			System.out.println("User is in the camp committee.");
 	}
 
+	public int getPointsOfCommitteeMember(String userID){
+		return this.committee.get(userID);
+	}
+
+	public void addPointToCommitteeMember(String userID, int pointsAdded){
+		int currentPoints = this.committee.get(userID);
+		this.committee.put(userID, currentPoints + pointsAdded);
+	}
+
 	//if specified user has already joined the camp as an attendee or committee, returns true
 	public boolean checkForMember(String userID) {
 		return this.committee.containsKey(userID) || this.attendees.contains(userID);

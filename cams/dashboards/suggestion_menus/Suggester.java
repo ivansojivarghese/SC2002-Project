@@ -4,12 +4,13 @@ import cams.Camp;
 import cams.database.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.post_types.*;
+import cams.users.Committable;
 import cams.users.User;
 import cams.util.SavableObject;
 
 public class Suggester extends SuggesterUI{
     @Override
-    public boolean submit(String campName, String userID, String text) {
+    public boolean submit(String campName, User user, String text) {
         Post newPost = PostFactory.createPost(PostType.SUGGESTION);
 
         CampRepository repo = UnifiedCampRepository.getInstance();
@@ -20,9 +21,16 @@ public class Suggester extends SuggesterUI{
         }
         Suggestion newSuggestion = (Suggestion) newPost.getFirstMessage();
         newSuggestion.setContent(text);
-        newSuggestion.setPostedBy(userID);
+        newSuggestion.setPostedBy(user.getUserID());
         newPost.setCamp(campName);
         camp.addSuggestion(newPost);
+
+        if(user instanceof Committable){
+            System.out.println("1 point has been added.");
+            camp.addPointToCommitteeMember(user.getUserID(), 1);
+        }
+
+        camp.save();
         return true;
     }
 

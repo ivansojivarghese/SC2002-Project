@@ -79,8 +79,11 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
         System.out.println("Input content: ");
         String content = sc.nextLine();
         try {
-            if (submit(campName, user.getUserID(), content))
+            if (submit(campName, user, content))
                 System.out.println("Success!");
+            if(user instanceof Committable){
+                System.out.println("1 point has been added.");
+            }
         } catch (Exception e) {
             System.out.println("Unsuccessful: " + e.getMessage());
         }
@@ -107,7 +110,7 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
         }
     }
 
-    public abstract boolean submit(String camp, String userID, String text);
+    public abstract boolean submit(String camp, User user, String text);
     public abstract boolean edit(User user, int postIndex, String content);
     public abstract boolean delete(User user, int postIndex);
 }

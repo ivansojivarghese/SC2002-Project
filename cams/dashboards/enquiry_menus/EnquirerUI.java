@@ -107,7 +107,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
 
         // Attempt to submit the enquiry
         try {
-            if (submit(campName, user.getUserID(), content))
+            if (submit(campName, user, content))
                 System.out.println("Enquiry successfully submitted!");
         } catch (NullPointerException e) {
             System.out.println("Submission unsuccessful: " + e.getMessage());
@@ -153,7 +153,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
         }
     }
 
-    public abstract boolean submit(String campName, String userID, String text);
+    public abstract boolean submit(String campName, User user, String text);
     public abstract boolean edit(User user, int postIndex, String content);
     public abstract boolean delete(User user, int postIndex);
 }
