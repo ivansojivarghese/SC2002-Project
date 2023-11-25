@@ -4,8 +4,7 @@ package cams.dashboards;
  * Functional interface encapsulating a behavior or a block of code that can be executed on demand.
  * It can be implemented using lambda expressions
  * <p>
- * The {@code execute} method is the single abstract method of this interface,
- * and it defines the action that will be performed.
+ * The {@code execute} method is an abstract method defining the action that will be performed.
  */
 @FunctionalInterface
 public interface MenuAction {

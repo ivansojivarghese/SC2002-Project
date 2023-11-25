@@ -3,7 +3,10 @@ package cams.dashboards;
 import cams.Camp;
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Approver;
+import cams.database.CampRepository;
 import cams.database.UnifiedCampRepository;
+import cams.database.UnifiedUserRepository;
+import cams.database.UserRepository;
 import cams.reports.ParticipationReport;
 import cams.reports.PerformanceReport;
 import cams.reports.ReportGenerator;
@@ -17,11 +20,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
+/**
+ * Class containing the user interface for various camp management
+ * functionalities in the dashboard that are core to Staff responsibilities
+ * Includes actions like editing camps, creating camps, responding to suggestions, and more.
+ */
 public class StaffMenuState extends UserMenuState implements DashboardState {
     private final Organiser organiser = new StaffOrganiserActions();
     /**
-     * Displays the student menu to the user and handles user input for various operations.
+     * Displays the staff menu to the user and handles user input for various operations.
      * @param dashboard The dashboard through which the user interacts.
      */
     @Override
@@ -60,7 +67,7 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
         actions.put(6, () -> respondSuggestions(dashboard));
         actions.put(7, () -> respondEnquiries(dashboard));
         actions.put(8, () -> seeAttendees(dashboard));
-        actions.put(9, () -> generateReport(dashboard, new ParticipationReport())); // Add the option for generating the participation report
+        actions.put(9, () -> generateParticipationReport(dashboard, new ParticipationReport())); // Add the option for generating the participation report
         actions.put(10, () -> generatePerformanceReport(dashboard, new PerformanceReport())); // Add the option for generating the performance report
         return actions;
     }
@@ -86,10 +93,26 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
             }
         }
     }
+
+    /**
+     * Transitions to the OrganiserMenu state.
+     * <p>
+     * This method is used when a user wishes to perform camp-editing related tasks.
+     *
+     * @param dashboard The dashboard context.
+     */
     protected void editCamp(Dashboard dashboard){
         // DELETE, AND TOGGLE camps
         dashboard.setState(new OrganiserMenu());
     }
+
+    /**
+     * This method is responsible for the UI of camp creation.
+     * It gets the requisite user input
+     * and initiates camp creation through the {@link Organiser} interface
+     *
+     * @param dashboard The dashboard context.
+     */
     protected void createCamp(Dashboard dashboard){
         CampDetails campDetails = new CampDetails();
         Scanner sc = InputScanner.getInstance();
@@ -201,17 +224,69 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
         organiser.createCamp(campDetails);
         System.out.println("Camp created successfully!");
     }
+
+    /**
+     * Transitions the dashboard the {@link Approver} menu state to respond to suggestions.
+     *
+     * @param dashboard The dashboard context.
+     */
     protected void respondSuggestions(Dashboard dashboard){
         dashboard.setState(new Approver());
     }
+
+    /**
+     * Transitions to the Replier state to respond to enquiries.
+     *
+     * @param dashboard The dashboard context.
+     */
     protected void respondEnquiries(Dashboard dashboard){
         dashboard.setState(new Replier());
     }
-    protected void seeAttendees(Dashboard dashboard){}
+
+    /**
+     * Prints a list of the participants including
+     * attendees and committee members for a specified camp
+     *
+     * @param dashboard The dashboard context.
+     */
+    protected void seeAttendees(Dashboard dashboard){
+        CampRepository campRepo = UnifiedCampRepository.getInstance();
+        UserRepository userRepo = UnifiedUserRepository.getInstance();
+        System.out.println("Name of camp: ");
+        String input = UserInput.getStringInput();
+        Camp camp = campRepo.retrieveCamp(input);
+        if(camp == null){
+            System.out.println("Invalid camp name inputted.");
+            return;
+        }
+        List<String> attendees = camp.getAttendees();
+        if(attendees == null){
+            System.out.println("No participants.");
+            return;
+        }
+        System.out.println("No. of Participants: " + attendees.size());
+        System.out.println("List of Participants (includes committee members): ");
+        for(String u : attendees){
+            User user = userRepo.retrieveUser(u);
+            System.out.println(user.getName());
+        }
+    }
+
+    /**
+     * Views all camps associated with a user.
+     *
+     * @param user The user whose camps are to be viewed.
+     */
     protected void viewAllCamps(User user){
         user.viewAllCamps();
     }
 
+
+    /**
+     * Displays information about the user on the dashboard.
+     *
+     * @param user The user whose information is to be displayed.
+     */
     protected void userInfo(User user){
         // Code to display options
         System.out.println("                          DASHBOARD                           ");
@@ -221,7 +296,13 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
         System.out.println("Faculty: " + user.getFaculty());
     }
 
-    private void generateReport(Dashboard dashboard, ReportGenerator reportGenerator) {
+    /**
+     * Responsible for interacting with the user to generate a report on the participants.
+     * Outputs the report in .xlsx format.
+     * @param dashboard The dashboard context
+     * @param reportGenerator The interface dependency injection that generates the required report
+     */
+    private void generateParticipationReport(Dashboard dashboard, ReportGenerator reportGenerator) {
         User user = dashboard.getAuthenticatedUser();
 
         List<String> staffCamps = ((Staff) user).getMyCamps();
@@ -254,6 +335,12 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
         }
     }
 
+    /**
+     * Responsible for interacting with the user to generate a performance report on committee members
+     * Outputs the report in .xlsx format.
+     * @param dashboard The dashboard context
+     * @param reportGenerator The interface dependency injection that generates the required report
+     */
     private void generatePerformanceReport(Dashboard dashboard, ReportGenerator reportGenerator) {
         User user = dashboard.getAuthenticatedUser();
 

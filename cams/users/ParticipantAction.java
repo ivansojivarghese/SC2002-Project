@@ -5,9 +5,18 @@ import cams.database.UnifiedCampRepository;
 import cams.util.Date;
 import cams.util.UserInput;
 
+/**
+ * Implements the {@link Participant} interface, handling actions related to camp registration and deregistration.
+ * This class applies the business logic to perform these actions, such as checking camp availability.
+ */
 public class ParticipantAction implements Participant{
 	private static Participant instance;
-	
+
+    /**
+     * Provides a global point of access to the {@link ParticipantAction} instance.
+     *
+     * @return The singleton instance of {@link ParticipantAction}.
+     */
 	public static Participant getInstance() {
         // If the instance is null, create a new one
         if (instance == null) {
@@ -16,7 +25,16 @@ public class ParticipantAction implements Participant{
         // Return the existing/new instance
         return instance;
     }
-	
+
+    /**
+     * Deregisters a user from a specified camp.
+     * <p>
+     * Handles logic to ensure a user can only deregister from camps they are registered for.
+     * Adds the user to a banned list of the camp preventing future registrations.
+     *
+     * @param user     The {@link User} who is deregistering.
+     * @param campName The name of the camp from which the user is deregistering.
+     */
     @Override
     //TODO prevent users from registering from deregistered camps using the banned list of each camp
     public void deregister(User user, String campName) {
@@ -46,6 +64,15 @@ public class ParticipantAction implements Participant{
         System.out.println("Successfully deregistered. You may not register for this Camp again.");
     }
 
+    /**
+     * Registers a user to a specified camp.
+     * <p>
+     * Handles logic to ensure a user can register for available camps and not for closed or over camps.
+     * Additionally, checks for date clashes and allows users to join the camp committee if vacancies exist.
+     *
+     * @param user     The {@link User} who is registering.
+     * @param campName The name of the camp to which the user is registering.
+     */
     @Override
     public void register(User user, String campName) {
     	
@@ -97,7 +124,7 @@ public class ParticipantAction implements Participant{
 	        input = UserInput.getStringInput();
 	        committeeCheck = UserInput.validateInput(input);
 	
-	        if (committeeCheck) {
+	        if (Boolean.TRUE.equals(committeeCheck)) {
 		        if(user instanceof Committable) {
 		            // selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
 		            if (selectedCamp.addCommittee(user.getUserID()) == 1) {

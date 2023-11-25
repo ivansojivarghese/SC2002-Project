@@ -13,6 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Class containing methods for various camp management functionalities in the dashboard.
+ * These methods include actions like assigning students to camps, changing camp details,
+ * and deleting camps.
+ */
 public class OrganiserMenu implements DashboardState {
     private final Organiser organiser;
 
@@ -103,6 +108,12 @@ public class OrganiserMenu implements DashboardState {
         }
     }
 
+    /**
+     * UI interaction that assigns a student to a selected camp as a participant.
+     * This method prompts for the userID of a student and assigns them to the specified camp.
+     * @param dashboard     The dashboard context.
+     * @param selectedCamp  The name of the camp to assign the student to.
+     */
     protected void assignStudent(Dashboard dashboard, String selectedCamp) {
         System.out.println("Enter the userID of a student to be assigned: ");
         String student = UserInput.getStringInput();
@@ -110,18 +121,34 @@ public class OrganiserMenu implements DashboardState {
         dashboard.loggedIn();
     }
 
+    /**
+     * Handles user interaction process to change the name of a camp.
+     * <p>
+     * Prompts the user to enter a new name for the camp and updates it accordingly.
+     *
+     * @param dashboard The dashboard context.
+     * @param details   The {@link CampDetails} object containing information about the camp.
+     */
     protected void changeName(Dashboard dashboard, CampDetails details) {
-        String update;
+        String updatedName;
         System.out.println("Camp's current name is: " + details.getCampName());
         System.out.println("Set a new name for the Camp: ");
-        update = UserInput.getStringInput();
-        details.setCampName(update);
+        updatedName = UserInput.getStringInput();
+        details.setCampName(updatedName);
 
         organiser.editCamp(details.getCampName(), details);
         System.out.println("New Camp name: " + details.getCampName());
         dashboard.loggedIn();
     }
 
+    /**
+     * Handles user interaction process to toggle the visibility of a camp.
+     * <p>
+     * Allows changing the camp's visibility status, making it either visible or invisible to potential participants.
+     *
+     * @param dashboard The dashboard context.
+     * @param details   The {@link CampDetails} object containing information about the camp.
+     */
     protected void toggleVisibility(Dashboard dashboard, CampDetails details) {
         boolean bool;
         System.out.println("Camp is visible: " + String.valueOf(details.isVisible()).toUpperCase());
@@ -135,6 +162,11 @@ public class OrganiserMenu implements DashboardState {
         dashboard.loggedIn();
     }
 
+    /**
+     * Handles user interaction to toggle the visibility of the camp
+     * @param dashboard The dashboard context.
+     * @param details The {@link CampDetails} object containing information about the camp.
+     */
     protected void changeFaculty(Dashboard dashboard, CampDetails details) {
         System.out.println("Camp was previously open to " + details.getFacultyRestriction() + ".");
         if (details.getFacultyRestriction() != Faculty.ALL) {
@@ -147,6 +179,11 @@ public class OrganiserMenu implements DashboardState {
         dashboard.loggedIn();
     }
 
+    /**
+     * Handles user interaction process to change the number of slots for camp attendees
+     * @param dashboard The dashboard context.
+     * @param details The {@link CampDetails} object containing information about the camp.
+     */
     protected void changeAttendeeSlots(Dashboard dashboard, CampDetails details) {
         System.out.println("Camp currently has a total of " + details.getAttendeeSlots() + " attendee slots.");
 
@@ -160,6 +197,14 @@ public class OrganiserMenu implements DashboardState {
         dashboard.loggedIn();
     }
 
+    /**
+     * Changes the number of committee slots available for a camp.
+     * <p>
+     * Prompts for the new number of committee slots and updates the camp details accordingly.
+     *
+     * @param dashboard The dashboard context.
+     * @param details   The {@link CampDetails} object containing information about the camp.
+     */
     protected void changeCommitteeSlots(Dashboard dashboard, CampDetails details) {
         System.out.println("Camp currently has a total of " + details.getCommitteeSlots() + " committee slots.");
 
@@ -173,6 +218,14 @@ public class OrganiserMenu implements DashboardState {
         dashboard.loggedIn();
     }
 
+    /**
+     * Changes the description of a camp.
+     * <p>
+     * Prompts for a new description and updates the camp details accordingly.
+     *
+     * @param dashboard The dashboard context.
+     * @param details   The {@link CampDetails} object containing information about the camp.
+     */
     protected void changeDescription(Dashboard dashboard, CampDetails details) {
         String update;
         System.out.println("Camp's current description: " + details.getDescription());
@@ -184,7 +237,15 @@ public class OrganiserMenu implements DashboardState {
         System.out.println("New Camp description: " + details.getDescription());
         dashboard.loggedIn();
     }
-
+    /**
+     * Changes the closing date of camp registration.
+     * <p>
+     * Prompts the user to set a new closing date for camp registration, ensuring it is before the camp start date
+     * and after the current date.
+     *
+     * @param dashboard The dashboard context.
+     * @param details   The {@link CampDetails} object containing information about the camp.
+     */
     protected void changeClosingDate(Dashboard dashboard, CampDetails details) {
         Scanner sc = InputScanner.getInstance();
         String input;
@@ -216,6 +277,11 @@ public class OrganiserMenu implements DashboardState {
         dashboard.loggedIn();
     }
 
+    /**
+     * Responsible for handling user interaction and initiating the change in camp dates.
+     * @param dashboard The dashboard context.
+     * @param details The {@link CampDetails} object containing information about the camp.
+     */
     protected void changeCampDates(Dashboard dashboard, CampDetails details) {
         Scanner sc = InputScanner.getInstance();
         String input;
@@ -261,6 +327,14 @@ public class OrganiserMenu implements DashboardState {
         dashboard.loggedIn();
     }
 
+    /**
+     * Responsible for user interaction in the process of deleting a camp.
+     * <p>
+     * Prompts for confirmation before deleting a camp. Camps with existing participants cannot be deleted.
+     *
+     * @param dashboard    The dashboard context.
+     * @param selectedCamp The name of the camp to be deleted.
+     */
     protected void deleteCamp(Dashboard dashboard, String selectedCamp) {
         if (organiser.getNumAttendees(selectedCamp) > 0) {
             System.out.println("Camps with participants cannot be deleted.");

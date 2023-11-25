@@ -16,6 +16,7 @@ import java.util.Scanner;
  * Abstract class representing the user interface for enquiry operations.
  * This class provides the template for enquiry related actions such as submitting,
  * editing, and deleting enquiries.
+ * It extends {@link EnquirerUI} and provides the implementation for the reply method in {@link PosterUI}.
  */
 public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
 

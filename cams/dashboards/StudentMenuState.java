@@ -80,6 +80,11 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
         }
     }
 
+    /**
+     * Displays information about the user on the dashboard.
+     *
+     * @param user The user whose information is to be displayed.
+     */
     protected void userInfo(User user){
         // Code to display options
         System.out.println("                          DASHBOARD                           ");
@@ -90,6 +95,13 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
         System.out.println("Faculty: " + user.getFaculty());
     }
 
+    /**
+     * Handles user interaction to register a user for a selected camp.
+     * <p>
+     * Prompts the user to choose a camp to register for and then proceeds with the registration.
+     *
+     * @param dashboard The dashboard context.
+     */
     protected void registerCamp(Dashboard dashboard){
         User user = dashboard.getAuthenticatedUser();
         Scanner sc = InputScanner.getInstance();
@@ -100,6 +112,15 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
         participant.register(user, registerInput);
         dashboard.loggedIn(); // Refresh dashboard state
     }
+
+    /**
+     * Handles user interaction to deregister a user from a selected camp.
+     * <p>
+     * Prompts the user to choose a camp to withdraw from
+     * and then proceeds with the de-registration.
+     *
+     * @param dashboard The dashboard context.
+     */
     protected void deregisterCamp(Dashboard dashboard){
         Scanner sc = InputScanner.getInstance();
         User user = dashboard.getAuthenticatedUser();
@@ -108,6 +129,13 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
         participant.deregister(user, deregisterInput);
     }
 
+    /**
+     * Transitions to the Enquiries state in the dashboard.
+     * <p>
+     * Changes the current state of the dashboard to handle enquiries.
+     *
+     * @param dashboard The dashboard context.
+     */
     protected void goToEnquiries(Dashboard dashboard){
         dashboard.setState(new Enquirer(UnifiedCampRepository.getInstance()));
     }

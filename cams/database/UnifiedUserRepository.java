@@ -17,31 +17,28 @@ import java.io.FileNotFoundException;
 
 import java.io.Serializable;
 import java.util.HashMap;
-
+/**
+ * Implements {@link UserRepository} as a Singleton to manage and store User objects.
+ * Provides functionalities to add, retrieve, and query users.
+ */
 public class UnifiedUserRepository implements UserRepository {
     private static UnifiedUserRepository instance;
     private static final Loader loader = new ObjectLoader();
     private HashMap<String, User> users;
     private static final String fileLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator + "users";
 
-    //prevent construction outside the class
+    /**
+     * Private constructor to prevent instantiation outside the class.
+     */
     private UnifiedUserRepository(){
         this.users = new HashMap<>();
     }
 
-    public void addUser(User user){
-        this.users.put(user.getUserID(), user);
-    }
-
-    //UserID is always uppercase to remove case sensitivity
-    public User retrieveUser(String userID){
-        return users.get(userID.toUpperCase());
-    }
-    
-    public boolean isEmpty() {
-        return this.users.isEmpty();
-    }
-
+    /**
+     * Provides a global point of access to the {@link UnifiedUserRepository} instance.
+     *
+     * @return The singleton instance of {@link UnifiedUserRepository}.
+     */
     public static UnifiedUserRepository getInstance() {
         // If the instance is null, create a new one
         if (instance == null) {
@@ -51,7 +48,47 @@ public class UnifiedUserRepository implements UserRepository {
         return instance;
     }
 
-    //Loads serializable objects into the program by storing them in the hashmap
+    /**
+     * Adds a new user to the repository.
+     *
+     * @param user The {@link User} object to add.
+     */
+    @Override
+    public void addUser(User user){
+        this.users.put(user.getUserID(), user);
+    }
+
+    /**
+     * Retrieves a user by their userID.
+     * <p>
+     * UserIDs are treated as case-insensitive for retrieval purposes.
+     *
+     * @param userID The userID of the user to retrieve.
+     * @return The {@link User} object if found, null otherwise.
+     */
+    @Override
+    //UserID is always uppercase to remove case sensitivity
+    public User retrieveUser(String userID){
+        return users.get(userID.toUpperCase());
+    }
+
+    /**
+     * Checks if the repository is empty.
+     *
+     * @return true if the repository contains no users, false otherwise.
+     */
+    @Override
+    public boolean isEmpty() {
+        return this.users.isEmpty();
+    }
+
+    /**
+     * Initializes the repository data from stored files.
+     * <p>
+     * Loads User objects from serialized files located in a specified directory.
+     *
+     * @return true if data initialization is successful, false otherwise.
+     */
     public boolean initialiseData(){
         File folder = new File(fileLocation);
         File[] listOfFiles = folder.listFiles();
@@ -79,7 +116,17 @@ public class UnifiedUserRepository implements UserRepository {
         }
         return true;
     }
-    //Initialises user objects from Excel files, and automatically serialises the objects
+
+
+    /**
+     * Initializes user objects from Excel files and automatically serializes the objects.
+     * <p>
+     * Reads user data from an Excel file and adds the users to the repository based on the specified user type.
+     *
+     * @param filename The filename of the Excel file containing user data.
+     * @param userType The type of users to be added (STUDENT or STAFF).
+     * @return true if data initialization is successful, false otherwise.
+     */
     public boolean initialiseData(String filename, UserType userType) {
         try {
             File file = new File(System.getProperty("user.dir") + File.separator + "cams" + File.separator + "util" + File.separator + filename);

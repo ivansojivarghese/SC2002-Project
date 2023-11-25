@@ -11,10 +11,14 @@ import cams.util.UserInput;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
+/**
+ * Abstract class providing the user interface for suggesting, editing, and deleting suggestions.
+ * Implements {@link PostViewerUI} to handle the display and interaction logic for suggestion management.
+ */
 public abstract class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
     /**
-     * Displays the suggestion menu to the user and handles user input for various enquiry operations.
+     * Displays the suggestion menu to the user
+     * and handles user input for various suggestion operations.
      * @param dashboard The dashboard through which the user interacts.
      */
     public void display(Dashboard dashboard) {
@@ -72,6 +76,13 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
         }
     }
 
+    /**
+     * Handles the user interaction required for the inputs of a new suggestion.
+     * Submits a new suggestion to a camp.
+     * Adds one point for every suggestion added.
+     * The user enters the information and the method {@link #submitSuggestion} handles the abstracted logic
+     * @param user The user making the suggestion.
+     */
     protected void submitSuggestion(User user){
         Scanner sc = InputScanner.getInstance();
         String campName = ((Committable) user).getCommittee();
@@ -88,6 +99,13 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
             System.out.println("Unsuccessful: " + e.getMessage());
         }
     }
+
+    /**
+     * Handles the user interaction required for editing an existing suggestion owned by the user.
+     * The user selects a suggestion to edit and the method {@link #edit(User, int, String)} handles the abstracted logic
+     * @param user The user editing the suggestion.
+     * @param numSuggestions The total number of suggestions the user has made.
+     */
     protected void editSuggestion(User user, int numSuggestions){
         Scanner sc = InputScanner.getInstance();
         int option = UserInput.getIntegerInput(0, numSuggestions-1, "Enter index of suggestion to edit: ");
@@ -100,6 +118,13 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
             System.out.println("Error: " + e.getMessage());
         }
     }
+
+    /**
+     * Handles the user interaction required for deleting one of the user's existing suggestions.
+     * The user selects a suggestion to delete and the method {@link #deleteSuggestion} handles the abstracted logic
+     * @param user
+     * @param numSuggestions
+     */
     protected void deleteSuggestion(User user, int numSuggestions){
         int option = UserInput.getIntegerInput(0, numSuggestions-1, "Enter index of suggestion to delete: ");
         try {

@@ -15,11 +15,24 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Represents the dashboard state for a committee member.
+ * This class extends {@link StudentMenuState} and adds additional functionalities specific to {@link Committable committee members},
+ * such as managing suggestions, replying to enquiries, and generating reports.
+ */
 public class CommitteeMenuState extends StudentMenuState {
+    /**
+     * Constructs a CommitteeMenuState instance.
+     */
     public CommitteeMenuState() {
         super();
     }
 
+    /**
+     * Displays the committee member menu options and handles user input for various actions.
+     *
+     * @param dashboard The dashboard through which the user interacts.
+     */
     @Override
     public void display(Dashboard dashboard) {
         // Display User information
@@ -38,7 +51,7 @@ public class CommitteeMenuState extends StudentMenuState {
 
     @Override
     protected void userInfo(User user) {
-        // Code to display options
+        // Displaying user details and committee membership if applicable
         System.out.println("                          DASHBOARD                           ");
         System.out.println("______________________________________________________________");
 
@@ -49,6 +62,7 @@ public class CommitteeMenuState extends StudentMenuState {
             System.out.println("Committee Member of: " + ((Committable) user).getCommittee());
     }
 
+    // Initializing actions for committee-specific functionalities
     @Override
     protected Map<Integer, MenuAction> initializeActions(Dashboard dashboard) {
         Map<Integer, MenuAction> actions = super.initializeActions(dashboard);
@@ -75,14 +89,28 @@ public class CommitteeMenuState extends StudentMenuState {
         }
     }
 
+    /**
+     * Sets the state of the dashboard to the suggestion menu
+     * @param dashboard The current dashboard context object
+     */
     protected void goToSuggest(Dashboard dashboard) {
         dashboard.setState(new Suggester());
     }
 
+    /**
+     * Sets the state of the dashboard to the reply menu
+     * @param dashboard The current dashboard context object
+     */
     protected void goToReply(Dashboard dashboard) {
         dashboard.setState(new Replier());
     }
 
+    /**
+     * Gets user input required to generate a report for the camp that the user is a committee member of.
+     * Outputs the report in .xlsx format
+     * @param dashboard The dashboard context object
+     * @param reportGenerator The {@link ReportGenerator} dependency that is injected
+     */
     protected void reportGenerator(Dashboard dashboard, ReportGenerator reportGenerator) {
         User authenticatedUser = dashboard.getAuthenticatedUser();
 

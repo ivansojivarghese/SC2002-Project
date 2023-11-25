@@ -2,8 +2,20 @@ package cams.dashboards;
 
 import cams.users.User;
 import cams.util.UserInput;
-
+/**
+ * Represents the state of the dashboard when a user is not logged in.
+ * This state displays the main menu options such as Login and Quit.
+ * Implements {@link DashboardState} for managing the display of this state.
+ */
 public class LogoutState implements DashboardState{
+    /**
+     * Displays the main menu options in the logout state.
+     * <p>
+     * In this state, the user can choose to either log in or quit the application.
+     * If the user chooses to log in, it attempts to authenticate the user.
+     *
+     * @param dashboard The {@link Dashboard} context in which this state operates.
+     */
     @Override
     public void display(Dashboard dashboard) {
         int option;
@@ -29,8 +41,8 @@ public class LogoutState implements DashboardState{
                 }
             }
 
-            //IF login successful set the menu to the loggedIn menu
-            //The loggedIn method sets the dashboard according to user role
+            // Check if login was successful and update dashboard state
+            // Set the current user owning the dashboard
             if (authenticatedUser != null) {
                 dashboard.setAuthenticatedUser(authenticatedUser);
                 dashboard.loggedIn();

@@ -10,14 +10,22 @@ import cams.util.UserInput;
 import java.util.*;
 
 /**
- * Abstract class representing the user interface for replying to enquiries
- * This class provides the template for the action of replying enquiries
+ * Abstract class representing the user interface for replying to {@link cams.post_types.Enquiry enquiries}, a specific type of {@link cams.post_types.Post post}.
+ * This class provides a UI with abstracted logic for the action of replying to enquiries,
+ * including displaying a menu to choose an enquiry to reply to, and handling the user interaction.
+ * It extends {@link EnquiryViewerUI} and implements {@link PostReplierUI}
  */
 public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI {
+    /**
+     * Constructs a ReplierUI instance.
+     */
     public ReplierUI() {
     }
     /**
-     * Displays the replier menu to the user and handles user input for reply operation.
+     * Displays the replier menu to the user and allows the user to select an enquiry to reply to.
+     * Subsequently, the method facilitates the reply process.
+     * If there are no enquiries, it redirects back to the main menu of the dashboard.
+     *
      * @param dashboard The dashboard through which the user interacts.
      */
     public void display(Dashboard dashboard) {
@@ -46,7 +54,6 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
         //At the end of the display method, the main APP will redisplay the set menu
     }
 
-
     /**
      * Initialises a hashmap of methods corresponding to each choice in the user menu
      * @param dashboard The dashboard object
@@ -63,7 +70,6 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
         }
         return actions;
     }
-
 
     /**
      * Displays the corresponding description of each menu choice
@@ -100,6 +106,14 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
         }
     }
 
+    /**
+     * Replies to a specific enquiry.
+     *
+     * @param user      The user performing the reply.
+     * @param postIndex The index of the post to reply to.
+     * @param reply     The reply content.
+     * @return true if the reply was successful, false otherwise.
+     */
     @Override
     public abstract boolean reply(User user, int postIndex, String reply);
 }

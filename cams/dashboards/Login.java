@@ -6,7 +6,22 @@ import cams.util.InputScanner;
 
 import java.util.Scanner;
 
+/**
+ * Each instance of the class represents a login attempt
+ * and handles the login process for users.
+ * This class is responsible for prompting the user for login credentials
+ * and initiating the validation method encapsulated in each {@link User} object.
+ * It detects and handles password changes for a first-time successful login attempt.
+ */
 class Login { //Class is package-private
+    /**
+     * Attempts to log in a user with a given user ID and password.
+     * <p>
+     * This method prompts the user for their User ID and password, checks these credentials,
+     * and handles the login process, including a first-time login check that prompts for password change.
+     *
+     * @return The {@link User} object if login is successful; null otherwise.
+     */
     public static User loginAttempt(){
         Scanner sc = InputScanner.getInstance();
         String LoginID;
@@ -33,22 +48,34 @@ class Login { //Class is package-private
             return null;
         }
 
-        if(password.equalsIgnoreCase("password")) {
-            //If user is logging in for the first time (i.e. if password == password), prompt to change password
+        // Prompt for password change if using default password
+        if (password.equalsIgnoreCase("password")) {
             System.out.println("You are using the default password.");
-            while (true) {
-                System.out.print("Please enter new password (Case Sensitive): ");
-                password = sc.nextLine();
-                if((password.equalsIgnoreCase("password") || password.isBlank() || password.length() < 8))
-                    System.out.println("Password must not be blank and must have at least 8 characters.");
-                else{
-                    break;
-                }
-            }
-            user.setPassword(password);
-            System.out.println("Password successfully changed!");
+            changeDefaultPassword(user, sc);
         }
 
         return user;
     }
+
+    /**
+     * Assists the user in changing their default password.
+     *
+     * @param user The {@link User} who is changing their password.
+     * @param sc   The {@link Scanner} instance for reading user input.
+     */
+    private static void changeDefaultPassword(User user, Scanner sc) {
+        String password;
+        while (true) {
+            System.out.print("Please enter new password (Case Sensitive): ");
+            password = sc.nextLine();
+            if (password.equalsIgnoreCase("password") || password.isBlank() || password.length() < 8) {
+                System.out.println("Password must not be blank and must have at least 8 characters.");
+            } else {
+                break;
+            }
+        }
+        user.setPassword(password);
+        System.out.println("Password successfully changed!");
+    }
 }
+

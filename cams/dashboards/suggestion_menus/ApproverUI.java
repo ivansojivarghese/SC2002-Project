@@ -11,9 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+/**
+ * Abstract class providing the user interface for the approval process of posts.
+ * Implements {@link PostApproverUI} to handle the display and interaction logic for post approvals.
+ */
 public abstract class ApproverUI extends SuggestionViewerUI implements PostApproverUI {
     /**
-     * Displays the enquiry menu to the user and handles user input for various enquiry operations.
+     * Displays the approval menu to the user and handles user input for various approval operations.
+     * <p>
+     * This method displays the list of suggestions to the user and allows them to select a suggestion
+     * to approve or reject.
+     *
      * @param dashboard The dashboard through which the user interacts.
      */
     @Override
@@ -46,7 +54,7 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
     /**
      * Initialises a hashmap of methods corresponding to each choice in the user menu
      * @param dashboard The dashboard object
-     * @param numSuggestions The number of enquiries that the user has submitted
+     * @param numSuggestions The total number of suggestions that the user has in their camps
      * @return Hash map of methods keyed to menu choices
      */
     protected Map<Integer, MenuAction> initializeActions(Dashboard dashboard, int numSuggestions) {
@@ -72,6 +80,12 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
         }
     }
 
+    /**
+     * UI process for getting user to approve or reject o a post
+     * Specific logic is implemented by {@link #approve(User, int, boolean)}
+     * @param user The user approving the suggestion
+     * @param numSuggestions The total number of suggestions that the user has in their camps
+     */
     protected void approveSuggestion(User user, int numSuggestions) {
         Scanner sc = InputScanner.getInstance();
         int postIndex = UserInput.getIntegerInput(0, numSuggestions-1, "Enter index of suggestion: ");
@@ -85,5 +99,12 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
         }
     }
 
+    /**
+     *
+     * @param user       The user who is performing the approval action.
+     * @param postIndex  The index of the post in the list of posts to be approved.
+     * @param isApproved Boolean flag indicating whether the post is approved (true) or disapproved (false).
+     * @return true if the post has been successfully approved or rejected, otherwise false
+     */
     public abstract boolean approve(User user, int postIndex, boolean isApproved);
 }
