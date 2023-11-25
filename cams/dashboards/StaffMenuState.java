@@ -44,6 +44,8 @@ public class StaffMenuState implements DashboardState {
         System.out.println("(7) Respond to camp suggestions");
         System.out.println("(8) Respond to camp enquiries");
         System.out.println("(9) View Participants/Committee Members for a camp");
+        System.out.println("(10) Generate participant report");
+        System.out.println("(11) Generate committee member performance report");
 
         //GET user choice
         option = UserInput.getIntegerInput(0, 9, "SELECT ACTION: ");
@@ -178,6 +180,12 @@ public class StaffMenuState implements DashboardState {
             case 9 -> {
             	
             } //TODO implement view list of participants/committee members for a camp
+            case 10 -> {
+
+            }
+            case 11 -> {
+
+            }
         }
     }
 
