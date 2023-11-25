@@ -7,9 +7,15 @@ import cams.users.Organiser;
 import cams.users.StaffOrganiserActions;
 import cams.users.User;
 import cams.util.UserInput;
+import cams.reports.ParticipationReport;
+import cams.reports.PerformanceReport;
+import cams.database.UnifiedCampRepository;
+import cams.Camp;
+import cams.users.Staff;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Scanner;
 
 public class StaffMenuState implements DashboardState {
@@ -48,7 +54,7 @@ public class StaffMenuState implements DashboardState {
         System.out.println("(11) Generate committee member performance report");
 
         //GET user choice
-        option = UserInput.getIntegerInput(0, 9, "SELECT ACTION: ");
+        option = UserInput.getIntegerInput(0, 11, "SELECT ACTION: ");
         System.out.println();
 
         switch (option) {
@@ -181,11 +187,58 @@ public class StaffMenuState implements DashboardState {
             	
             } //TODO implement view list of participants/committee members for a camp
             case 10 -> {
+                // Assuming the authenticated user is a staff member, you can get the list of camps they have organized
+                // and allow them to choose a camp for generating the participation report
+                List<String> staffCamps = ((Staff) user).getMyCamps();
 
+                if (staffCamps.isEmpty()) {
+                    System.out.println("You have not organized any camps. Unable to generate participation report.");
+                } else {
+                    // Display the list of camps organized by the staff
+                    System.out.println("Select a camp to generate the participation report:");
+                    for (int i = 0; i < staffCamps.size(); i++) {
+                        System.out.println((i + 1) + ". " + staffCamps.get(i));
+                    }
+
+                    // Get user input for the selected camp
+                    int selectedCampIndex = UserInput.getIntegerInput(1, staffCamps.size(), "Enter the number of the camp: ") - 1;
+                    String selectedCampName = staffCamps.get(selectedCampIndex);
+
+                    // Retrieve the Camp object based on the selected camp name
+                    Camp selectedCamp = UnifiedCampRepository.getInstance().retrieveCamp(selectedCampName);
+
+                    // Generate the participation report for the selected camp
+                    ParticipationReport participationReport = new ParticipationReport();
+                    participationReport.generateReport(selectedCamp);
+                }
             }
+
             case 11 -> {
+                // Similar to case 10, allow the staff to choose a camp for generating the performance report
+                List<String> staffCamps = ((Staff) user).getMyCamps();
 
+                if (staffCamps.isEmpty()) {
+                    System.out.println("You have not organized any camps. Unable to generate performance report.");
+                } else {
+                    // Display the list of camps organized by the staff
+                    System.out.println("Select a camp to generate the performance report:");
+                    for (int i = 0; i < staffCamps.size(); i++) {
+                        System.out.println((i + 1) + ". " + staffCamps.get(i));
+                    }
+
+                    // Get user input for the selected camp
+                    int selectedCampIndex = UserInput.getIntegerInput(1, staffCamps.size(), "Enter the number of the camp: ") - 1;
+                    String selectedCampName = staffCamps.get(selectedCampIndex);
+
+                    // Retrieve the Camp object based on the selected camp name
+                    Camp selectedCamp = UnifiedCampRepository.getInstance().retrieveCamp(selectedCampName);
+
+                    // Generate the performance report for the selected camp
+                    PerformanceReport performanceReport = new PerformanceReport();
+                    performanceReport.generateReport(selectedCamp);
+                }
             }
+
         }
     }
 
