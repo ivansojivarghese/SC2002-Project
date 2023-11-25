@@ -4,7 +4,6 @@ import cams.Camp;
 import cams.util.Faculty;
 import cams.util.Loader;
 import cams.util.ObjectLoader;
-import cams.util.SavableObject;
 
 import java.io.File;
 import java.io.Serializable;

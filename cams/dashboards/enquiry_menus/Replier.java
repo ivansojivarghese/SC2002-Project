@@ -23,7 +23,7 @@ public class Replier extends ReplierUI{
         CampRepository repo = UnifiedCampRepository.getInstance();
         Camp camp = repo.retrieveCamp(post.getCampName());
         //Save changes
-        SavableObject.saveObject(camp, camp.getFolderName(), camp.getFileName());
+        camp.save();
         return true;
     }
 }

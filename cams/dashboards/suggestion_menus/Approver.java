@@ -19,7 +19,7 @@ public class Approver extends ApproverUI {
         CampRepository repo = UnifiedCampRepository.getInstance();
         Camp camp = repo.retrieveCamp(currentPost.getCampName());
         //Save changes
-        SavableObject.saveObject(camp, camp.getFolderName(), camp.getFileName());
+        camp.save();
         return true;
     }
 }

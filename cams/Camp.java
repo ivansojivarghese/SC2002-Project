@@ -207,7 +207,6 @@ public class Camp implements Serializable {
 	public Camp setCampName(String campName) {
 		String oldFileName = getFileName();
 		this.campName = campName;
-		String newFileName = getFileName();
 		savable.deleteFile(folderName, oldFileName);
 		savable.saveObject(this, folderName, getFileName());
 		return this;
@@ -296,9 +295,10 @@ public class Camp implements Serializable {
 			savable.saveObject(this, folderName, getFileName());
 			return 1;
 		}
-		else
+		else {
 			System.out.println("Camp Committee is full.");
 			return 0;
+		}
 		// 
 	}
 	public void removeCommittee(String userID){

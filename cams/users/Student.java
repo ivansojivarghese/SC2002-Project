@@ -12,7 +12,6 @@ import cams.database.CampRepository;
 import cams.post_types.*;
 import cams.database.UnifiedCampRepository;
 import cams.util.Faculty;
-import cams.util.SavableObject;
 
 public class Student extends User implements Committable, Serializable { // student class
     @Serial
