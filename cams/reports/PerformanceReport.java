@@ -26,10 +26,32 @@ public class PerformanceReport implements ReportGenerator {
     public void generateReport(Camp camp) {
         try (Workbook workbook = new XSSFWorkbook()) {
             Scanner scanner = new Scanner(System.in);
-            Sheet sheet = workbook.createSheet("Camp Attendance Report");
+            Sheet sheet = workbook.createSheet("Camp Participation Report");
 
-            // Create header row
-            Row headerRow = sheet.createRow(0);
+            // Add camp details at the top of the Excel file
+            Row detailsRow = sheet.createRow(0);
+            detailsRow.createCell(0).setCellValue("Camp Name: " + camp.getCampName());
+            detailsRow = sheet.createRow(1);
+            detailsRow.createCell(0).setCellValue("Dates: " + camp.getStartDate() + " to " + camp.getEndDate());
+            detailsRow = sheet.createRow(2);
+            detailsRow.createCell(0).setCellValue("Registration closes on: " + camp.getClosingDate());
+            detailsRow = sheet.createRow(3);
+            detailsRow.createCell(0).setCellValue("Open to: " + camp.getFacultyRestriction());
+            detailsRow = sheet.createRow(4);
+            detailsRow.createCell(0).setCellValue("Location: " + camp.getLocation());
+            detailsRow = sheet.createRow(5);
+            detailsRow.createCell(0).setCellValue("Available Attendee Slots: " +
+                    camp.getRemainingAttendeeSlots() + " / " + camp.getAttendeeSlots());
+            detailsRow = sheet.createRow(6);
+            detailsRow.createCell(0).setCellValue("Committee Size: " +
+                    camp.getCommittee().size() + " / " + camp.getCommitteeSlots());
+            detailsRow = sheet.createRow(7);
+            detailsRow.createCell(0).setCellValue("Description: " + camp.getDescription());
+            detailsRow = sheet.createRow(8);
+            detailsRow.createCell(0).setCellValue("Staff-in-Charge: " + camp.getInCharge());
+
+            // Create a new row for column headers
+            Row headerRow = sheet.createRow(10);
             headerRow.createCell(0).setCellValue("UserID");
             headerRow.createCell(1).setCellValue("Name");
             headerRow.createCell(2).setCellValue("Faculty");
@@ -39,7 +61,7 @@ public class PerformanceReport implements ReportGenerator {
             HashMap<String, Integer> committee = camp.getCommittee();
 
             // Populate data rows for committee members
-            int rowNum = 1;
+            int rowNum = 11;
             for (Map.Entry<String, Integer> entry : committee.entrySet()) {
                 User user = UnifiedUserRepository.getInstance().retrieveUser(entry.getKey());
                 if (user != null) {
@@ -55,7 +77,7 @@ public class PerformanceReport implements ReportGenerator {
             System.out.print("Enter the file name (without extension): ");
             String fileName = scanner.nextLine().trim();
 
-            // Modify the outputPath to use a relative path to the "outputs" folder
+            // Modify the outputPath to include the "outputs" folder
             String outputPath = "outputs/" + fileName + ".xlsx";
 
             // Write to file
@@ -63,9 +85,10 @@ public class PerformanceReport implements ReportGenerator {
                 workbook.write(fileOut);
             }
 
-            System.out.println("Camp Attendance Report generated successfully. File saved at: " + outputPath);
+            System.out.println("Camp Participation Report generated successfully. File saved at: " + outputPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }

@@ -26,32 +26,50 @@ public class ParticipationReport implements ReportGenerator {
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("Participation Report");
 
-            // Create header row
-            Row headerRow = sheet.createRow(0);
+            // Add camp details at the top of the Excel file
+            Row detailsRow = sheet.createRow(0);
+            detailsRow.createCell(0).setCellValue("Camp Name: " + camp.getCampName());
+            detailsRow = sheet.createRow(1);
+            detailsRow.createCell(0).setCellValue("Dates: " + camp.getStartDate() + " to " + camp.getEndDate());
+            detailsRow = sheet.createRow(2);
+            detailsRow.createCell(0).setCellValue("Registration closes on: " + camp.getClosingDate());
+            detailsRow = sheet.createRow(3);
+            detailsRow.createCell(0).setCellValue("Open to: " + camp.getFacultyRestriction());
+            detailsRow = sheet.createRow(4);
+            detailsRow.createCell(0).setCellValue("Location: " + camp.getLocation());
+            detailsRow = sheet.createRow(5);
+            detailsRow.createCell(0).setCellValue("Available Attendee Slots: " +
+                    camp.getRemainingAttendeeSlots() + " / " + camp.getAttendeeSlots());
+            detailsRow = sheet.createRow(6);
+            detailsRow.createCell(0).setCellValue("Committee Size: " +
+                    camp.getCommittee().size() + " / " + camp.getCommitteeSlots());
+            detailsRow = sheet.createRow(7);
+            detailsRow.createCell(0).setCellValue("Description: " + camp.getDescription());
+            detailsRow = sheet.createRow(8);
+            detailsRow.createCell(0).setCellValue("Staff-in-Charge: " + camp.getInCharge());
+
+            // Create header row for participation details
+            Row headerRow = sheet.createRow(10);
             headerRow.createCell(0).setCellValue("UserID");
             headerRow.createCell(1).setCellValue("Name");
-            headerRow.createCell(2).setCellValue("Role");
-            headerRow.createCell(3).setCellValue("Camp Name");
-            headerRow.createCell(4).setCellValue("Camp Date");
-            headerRow.createCell(5).setCellValue("Faculty");
-            headerRow.createCell(6).setCellValue("Points"); // New column for points
+            headerRow.createCell(2).setCellValue("Faculty");
+            headerRow.createCell(3).setCellValue("Role");
+            headerRow.createCell(4).setCellValue("Points");
 
             // Access committee directly from the camp instance
             HashMap<String, Integer> committee = camp.getCommittee();
 
             // Populate data rows for committee members
-            int rowNum = 1;
+            int rowNum = 11;
             for (Map.Entry<String, Integer> entry : committee.entrySet()) {
                 User user = UnifiedUserRepository.getInstance().retrieveUser(entry.getKey());
                 if (user != null) {
                     Row row = sheet.createRow(rowNum++);
                     row.createCell(0).setCellValue(user.getUserID()); // UserID
                     row.createCell(1).setCellValue(user.getName()); // Name
-                    row.createCell(2).setCellValue("Committee Member"); // Role
-                    row.createCell(3).setCellValue(camp.getCampName()); // Camp Name
-                    row.createCell(4).setCellValue(camp.getStartDate().toString()); // Camp Date
-                    row.createCell(5).setCellValue(user.getFaculty().toString()); // Faculty
-                    row.createCell(6).setCellValue(entry.getValue()); // Points
+                    row.createCell(2).setCellValue(user.getFaculty().toString()); // Faculty
+                    row.createCell(3).setCellValue("Committee Member"); // Role
+                    row.createCell(4).setCellValue(entry.getValue()); // Points
                 }
             }
 
@@ -62,11 +80,9 @@ public class ParticipationReport implements ReportGenerator {
                     Row row = sheet.createRow(rowNum++);
                     row.createCell(0).setCellValue(user.getUserID()); // UserID
                     row.createCell(1).setCellValue(user.getName()); // Name
-                    row.createCell(2).setCellValue("Attendee"); // Role
-                    row.createCell(3).setCellValue(camp.getCampName()); // Camp Name
-                    row.createCell(4).setCellValue(camp.getStartDate().toString()); // Camp Date
-                    row.createCell(5).setCellValue(user.getFaculty().toString()); // Faculty
-                    row.createCell(6).setCellValue("NA"); // Points for attendees
+                    row.createCell(2).setCellValue(user.getFaculty().toString()); // Faculty
+                    row.createCell(3).setCellValue("Attendee"); // Role
+                    row.createCell(4).setCellValue("NA"); // Points for attendees
                 }
             }
 
