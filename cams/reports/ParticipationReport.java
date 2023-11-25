@@ -1,7 +1,9 @@
 package cams.reports;
+
 import cams.Camp;
-import cams.users.User;
 import cams.database.UnifiedUserRepository;
+import cams.filters.Filter;
+import cams.users.User;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -10,8 +12,10 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileOutputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class ParticipationReport implements ReportGenerator {
     @Override
@@ -59,32 +63,45 @@ public class ParticipationReport implements ReportGenerator {
             // Access committee directly from the camp instance
             HashMap<String, Integer> committee = camp.getCommittee();
 
-            // Populate data rows for committee members
+            // Retrieve attendees and committee members from the camp instance
+            List<User> attendeesAndCommittee = camp.getAttendees().stream()
+                    .map(userId -> UnifiedUserRepository.getInstance().retrieveUser(userId))
+                    .collect(Collectors.toList());
+
+            committee.keySet().forEach(committeeMemberId -> {
+                User committeeMember = UnifiedUserRepository.getInstance().retrieveUser(committeeMemberId);
+                if (committeeMember != null) {
+                    attendeesAndCommittee.add(committeeMember);
+                }
+            });
+
+            int option = 0;
+
+            // After retrieving attendees and committee members, apply sorting methods
+            List<String> sortedAttendeesAndCommitteeNames = Filter.ascendingSort(attendeesAndCommittee.stream()
+                    .map(User::getName)
+                    .collect(Collectors.toList()));
+
+
+
+            // Populate data rows for sorted attendees and committee members
             int rowNum = 11;
-            for (Map.Entry<String, Integer> entry : committee.entrySet()) {
-                User user = UnifiedUserRepository.getInstance().retrieveUser(entry.getKey());
+            for (String userName : sortedAttendeesAndCommitteeNames) {
+                User user = attendeesAndCommittee.stream()
+                        .filter(u -> u.getName().equals(userName))
+                        .findFirst()
+                        .orElse(null);
+
                 if (user != null) {
                     Row row = sheet.createRow(rowNum++);
-                    row.createCell(0).setCellValue(user.getUserID()); // UserID
-                    row.createCell(1).setCellValue(user.getName()); // Name
-                    row.createCell(2).setCellValue(user.getFaculty().toString()); // Faculty
-                    row.createCell(3).setCellValue("Committee Member"); // Role
-                    row.createCell(4).setCellValue(entry.getValue()); // Points
+                    row.createCell(0).setCellValue(user.getUserID());
+                    row.createCell(1).setCellValue(user.getName());
+                    row.createCell(2).setCellValue(user.getFaculty().toString());
+                    row.createCell(3).setCellValue(committee.containsKey(user.getUserID()) ? "Committee Member" : "Attendee");
+                    row.createCell(4).setCellValue(committee.getOrDefault(user.getUserID(), 0));
                 }
             }
 
-            // Access attendees directly from the camp instance
-            for (String attendee : camp.getAttendees()) {
-                User user = UnifiedUserRepository.getInstance().retrieveUser(attendee);
-                if (user != null) {
-                    Row row = sheet.createRow(rowNum++);
-                    row.createCell(0).setCellValue(user.getUserID()); // UserID
-                    row.createCell(1).setCellValue(user.getName()); // Name
-                    row.createCell(2).setCellValue(user.getFaculty().toString()); // Faculty
-                    row.createCell(3).setCellValue("Attendee"); // Role
-                    row.createCell(4).setCellValue("NA"); // Points for attendees
-                }
-            }
 
             // Allow the user to input the file name
             System.out.print("Enter the file name (without extension): ");

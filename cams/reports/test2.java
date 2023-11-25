@@ -17,9 +17,9 @@ public class test2 {
 
         // Creating users
         User student1 = new Student("Alice Adams", "alice@student.com", Faculty.SCSE);
-        User student2 = new Student("Bob Brown", "bob@student.com", Faculty.CCEB);
-        User student3 = new Student("Charlie Clark", "charlie@student.com", Faculty.NBS);
-        User staff1 = new Staff("John Doe", "john@staff.com", Faculty.EEE);
+        User student2 = new Student("Zob Brown", "bob@student.com", Faculty.CCEB);
+        User student3 = new Student("Dharlie Clark", "charlie@student.com", Faculty.NBS);
+        User staff1 = new Staff("Jaze Doe", "john@staff.com", Faculty.EEE);
         User staff2 = new Staff("Jane Smith", "jane@staff.com", Faculty.NIE);
 
         // Adding users to UnifiedUserRepository
@@ -44,14 +44,14 @@ public class test2 {
         // Add committee members to the camp
         HashMap<String, Integer> committeeMembers = new HashMap<>();
         committeeMembers.put(student1.getUserID(), 60);
-        committeeMembers.put(student2.getUserID(), 45);
+        committeeMembers.put(student3.getUserID(), 45);
         committeeMembers.put(staff1.getUserID(), 35);
 
         // Set committee members for the camp
         newCamp.setCommitteeMembers(committeeMembers);
 
         // Add attendees to the camp using their user IDs
-        newCamp.addAttendee(student3.getUserID());
+        newCamp.addAttendee(student2.getUserID());
         newCamp.addAttendee(staff2.getUserID());
 
         // Create a ParticipationReport instance
