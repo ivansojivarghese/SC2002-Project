@@ -4,48 +4,82 @@ import cams.dashboards.enquiry_menus.Enquirer;
 import cams.users.Participant;
 import cams.users.ParticipantAction;
 import cams.users.User;
+import cams.util.InputScanner;
 import cams.util.UserInput;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
  Represents the state of the dashboard when a student is logged in.
  **/
-public class StudentMenuState implements DashboardState{
+public class StudentMenuState extends UserMenuState implements DashboardState{
     protected final Participant participant;
-    protected Dashboard dashboard;
-    protected User user;
 
     public StudentMenuState(){
         this.participant = new ParticipantAction();
     }
+    /**
+     * Displays the student menu to the user and handles user input for various operations.
+     * @param dashboard The dashboard through which the user interacts.
+     */
     @Override
     public void display(Dashboard dashboard) {
         //Initialise Dashboard and User variables
-        this.dashboard = dashboard;
-        this.user = dashboard.getAuthenticatedUser();
-
-        // Null check for dashboard
-        if (dashboard == null) {
-            throw new IllegalArgumentException("Dashboard cannot be null");
-        }
-        // Null check for user
-        if (user == null) {
-            throw new IllegalStateException("User cannot be null in dashboard");
-        }
+        User user = dashboard.getAuthenticatedUser();
 
         // Display User information and the main menu
-        this.userInfo();
-        this.mainMenu();
+        this.userInfo(user);
+        // Initialise and display hash map of menu options storing methods
+        Map<Integer, MenuAction> options = initializeActions(dashboard);
+        System.out.println("______________________________________________________________");
+        System.out.println("                             MENU                              ");
+        describeOptions(options);
 
-        // Get user choice and process it
-        int option = UserInput.getIntegerInput(1, 6, "SELECT ACTION: ");
-        System.out.println();
+        // Get user's choice
+        int option = UserInput.getIntegerInput(0, options.size() - 1, "SELECT AN ACTION: ");
 
-        menuLogic(option);
+        // Executes the lambda expression associated with the user's option
+        options.getOrDefault(option, () -> System.out.println("Invalid option selected")).execute();
+    }
+    /**
+     * Initialises a hashmap of methods corresponding to each choice in the user menu
+     * @param dashboard The dashboard object
+     * @return Hash map of methods keyed to menu choices
+     */
+    protected Map<Integer, MenuAction> initializeActions(Dashboard dashboard) {
+        Map<Integer, MenuAction> actions = new HashMap<>();
+        User user = dashboard.getAuthenticatedUser();
+
+        actions.put(1, () -> changePassword(user));
+        actions.put(2, dashboard::logout);
+        actions.put(3, user::displayMyCamps);
+        actions.put(4, () -> registerCamp(dashboard));
+        actions.put(5, () -> deregisterCamp(dashboard));
+        actions.put(6, () -> goToEnquiries(dashboard));
+
+        return actions;
     }
 
-    protected void userInfo(){
+    /**
+     * Displays the corresponding description of each menu choice
+     * @param actions Hash map of methods keyed to menu choices
+     */
+    protected void describeOptions(Map<Integer, MenuAction> actions) {
+        for (Integer key : actions.keySet()) {
+            switch (key) {
+                case 1 -> System.out.println("(1) Change your password");
+                case 2 -> System.out.println("(2) Logout");
+                case 3 -> System.out.println("(3) View my Camps");
+                case 4 -> System.out.println("(4) Register for a Camp");
+                case 5 -> System.out.println("(5) Withdraw from a Camp");
+                case 6 -> System.out.println("(6) View enquiries menu");
+            }
+        }
+    }
+
+    protected void userInfo(User user){
         // Code to display options
         System.out.println("                          DASHBOARD                           ");
         System.out.println("______________________________________________________________");
@@ -55,56 +89,25 @@ public class StudentMenuState implements DashboardState{
         System.out.println("Faculty: " + user.getFaculty());
     }
 
-    /**
-     * Displays the main menu options for the student.
-     **/
-    protected void mainMenu(){
-        System.out.println("______________________________________________________________");
-        System.out.println("                             MENU                              ");
-        System.out.println("(1) Change your password");
-        System.out.println("(2) Logout");
-        System.out.println("(3) View my Camps");
+    protected void registerCamp(Dashboard dashboard){
+        User user = dashboard.getAuthenticatedUser();
+        Scanner sc = InputScanner.getInstance();
+        user.viewAllCamps();
+        System.out.println("\nEnter name of camp to register for: ");
+        String registerInput = sc.nextLine();
 
-        System.out.println("(4) Register for a Camp");
-        System.out.println("(5) Withdraw from a Camp");
-        System.out.println("(6) View enquiries menu");
+        participant.register(user, registerInput);
+        dashboard.loggedIn(); // Refresh dashboard state
+    }
+    protected void deregisterCamp(Dashboard dashboard){
+        Scanner sc = InputScanner.getInstance();
+        User user = dashboard.getAuthenticatedUser();
+        System.out.println("\nEnter name of camp to withdraw from: ");
+        String deregisterInput = sc.nextLine();
+        participant.deregister(user, deregisterInput);
     }
 
-    /**
-     * Processes the selected menu option.
-     * @param option The user-selected menu option.
-     **/
-    protected void menuLogic(int option){
-        Scanner sc = new Scanner(System.in);
-
-        switch (option) {
-            case 1 -> { // Change password
-                System.out.println("Enter new password (Case Sensitive):");
-                String newPassword = sc.nextLine();
-                user.setPassword(newPassword);
-                System.out.println("Password successfully changed!");
-            }
-            case 2 -> // Logout
-                    dashboard.logout();
-            case 3 -> // View registered camps
-                    user.displayMyCamps();
-            case 4 -> { // Register for a camp
-                user.viewAllCamps();
-                System.out.println();
-                System.out.println("\nEnter name of camp to register for: ");
-                String registerInput = sc.nextLine();
-
-                participant.register(user, registerInput);
-                dashboard.loggedIn(); // Refresh dashboard state
-            }
-            case 5 -> { // Withdraw from a camp
-                System.out.println("Enter name of camp to withdraw from: ");
-                String deregisterInput = sc.nextLine();
-                participant.deregister(user, deregisterInput);
-            }
-            case 6 -> { // View enquiries menu
-                dashboard.setState(new Enquirer());
-            }
-        }
+    protected void goToEnquiries(Dashboard dashboard){
+        dashboard.setState(new Enquirer());
     }
 }

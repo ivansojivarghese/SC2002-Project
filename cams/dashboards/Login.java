@@ -2,12 +2,13 @@ package cams.dashboards;
 
 import cams.users.User;
 import cams.database.UnifiedUserRepository;
+import cams.util.InputScanner;
 
 import java.util.Scanner;
 
 class Login { //Class is package-private
     public static User loginAttempt(){
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = InputScanner.getInstance();
         String LoginID;
         String password;
         User user;

@@ -191,7 +191,7 @@ public class Date {
     }
 
     static int[] enterDate(int dayFrom, int monthFrom, int yearFrom, boolean range) {
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = InputScanner.getInstance();(System.in);
         int day;
         int month;
         int year = 0;

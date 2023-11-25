@@ -30,7 +30,7 @@ public class UserInput {
     
     public static String getStringInput() { // update string-based input
     	String input;
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = InputScanner.getInstance();
         input = sc.next();
         return input;
     }

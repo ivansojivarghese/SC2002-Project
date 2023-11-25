@@ -4,6 +4,7 @@ import cams.users.Organiser;
 import cams.users.StaffOrganiserActions;
 import cams.users.User;
 import cams.util.Faculty;
+import cams.util.InputScanner;
 import cams.util.UserInput;
 
 import java.time.LocalDate;
@@ -161,8 +162,8 @@ public class OrganiserMenu implements DashboardState{
 				dashboard.loggedIn();
 			}
 			case 7 -> { // change closing date of registration
-				
-				Scanner sc = new Scanner(System.in);
+
+                Scanner sc = InputScanner.getInstance();
 				String input;
 				
 				System.out.println("Current closing date of registration: " + details.getClosingDate());
@@ -192,8 +193,8 @@ public class OrganiserMenu implements DashboardState{
 				dashboard.loggedIn();
 			}
 			case 8 -> { // change start and end dates
-				
-				Scanner sc = new Scanner(System.in);
+
+                Scanner sc = InputScanner.getInstance();
 				String input;
 				
 				System.out.println("Current period of dates: " + details.getStartDate() + " - " + details.getEndDate());

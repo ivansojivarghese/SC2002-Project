@@ -3,41 +3,35 @@ package cams.dashboards;
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Suggester;
 import cams.users.Committable;
+import cams.users.User;
 import cams.util.UserInput;
 
-public class CommitteeMenuState extends StudentMenuState{
-    public CommitteeMenuState(){
+import java.util.HashMap;
+import java.util.Map;
+
+public class CommitteeMenuState extends StudentMenuState {
+    public CommitteeMenuState() {
         super();
     }
 
     @Override
     public void display(Dashboard dashboard) {
-        //Initialise Dashboard and User variables
-        this.dashboard = dashboard;
-        this.user = dashboard.getAuthenticatedUser();
+        // Display User information
+        this.userInfo(dashboard.getAuthenticatedUser());
 
-        // Null check for dashboard
-        if (dashboard == null) {
-            throw new IllegalArgumentException("Dashboard cannot be null");
-        }
-        // Null check for user
-        if (user == null) {
-            throw new IllegalStateException("User cannot be null in dashboard");
-        }
+        // Initialise and display hash map of menu options storing methods
+        Map<Integer, MenuAction> options = initializeActions(dashboard);
+        describeOptions(options);
 
-        // Display User information and the main menu
-        this.userInfo();
-        this.mainMenu();
+        // Get user's choice
+        int option = UserInput.getIntegerInput(0, options.size() - 1, "SELECT AN ACTION: ");
 
-        // Get user choice and process it
-        int option = UserInput.getIntegerInput(0, 9, "SELECT AN ACTION: ");
-        System.out.println();
-
-        menuLogic(option);
+        // Executes the lambda expression associated with the user's option
+        options.getOrDefault(option, () -> System.out.println("Invalid option selected")).execute();
     }
 
     @Override
-    protected void userInfo(){
+    protected void userInfo(User user) {
         // Code to display options
         System.out.println("                          DASHBOARD                           ");
         System.out.println("______________________________________________________________");
@@ -45,28 +39,45 @@ public class CommitteeMenuState extends StudentMenuState{
         System.out.println("STUDENT Name: " + user.getName());
         System.out.println("Username: " + user.getUserID());
         System.out.println("Faculty: " + user.getFaculty());
-        if(user instanceof Committable)
+        if (user instanceof Committable)
             System.out.println("Committee Member of: " + ((Committable) user).getCommittee());
     }
+
     @Override
-    protected void mainMenu() {
-        //Displays the student main menu
-        super.mainMenu();
-        //Displays additional options available to committee members
-        System.out.println("(7) View suggestions menu");
-        System.out.println("(8) Reply to enquiries for my camp");
-        System.out.println("(9) Generate report for my camp");
+    protected Map<Integer, MenuAction> initializeActions(Dashboard dashboard) {
+        Map<Integer, MenuAction> actions = super.initializeActions(dashboard);
+        actions.put(7, () -> goToSuggest(dashboard));
+        actions.put(8, () -> goToReply(dashboard));
+        actions.put(9, () -> reportGenerator(dashboard));
+        return actions;
     }
 
     @Override
-    protected void menuLogic(int option){
-        super.menuLogic(option);
-
-        switch (option){
-            case 7 -> dashboard.setState(new Suggester());
-            case 8 -> dashboard.setState(new Replier());
-            //TODO implement report generator
-            case 9 -> System.out.println("TODO");
+    protected void describeOptions(Map<Integer, MenuAction> actions) {
+        for (Integer key : actions.keySet()) {
+            switch (key) {
+                case 1 -> System.out.println("(1) Change your password");
+                case 2 -> System.out.println("(2) Logout");
+                case 3 -> System.out.println("(3) View my Camps");
+                case 4 -> System.out.println("(4) Register for a Camp");
+                case 5 -> System.out.println("(5) Withdraw from a Camp");
+                case 6 -> System.out.println("(6) View enquiries menu");
+                case 7 -> System.out.println("(7) View suggestions menu");
+                case 8 -> System.out.println("(8) Reply to enquiries for my camp");
+                case 9 -> System.out.println("(9) Generate report for my camp");
+            }
         }
+    }
+
+    protected void goToSuggest(Dashboard dashboard) {
+        dashboard.setState(new Suggester());
+    }
+
+    protected void goToReply(Dashboard dashboard) {
+        dashboard.setState(new Replier());
+    }
+
+    protected void reportGenerator(Dashboard dashboard) {
+
     }
 }

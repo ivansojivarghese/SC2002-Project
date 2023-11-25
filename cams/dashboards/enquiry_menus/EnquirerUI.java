@@ -3,6 +3,7 @@ package cams.dashboards.enquiry_menus;
 import cams.dashboards.Dashboard;
 import cams.dashboards.MenuAction;
 import cams.dashboards.post_menus.PosterUI;
+import cams.users.Committable;
 import cams.users.User;
 import cams.util.InputScanner;
 import cams.util.UserInput;
@@ -24,6 +25,7 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
      * Displays the enquiry menu to the user and handles user input for various enquiry operations.
      * @param dashboard The dashboard through which the user interacts.
      */
+    @Override
     public void display(Dashboard dashboard) {
         try {
             // Displays the enquiries of the user and gets the user's number of enquiries
@@ -84,6 +86,14 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
         Scanner sc = InputScanner.getInstance();
         System.out.println("Name of camp you are enquiring about: ");
         String campName = sc.nextLine();
+        // Prevent committee members from submitting enquiries to their camp
+        if(user instanceof Committable){
+            if(campName.equalsIgnoreCase(((Committable) user).getCommittee()))
+            {
+                System.out.println("Committee members cannot enquire about their own camp.");
+                return;
+            }
+        }
         System.out.println("Input query: ");
         String content = sc.nextLine();
         try {
