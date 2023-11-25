@@ -4,6 +4,7 @@ import cams.Camp;
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Suggester;
 import cams.database.UnifiedCampRepository;
+import cams.reports.ParticipationReport;
 import cams.reports.PerformanceReport;
 import cams.reports.ReportGenerator;
 import cams.users.Committable;
@@ -53,7 +54,7 @@ public class CommitteeMenuState extends StudentMenuState {
         Map<Integer, MenuAction> actions = super.initializeActions(dashboard);
         actions.put(6, () -> goToSuggest(dashboard));
         actions.put(7, () -> goToReply(dashboard));
-        actions.put(8, () -> reportGenerator(dashboard));
+        actions.put(8, () -> reportGenerator(dashboard, new PerformanceReport()));
         return actions;
     }
 
@@ -69,7 +70,7 @@ public class CommitteeMenuState extends StudentMenuState {
                 case 5 -> System.out.println("(5) View enquiries menu");
                 case 6 -> System.out.println("(6) View suggestions menu");
                 case 7 -> System.out.println("(7) Reply to enquiries for my camp");
-                case 8 -> System.out.println("(8) Generate report for my camp");
+                case 8 -> System.out.println("(8) Generate participation report for my camp");
             }
         }
     }
@@ -82,38 +83,33 @@ public class CommitteeMenuState extends StudentMenuState {
         dashboard.setState(new Replier());
     }
 
-    protected void reportGenerator(Dashboard dashboard) {
-        // Assuming the authenticated user is a committee member, you can get the list of camps they are part of
+    protected void reportGenerator(Dashboard dashboard, ReportGenerator reportGenerator) {
         User authenticatedUser = dashboard.getAuthenticatedUser();
-        if (authenticatedUser instanceof Committable) {
-            Committable committeeMember = (Committable) authenticatedUser;
 
-            // Get the list of camps the committee member is part of, using singleton list here
-            List<String> committeeCamps = Collections.singletonList(committeeMember.getCommittee());
+        List<String> userCamps = authenticatedUser.getMyCamps();
 
-            if (committeeCamps.isEmpty()) {
-                System.out.println("You are not part of any camps. Unable to generate reports.");
-            } else {
-                // Display the list of camps the committee member is part of
-                System.out.println("Select a camp to generate a report:");
-                for (int i = 0; i < committeeCamps.size(); i++) {
-                    System.out.println((i + 1) + ". " + committeeCamps.get(i));
-                }
-
-                // Get user input for the selected camp
-                int selectedCampIndex = UserInput.getIntegerInput(1, committeeCamps.size(), "Enter the number of the camp: ") - 1;
-                String selectedCampName = committeeCamps.get(selectedCampIndex);
-
-                // Retrieve the Camp object based on the selected camp name
-                Camp selectedCamp = UnifiedCampRepository.getInstance().retrieveCamp(selectedCampName);
-
-                // Display menu for report generation (similar to staff menu)
-                ReportGenerator performanceReport = new PerformanceReport();
-                performanceReport.generateReport(selectedCamp);
-            }
+        if (userCamps.isEmpty()) {
+            System.out.println("You are not part of any camps. Unable to generate reports.");
         } else {
-            System.out.println("Error: Invalid user type for report generation.");
+            // Display the list of camps the user is part of
+            System.out.println("Generating reports for your camps:");
+
+            // Iterate over each camp
+            for (String campName : userCamps) {
+                // Retrieve the Camp object based on the camp name
+                Camp currentCamp = UnifiedCampRepository.getInstance().retrieveCamp(campName);
+
+                // Now you have the currentCamp object, you can proceed with generating the report.
+                reportGenerator.generateReport(currentCamp);
+            }
+
+            System.out.println("Reports generated successfully.");
         }
     }
+
+
+
+
+
 
 }

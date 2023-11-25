@@ -101,6 +101,9 @@ public class PerformanceReport implements ReportGenerator {
             // Get user input for sorting method
             int sortingOption = getSortingOption(scanner);
 
+            // Consume the newline character
+            scanner.nextLine();
+
             // After retrieving committee members, apply sorting methods based on user's choice
             List<String> sortedCommittee = applySortingMethod(sortingOption, committeeMembers, committee);
 

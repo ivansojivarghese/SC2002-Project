@@ -5,6 +5,7 @@ import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Approver;
 import cams.database.UnifiedCampRepository;
 import cams.reports.ParticipationReport;
+import cams.reports.PerformanceReport;
 import cams.reports.ReportGenerator;
 import cams.users.*;
 import cams.util.InputScanner;
@@ -60,6 +61,7 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
         actions.put(7, () -> respondEnquiries(dashboard));
         actions.put(8, () -> seeAttendees(dashboard));
         actions.put(9, () -> generateReport(dashboard, new ParticipationReport())); // Add the option for generating the participation report
+        actions.put(10, () -> generatePerformanceReport(dashboard, new PerformanceReport())); // Add the option for generating the performance report
         return actions;
     }
 
@@ -80,6 +82,7 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
                 case 7 -> System.out.println("(7) Respond to camp enquiries");
                 case 8 -> System.out.println("(8) View Participants/Committee Members for a camp");
                 case 9 -> System.out.println("(9) Generate Participation Report");
+                case 10 -> System.out.println("(10) Generate Performance Report");
             }
         }
     }
@@ -221,8 +224,6 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
     private void generateReport(Dashboard dashboard, ReportGenerator reportGenerator) {
         User user = dashboard.getAuthenticatedUser();
 
-        // Assuming the authenticated user is a staff member, you can get the list of camps they have organized
-        // and allow them to choose a camp for generating the report
         List<String> staffCamps = ((Staff) user).getMyCamps();
 
         if (staffCamps.isEmpty()) {
@@ -234,16 +235,57 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
                 System.out.println((i + 1) + ". " + staffCamps.get(i));
             }
 
-            // Get user input for the selected camp
-            int selectedCampIndex = UserInput.getIntegerInput(1, staffCamps.size(), "Enter the number of the camp: ") - 1;
-            String selectedCampName = staffCamps.get(selectedCampIndex);
+            int selectedCampIndex = -1;
 
-            // Retrieve the Camp object based on the selected camp name
+            // Get user input for the selected camp, handle non-integer input
+            while (selectedCampIndex == -1) {
+                try {
+                    selectedCampIndex = UserInput.getIntegerInput(1, staffCamps.size(), "Enter the number of the camp: ") - 1;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a valid number.");
+                }
+            }
+
+            String selectedCampName = staffCamps.get(selectedCampIndex);
             Camp selectedCamp = UnifiedCampRepository.getInstance().retrieveCamp(selectedCampName);
 
-            // Generate the report for the selected camp using the provided ReportGenerator
+            reportGenerator.generateReport(selectedCamp);
+
+        }
+    }
+
+    private void generatePerformanceReport(Dashboard dashboard, ReportGenerator reportGenerator) {
+        User user = dashboard.getAuthenticatedUser();
+
+        List<String> staffCamps = ((Staff) user).getMyCamps();
+
+        if (staffCamps.isEmpty()) {
+            System.out.println("You have not organized any camps. Unable to generate the report.");
+        } else {
+            // Display the list of camps organized by the staff
+            System.out.println("Select a camp to generate the report:");
+            for (int i = 0; i < staffCamps.size(); i++) {
+                System.out.println((i + 1) + ". " + staffCamps.get(i));
+            }
+
+            int selectedCampIndex = -1;
+
+            // Get user input for the selected camp, handle non-integer input
+            while (selectedCampIndex == -1) {
+                try {
+                    selectedCampIndex = UserInput.getIntegerInput(1, staffCamps.size(), "Enter the number of the camp: ") - 1;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a valid number.");
+                }
+            }
+
+            String selectedCampName = staffCamps.get(selectedCampIndex);
+            Camp selectedCamp = UnifiedCampRepository.getInstance().retrieveCamp(selectedCampName);
+
             reportGenerator.generateReport(selectedCamp);
         }
     }
+
+
 
 }
