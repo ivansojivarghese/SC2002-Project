@@ -3,8 +3,20 @@ package cams.users;
 import cams.Camp;
 import cams.database.UnifiedCampRepository;
 import cams.util.Date;
+import cams.util.UserInput;
 
 public class ParticipantAction implements Participant{
+	private static Participant instance;
+	
+	public static Participant getInstance() {
+        // If the instance is null, create a new one
+        if (instance == null) {
+            instance = new ParticipantAction();
+        }
+        // Return the existing/new instance
+        return instance;
+    }
+	
     @Override
     //TODO prevent users from registering from deregistered camps using the banned list of each camp
     public void deregister(User user, String campName) {
@@ -36,6 +48,10 @@ public class ParticipantAction implements Participant{
 
     @Override
     public void register(User user, String campName) {
+    	
+    	String input;
+    	Boolean committeeCheck;
+    	
         //TODO prevent participants for registering for camps that are closed OR over
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         if (repo.getSize() == 0) {
@@ -75,7 +91,25 @@ public class ParticipantAction implements Participant{
         //SUCCESS outcome
         selectedCamp.addAttendee(user.getUserID()); //add attendee to camp
         user.addCamp(selectedCamp); //add camp to attendee
+        
+        if (selectedCamp.getCommitteeSlots() > 0) { // if committee vacancy remains
+	        System.out.println("Be part of the committee? (Y: Yes, N: No)");
+	        input = UserInput.getStringInput();
+	        committeeCheck = UserInput.validateInput(input);
+	
+	        if (committeeCheck) {
+		        if(user instanceof Committable) {
+		            // selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
+		            if (selectedCamp.addCommittee(user.getUserID()) == 1) {
+		            	((Committable) user).setCommittee(campName);
+		            }
+		        }
+	        }
+        }
+        
         System.out.println("Successfully registered.");
+        
+        // System.out.println("Successfully registered.");
 
         /*
         if(user instanceof Committable) {
