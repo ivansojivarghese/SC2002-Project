@@ -6,6 +6,17 @@ import cams.util.Date;
 import cams.util.UserInput;
 
 public class ParticipantAction implements Participant{
+	private static Participant instance;
+	
+	public static Participant getInstance() {
+        // If the instance is null, create a new one
+        if (instance == null) {
+            instance = new ParticipantAction();
+        }
+        // Return the existing/new instance
+        return instance;
+    }
+	
     @Override
     //TODO prevent users from registering from deregistered camps using the banned list of each camp
     public void deregister(User user, String campName) {
@@ -81,16 +92,18 @@ public class ParticipantAction implements Participant{
         selectedCamp.addAttendee(user.getUserID()); //add attendee to camp
         user.addCamp(selectedCamp); //add camp to attendee
         
-        System.out.println("Would you like to be part of the committee? (Y: Yes, N: No)");
-        input = UserInput.getStringInput();
-        committeeCheck = UserInput.validateInput(input);
-
-        if (committeeCheck) {
-	        if(user instanceof Committable) {
-	            // selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
-	            if (selectedCamp.addCommittee(user.getUserID()) == 1) {
-	            	((Committable) user).setCommittee(campName);
-	            }
+        if (selectedCamp.getCommitteeSlots() > 0) { // if committee vacancy remains
+	        System.out.println("Be part of the committee? (Y: Yes, N: No)");
+	        input = UserInput.getStringInput();
+	        committeeCheck = UserInput.validateInput(input);
+	
+	        if (committeeCheck) {
+		        if(user instanceof Committable) {
+		            // selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
+		            if (selectedCamp.addCommittee(user.getUserID()) == 1) {
+		            	((Committable) user).setCommittee(campName);
+		            }
+		        }
 	        }
         }
         

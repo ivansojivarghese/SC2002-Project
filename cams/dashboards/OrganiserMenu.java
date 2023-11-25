@@ -80,7 +80,15 @@ public class OrganiserMenu implements DashboardState{
 
         switch (option) {
             case 0 -> { // Assign students
+            	System.out.println("Enter the userID of a student to be assigned:");
             	
+            	String student = UserInput.getStringInput();
+            	organiser.assignCamp(student, selectedCamp);
+            	
+            	
+                dashboard.loggedIn();
+            	
+            	// System.out.println("Student has been assigned.");
             }
             case 1 -> { // Change camp name
             	/*
