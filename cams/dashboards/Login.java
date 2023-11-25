@@ -14,7 +14,7 @@ class Login { //Class is package-private
 
         System.out.println("                            LOGIN                             ");
         System.out.print("Enter your User ID: ");
-        LoginID = sc.next(); // get USER ID
+        LoginID = sc.nextLine(); // get USER ID
 
         user = UnifiedUserRepository.getInstance().retrieveUser(LoginID); // check on USER ID
         if(user == null){

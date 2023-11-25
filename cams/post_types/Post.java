@@ -2,10 +2,11 @@ package cams.post_types;
 
 import cams.Camp;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Post {
+public class Post implements Serializable {
     //Attributes
     private String campName;
     private PostType postType;

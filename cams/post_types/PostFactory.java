@@ -1,6 +1,8 @@
 package cams.post_types;
 
-public class PostFactory {
+import java.io.Serializable;
+
+public class PostFactory implements Serializable {
 
     //Returns a post object with an empty message of specified type
     public static Post createPost(PostType type) {

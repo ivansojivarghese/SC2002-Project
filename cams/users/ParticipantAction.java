@@ -77,11 +77,12 @@ public class ParticipantAction implements Participant{
         user.addCamp(selectedCamp); //add camp to attendee
         System.out.println("Successfully registered.");
 
+        /*
         if(user instanceof Committable) {
             // selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
             if (selectedCamp.addCommittee(user.getUserID()) == 1) {
             	((Committable) user).setCommittee(campName);
             }
-        }
+        }*/
     }
 }

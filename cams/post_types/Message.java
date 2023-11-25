@@ -1,6 +1,8 @@
 package cams.post_types;
 
-public abstract class Message {
+import java.io.Serializable;
+
+public abstract class Message implements Serializable {
     private String postedBy;
     public abstract void setContent(String content);
     public abstract void displayContent();

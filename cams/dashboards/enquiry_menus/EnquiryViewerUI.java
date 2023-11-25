@@ -28,7 +28,7 @@ public abstract class EnquiryViewerUI implements PostViewerUI {
         }
         for (int i = 0; i < myEnquiries.size(); i++) {
             currentPost = myEnquiries.get(i);
-            System.out.println("Index" + i + ": ");
+            System.out.println("Index " + i + ": ");
             currentPost.displayContent();
             System.out.println("__________________________");
         }
