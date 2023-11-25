@@ -48,15 +48,15 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
         Map<Integer, MenuAction> actions = new HashMap<>();
         User user = dashboard.getAuthenticatedUser();
 
+        actions.put(0, dashboard::logout);
         actions.put(1, () -> changePassword(user));
-        actions.put(2, dashboard::logout);
-        actions.put(3, user::displayMyCamps);
-        actions.put(4, () -> viewAllCamps(user));
-        actions.put(5, () -> editCamp(dashboard));
-        actions.put(6, () -> createCamp(dashboard));
-        actions.put(7, () -> respondSuggestions(dashboard));
-        actions.put(8, () -> respondEnquiries(dashboard));
-        actions.put(9, () -> seeAttendees(dashboard));
+        actions.put(2, user::displayMyCamps);
+        actions.put(3, () -> viewAllCamps(user));
+        actions.put(4, () -> editCamp(dashboard));
+        actions.put(5, () -> createCamp(dashboard));
+        actions.put(6, () -> respondSuggestions(dashboard));
+        actions.put(7, () -> respondEnquiries(dashboard));
+        actions.put(8, () -> seeAttendees(dashboard));
         return actions;
     }
 
@@ -67,15 +67,15 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
     protected void describeOptions(Map<Integer, MenuAction> actions) {
         for (Integer key : actions.keySet()) {
             switch (key) {
+                case 0 -> System.out.println("(0) Logout");
                 case 1 -> System.out.println("(1) Change your password");
-                case 2 -> System.out.println("(2) Logout");
-                case 3 -> System.out.println("(3) View my Camps");
-                case 4 -> System.out.println("(4) View all Camps");
-                case 5 -> System.out.println("(5) Edit your Camp(s)");
-                case 6 -> System.out.println("(6) Create a new Camp");
-                case 7 -> System.out.println("(7) Respond to camp suggestions");
-                case 8 -> System.out.println("(8) Respond to camp enquiries");
-                case 9 -> System.out.println("(9) View Participants/Committee Members for a camp");
+                case 2 -> System.out.println("(2) View my Camps");
+                case 3 -> System.out.println("(3) View all Camps");
+                case 4 -> System.out.println("(4) Edit your Camp(s)");
+                case 5 -> System.out.println("(5) Create a new Camp");
+                case 6 -> System.out.println("(6) Respond to camp suggestions");
+                case 7 -> System.out.println("(7) Respond to camp enquiries");
+                case 8 -> System.out.println("(8) View Participants/Committee Members for a camp");
             }
         }
     }

@@ -22,7 +22,7 @@ public class Suggester extends SuggesterUI{
         newSuggestion.setContent(text);
         newSuggestion.setPostedBy(userID);
         newPost.setCamp(campName);
-        camp.addEnquiry(newPost);
+        camp.addSuggestion(newPost);
         return true;
     }
 
