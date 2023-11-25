@@ -40,6 +40,7 @@ public class Enquirer extends EnquirerUI{
         newEnquiry.setPostedBy(user.getUserID());
         newPost.setCamp(campName);
         camp.addEnquiry(newPost);
+        user.addEnquiry(newPost);
         return true;
     }
 

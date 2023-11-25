@@ -22,6 +22,7 @@ public class Student extends User implements Committable, Serializable { // stud
     private static final long serialVersionUID = 555657101575497102L; //crc32b Hash of "User" converted to ASCII
     private static final String folderName = "users";
     private String myCommittee;
+    private List<Post> myEnquiries;
 
     /**
      * Generates a file name based on the userID.
@@ -94,22 +95,17 @@ public class Student extends User implements Committable, Serializable { // stud
      *
      * @return A list of {@link Post} objects representing enquiries.
      */
-    //TODO is a student allowed to enquire about camps they have not registered for
     @Override
     public List<Post> getEnquiries() {
-        List<Post> myEnquiries = new ArrayList<>();
-        CampRepository repo = UnifiedCampRepository.getInstance();
-        for (String campName : this.getMyCamps()) {
-            Camp camp = repo.retrieveCamp(campName);
-            if(camp == null)
-                continue;
-            for (Post post : camp.getEnquiries()) {
-                if (Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
-                    myEnquiries.add(post);
-                }
-            }
-        }
-        return myEnquiries;
+        return this.myEnquiries;
+    }
+
+    /**
+     * Adds an enquiry to the student's myEnquiries attribute.
+     */
+    @Override
+    public void addEnquiry(Post post) {
+        this.myEnquiries.add(post);
     }
 
     /**

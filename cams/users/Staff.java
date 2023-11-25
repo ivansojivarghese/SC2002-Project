@@ -80,6 +80,14 @@ public class Staff extends User implements Serializable {
     }
 
     /**
+     * This method is not implemented.
+     */
+    @Override
+    public void addEnquiry(Post post) {
+        throw new UnsupportedOperationException("This method is not implemented. Staffs do not post enquiries.");
+    }
+
+    /**
      * Displays all available camps.
      *
      * @return The number of camps displayed.

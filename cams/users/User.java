@@ -49,6 +49,8 @@ public abstract class User implements Serializable {
     public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();
 
+    public abstract void addEnquiry(Post post);
+
     public User(){}
     public User(String name, String userID, Faculty faculty){
         //Must set UserID before all else to ensure proper saving of file
