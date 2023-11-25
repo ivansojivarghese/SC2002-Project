@@ -2,6 +2,7 @@ package cams.dashboards;
 
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Suggester;
+import cams.users.Committable;
 import cams.users.Student;
 import cams.users.User;
 import cams.util.UserInput;
@@ -9,27 +10,31 @@ import cams.util.UserInput;
 import java.util.Scanner;
 
 public class CommitteeMenuState extends StudentMenuState{
-    private Dashboard dashboard;
-    private User user;
     public CommitteeMenuState(){
+        super();
     }
+
+    @Override
     public void display(Dashboard dashboard) {
-        //Initialise Dashboard and User variable
+        //Initialise Dashboard and User variables
         this.dashboard = dashboard;
         this.user = dashboard.getAuthenticatedUser();
 
-        //Initialise variables and scanner for user input
-        int option;
-        String input;
-        Scanner sc = new Scanner(System.in);
+        // Null check for dashboard
+        if (dashboard == null) {
+            throw new IllegalArgumentException("Dashboard cannot be null");
+        }
+        // Null check for user
+        if (user == null) {
+            throw new IllegalStateException("User cannot be null in dashboard");
+        }
 
-        //Display User information
+        // Display User information and the main menu
         this.userInfo();
-        // Display options of the main menu
         this.mainMenu();
 
-        //GET user choice
-        option = UserInput.getIntegerInput(0, 9, "SELECT AN ACTION: ");
+        // Get user choice and process it
+        int option = UserInput.getIntegerInput(0, 9, "SELECT AN ACTION: ");
         System.out.println();
 
         menuLogic(option);
@@ -44,7 +49,8 @@ public class CommitteeMenuState extends StudentMenuState{
         System.out.println("STUDENT Name: " + user.getName());
         System.out.println("Username: " + user.getUserID());
         System.out.println("Faculty: " + user.getFaculty());
-        System.out.println("Committee Member of: " + ((Student) user).getCommittee());
+        if(user instanceof Committable)
+            System.out.println("Committee Member of: " + ((Committable) user).getCommittee());
     }
     @Override
     protected void mainMenu() {
@@ -56,10 +62,8 @@ public class CommitteeMenuState extends StudentMenuState{
         System.out.println("(9) Generate report for my camp");
     }
 
+    @Override
     protected void menuLogic(int option){
-        String userInput;
-        Scanner sc = new Scanner(System.in);
-
         super.menuLogic(option);
 
         switch (option){
