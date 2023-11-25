@@ -55,7 +55,7 @@ public class CommitteeMenuState extends StudentMenuState {
         Map<Integer, MenuAction> actions = super.initializeActions(dashboard);
         actions.put(6, () -> goToSuggest(dashboard));
         actions.put(7, () -> goToReply(dashboard));
-        actions.put(8, () -> reportGenerator(dashboard));
+        actions.put(8, () -> reportGenerator(dashboard, new PerformanceReport()));
         return actions;
     }
 
@@ -84,7 +84,7 @@ public class CommitteeMenuState extends StudentMenuState {
         dashboard.setState(new Replier());
     }
 
-    protected void reportGenerator(Dashboard dashboard) {
+    protected void reportGenerator(Dashboard dashboard, ReportGenerator reportGenerator) {
         User authenticatedUser = dashboard.getAuthenticatedUser();
 
         List<String> userCamps = authenticatedUser.getMyCamps();
@@ -93,49 +93,24 @@ public class CommitteeMenuState extends StudentMenuState {
             System.out.println("You are not part of any camps. Unable to generate reports.");
         } else {
             // Display the list of camps the user is part of
-            System.out.println("Select a camp to generate a report:");
-            for (int i = 0; i < userCamps.size(); i++) {
-                System.out.println((i + 1) + ". " + userCamps.get(i));
+            System.out.println("Generating reports for your camps:");
+
+            // Iterate over each camp
+            for (String campName : userCamps) {
+                // Retrieve the Camp object based on the camp name
+                Camp currentCamp = UnifiedCampRepository.getInstance().retrieveCamp(campName);
+
+                // Now you have the currentCamp object, you can proceed with generating the report.
+                reportGenerator.generateReport(currentCamp);
             }
 
-            // Get user input for the selected camp
-            int selectedCampIndex = UserInput.getIntegerInput(1, userCamps.size(), "Enter the number of the camp: ") - 1;
-            String selectedCampName = userCamps.get(selectedCampIndex);
-
-            // Retrieve the Camp object based on the selected camp name
-            Camp selectedCamp = UnifiedCampRepository.getInstance().retrieveCamp(selectedCampName);
-
-            // Display menu for report generation
-            displayReportGenerationMenu(selectedCamp);
+            System.out.println("Reports generated successfully.");
         }
     }
 
 
-    private void displayReportGenerationMenu(Camp camp) {
-        // Display report generation menu options
-        System.out.println("Select Report Type:");
-        System.out.println("1. Performance Report");
-        System.out.println("2. Participation Report");
-        // Add more report types as needed
 
-        // Get user input for the selected report type
-        int selectedReportType = UserInput.getIntegerInput(1, 2, "Enter the number of the report type: ");
 
-        // Generate the selected report
-        switch (selectedReportType) {
-            case 1:
-                ReportGenerator performanceReport = new PerformanceReport();
-                performanceReport.generateReport(camp);
-                break;
-            case 2:
-                ReportGenerator participationReport = new ParticipationReport();
-                participationReport.generateReport(camp);
-                break;
-            // Add more cases for additional report types
-            default:
-                System.out.println("Invalid report type selected.");
-        }
-    }
 
 
 }
