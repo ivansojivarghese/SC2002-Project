@@ -18,6 +18,7 @@ public class Enquirer extends EnquirerUI{
             System.out.println("Selected camp does not exist.");
             return false;
         }
+
         Post newPost = PostFactory.createPost(PostType.ENQUIRY);
         Enquiry newEnquiry = (Enquiry) newPost.getFirstMessage();
         newEnquiry.setContent(text);
