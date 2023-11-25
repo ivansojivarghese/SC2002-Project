@@ -221,8 +221,6 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
     private void generateReport(Dashboard dashboard, ReportGenerator reportGenerator) {
         User user = dashboard.getAuthenticatedUser();
 
-        // Assuming the authenticated user is a staff member, you can get the list of camps they have organized
-        // and allow them to choose a camp for generating the report
         List<String> staffCamps = ((Staff) user).getMyCamps();
 
         if (staffCamps.isEmpty()) {
@@ -234,16 +232,25 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
                 System.out.println((i + 1) + ". " + staffCamps.get(i));
             }
 
-            // Get user input for the selected camp
-            int selectedCampIndex = UserInput.getIntegerInput(1, staffCamps.size(), "Enter the number of the camp: ") - 1;
-            String selectedCampName = staffCamps.get(selectedCampIndex);
+            int selectedCampIndex = -1;
 
-            // Retrieve the Camp object based on the selected camp name
+            // Get user input for the selected camp, handle non-integer input
+            while (selectedCampIndex == -1) {
+                try {
+                    selectedCampIndex = UserInput.getIntegerInput(1, staffCamps.size(), "Enter the number of the camp: ") - 1;
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Please enter a valid number.");
+                }
+            }
+
+            String selectedCampName = staffCamps.get(selectedCampIndex);
             Camp selectedCamp = UnifiedCampRepository.getInstance().retrieveCamp(selectedCampName);
 
-            // Generate the report for the selected camp using the provided ReportGenerator
             reportGenerator.generateReport(selectedCamp);
+
+
         }
     }
+
 
 }
