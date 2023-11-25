@@ -27,6 +27,13 @@ public class UserInput {
             }
         }
     }
+    
+    public static String getStringInput() { // update string-based input
+    	String input;
+        Scanner sc = new Scanner(System.in);
+        input = sc.next();
+        return input;
+    }
 
 
     public static boolean getBoolInput(String request){
