@@ -55,8 +55,9 @@ public class PerformanceReport implements ReportGenerator {
             System.out.print("Enter the file name (without extension): ");
             String fileName = scanner.nextLine().trim();
 
-            // Save the Excel file in the same directory as the Java class with the user-inputted file name
-            String outputPath = fileName + ".xlsx";
+            // Modify the outputPath to use a relative path to the "outputs" folder
+            String outputPath = "outputs/" + fileName + ".xlsx";
+
             // Write to file
             try (FileOutputStream fileOut = new FileOutputStream(outputPath)) {
                 workbook.write(fileOut);
