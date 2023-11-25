@@ -53,11 +53,11 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
         User user = dashboard.getAuthenticatedUser();
 
         actions.put(1, () -> changePassword(user));
-        actions.put(2, dashboard::logout);
-        actions.put(3, user::displayMyCamps);
-        actions.put(4, () -> registerCamp(dashboard));
-        actions.put(5, () -> deregisterCamp(dashboard));
-        actions.put(6, () -> goToEnquiries(dashboard));
+        actions.put(0, dashboard::logout);
+        actions.put(2, user::displayMyCamps);
+        actions.put(3, () -> registerCamp(dashboard));
+        actions.put(4, () -> deregisterCamp(dashboard));
+        actions.put(5, () -> goToEnquiries(dashboard));
 
         return actions;
     }
@@ -69,12 +69,12 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
     protected void describeOptions(Map<Integer, MenuAction> actions) {
         for (Integer key : actions.keySet()) {
             switch (key) {
+                case 0 -> System.out.println("(0) Logout");
                 case 1 -> System.out.println("(1) Change your password");
-                case 2 -> System.out.println("(2) Logout");
-                case 3 -> System.out.println("(3) View my Camps");
-                case 4 -> System.out.println("(4) Register for a Camp");
-                case 5 -> System.out.println("(5) Withdraw from a Camp");
-                case 6 -> System.out.println("(6) View enquiries menu");
+                case 2 -> System.out.println("(2) View my Camps");
+                case 3 -> System.out.println("(3) Register for a Camp");
+                case 4 -> System.out.println("(4) Withdraw from a Camp");
+                case 5 -> System.out.println("(5) View enquiries menu");
             }
         }
     }

@@ -379,6 +379,11 @@ public class Camp implements Serializable {
 	}
 	public List<Post> getEnquiries(){ return this.enquiries; }
 
+	public void addSuggestion(Post post){
+		this.suggestions.add(post);
+		SerializeUtility.saveObject(this, folderName, getFileName());
+	}
+
 	public void setSuggestions(List<Post> suggestions) {
 		this.suggestions = suggestions;
 		SerializeUtility.saveObject(this, folderName, getFileName());

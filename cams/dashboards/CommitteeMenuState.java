@@ -46,9 +46,9 @@ public class CommitteeMenuState extends StudentMenuState {
     @Override
     protected Map<Integer, MenuAction> initializeActions(Dashboard dashboard) {
         Map<Integer, MenuAction> actions = super.initializeActions(dashboard);
-        actions.put(7, () -> goToSuggest(dashboard));
-        actions.put(8, () -> goToReply(dashboard));
-        actions.put(9, () -> reportGenerator(dashboard));
+        actions.put(6, () -> goToSuggest(dashboard));
+        actions.put(7, () -> goToReply(dashboard));
+        actions.put(8, () -> reportGenerator(dashboard));
         return actions;
     }
 
@@ -56,15 +56,15 @@ public class CommitteeMenuState extends StudentMenuState {
     protected void describeOptions(Map<Integer, MenuAction> actions) {
         for (Integer key : actions.keySet()) {
             switch (key) {
+                case 0 -> System.out.println("(0) Logout");
                 case 1 -> System.out.println("(1) Change your password");
-                case 2 -> System.out.println("(2) Logout");
-                case 3 -> System.out.println("(3) View my Camps");
-                case 4 -> System.out.println("(4) Register for a Camp");
-                case 5 -> System.out.println("(5) Withdraw from a Camp");
-                case 6 -> System.out.println("(6) View enquiries menu");
-                case 7 -> System.out.println("(7) View suggestions menu");
-                case 8 -> System.out.println("(8) Reply to enquiries for my camp");
-                case 9 -> System.out.println("(9) Generate report for my camp");
+                case 2 -> System.out.println("(2) View my Camps");
+                case 3 -> System.out.println("(3) Register for a Camp");
+                case 4 -> System.out.println("(4) Withdraw from a Camp");
+                case 5 -> System.out.println("(5) View enquiries menu");
+                case 6 -> System.out.println("(6) View suggestions menu");
+                case 7 -> System.out.println("(7) Reply to enquiries for my camp");
+                case 8 -> System.out.println("(8) Generate report for my camp");
             }
         }
     }
