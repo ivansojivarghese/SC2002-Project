@@ -6,6 +6,8 @@ import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
 import cams.database.UserRepository;
 
+import cams.users.*;
+
 public class StaffOrganiserActions implements Organiser{
     public StaffOrganiserActions() {}
 
@@ -96,6 +98,13 @@ public class StaffOrganiserActions implements Organiser{
     @Override
     public void assignCamp(String UserID, String campName) {
         //TODO implement camp assignment
+    	
+    	UserRepository userRepo = UnifiedUserRepository.getInstance();
+    	Participant participant = ParticipantAction.getInstance();
+
+        participant.register(userRepo.retrieveUser(UserID), campName);
+        
+        // dashboard.loggedIn(); // Refresh dashboard state
     }
 
     public boolean isCampNameUnique(String campName) {
