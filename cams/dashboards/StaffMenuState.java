@@ -1,17 +1,19 @@
 package cams.dashboards;
 
+import cams.Camp;
 import cams.dashboards.enquiry_menus.Replier;
 import cams.dashboards.suggestion_menus.Approver;
-import cams.users.CampDetails;
-import cams.users.Organiser;
-import cams.users.StaffOrganiserActions;
-import cams.users.User;
+import cams.database.UnifiedCampRepository;
+import cams.reports.ParticipationReport;
+import cams.reports.ReportGenerator;
+import cams.users.*;
 import cams.util.InputScanner;
 import cams.util.UserInput;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -57,6 +59,7 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
         actions.put(6, () -> respondSuggestions(dashboard));
         actions.put(7, () -> respondEnquiries(dashboard));
         actions.put(8, () -> seeAttendees(dashboard));
+        actions.put(9, () -> generateReport(dashboard, new ParticipationReport())); // Add the option for generating the participation report
         return actions;
     }
 
@@ -76,6 +79,7 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
                 case 6 -> System.out.println("(6) Respond to camp suggestions");
                 case 7 -> System.out.println("(7) Respond to camp enquiries");
                 case 8 -> System.out.println("(8) View Participants/Committee Members for a camp");
+                case 9 -> System.out.println("(9) Generate Participation Report");
             }
         }
     }
@@ -213,4 +217,33 @@ public class StaffMenuState extends UserMenuState implements DashboardState {
         System.out.println("Username: " + user.getUserID());
         System.out.println("Faculty: " + user.getFaculty());
     }
+
+    private void generateReport(Dashboard dashboard, ReportGenerator reportGenerator) {
+        User user = dashboard.getAuthenticatedUser();
+
+        // Assuming the authenticated user is a staff member, you can get the list of camps they have organized
+        // and allow them to choose a camp for generating the report
+        List<String> staffCamps = ((Staff) user).getMyCamps();
+
+        if (staffCamps.isEmpty()) {
+            System.out.println("You have not organized any camps. Unable to generate the report.");
+        } else {
+            // Display the list of camps organized by the staff
+            System.out.println("Select a camp to generate the report:");
+            for (int i = 0; i < staffCamps.size(); i++) {
+                System.out.println((i + 1) + ". " + staffCamps.get(i));
+            }
+
+            // Get user input for the selected camp
+            int selectedCampIndex = UserInput.getIntegerInput(1, staffCamps.size(), "Enter the number of the camp: ") - 1;
+            String selectedCampName = staffCamps.get(selectedCampIndex);
+
+            // Retrieve the Camp object based on the selected camp name
+            Camp selectedCamp = UnifiedCampRepository.getInstance().retrieveCamp(selectedCampName);
+
+            // Generate the report for the selected camp using the provided ReportGenerator
+            reportGenerator.generateReport(selectedCamp);
+        }
+    }
+
 }

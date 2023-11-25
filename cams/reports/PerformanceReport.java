@@ -22,13 +22,45 @@ public class PerformanceReport implements ReportGenerator {
         // Display performance report menu options
         System.out.println("1. Generate Camp Attendance Report");
         System.out.println("2. Back to Main Menu");
+        System.out.println("3. Exit"); // Added option to exit the application
     }
 
     @Override
     public void generateReport(Camp camp) {
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            // Display performance report menu options
+            displayMenu();
+
+            // Get user input for the selected option
+            System.out.print("Enter your choice: ");
+            int userChoice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            // Handle user choices
+            switch (userChoice) {
+                case 1:
+                    generateCampAttendanceReport(camp);
+                    break;
+                case 2:
+                    // Exit the report generation
+                    System.out.println("Exiting camp attendance report generation.");
+                    return;
+                case 3:
+                    // Exit the application
+                    System.out.println("Exiting application.");
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    private void generateCampAttendanceReport(Camp camp) {
         try (Workbook workbook = new XSSFWorkbook()) {
             Scanner scanner = new Scanner(System.in);
-            Sheet sheet = workbook.createSheet("Camp Participation Report");
+            Sheet sheet = workbook.createSheet("Camp Attendance Report");
 
             // Add camp details at the top of the Excel file
             Row detailsRow = sheet.createRow(0);
@@ -52,7 +84,7 @@ public class PerformanceReport implements ReportGenerator {
             detailsRow = sheet.createRow(8);
             detailsRow.createCell(0).setCellValue("Staff-in-Charge: " + camp.getInCharge());
 
-            // Create a new row for column headers
+            // Create header row for attendance details
             Row headerRow = sheet.createRow(10);
             headerRow.createCell(0).setCellValue("UserID");
             headerRow.createCell(1).setCellValue("Name");
@@ -67,41 +99,11 @@ public class PerformanceReport implements ReportGenerator {
                     .map(userId -> UnifiedUserRepository.getInstance().retrieveUser(userId))
                     .collect(Collectors.toList());
 
-            // Display sorting options
-            System.out.println("Select Sorting Method:");
-            System.out.println("1. Ascending Sort");
-            System.out.println("2. Descending Sort");
-            System.out.println("3. Points Sort");
+            // Get user input for sorting method
+            int sortingOption = getSortingOption(scanner);
 
-            // Get user input
-            System.out.print("Enter your choice: ");
-            int sortingOption = scanner.nextInt();
-
-            // After retrieving attendees and committee members, apply sorting methods based on user's choice
-            List<String> sortedCommittee;
-            switch (sortingOption) {
-                case 1:
-                    sortedCommittee = Filter.ascendingSort(committeeMembers.stream()
-                            .map(User::getName)
-                            .collect(Collectors.toList()));
-                    break;
-                case 2:
-                    sortedCommittee = Filter.descendingSort(committeeMembers.stream()
-                            .map(User::getName)
-                            .collect(Collectors.toList()));
-                    break;
-                case 3:
-                    sortedCommittee = Filter.pointsSort(committeeMembers, committee);
-                    break;
-                default:
-                    // Handle invalid option, default to ascending sort
-                    System.out.println("You selected an invalid option, defaulting to ascending sort!");
-                    sortedCommittee = Filter.ascendingSort(committeeMembers.stream()
-                            .map(User::getName)
-                            .collect(Collectors.toList()));
-            }
-
-            scanner.nextLine();
+            // After retrieving committee members, apply sorting methods based on user's choice
+            List<String> sortedCommittee = applySortingMethod(sortingOption, committeeMembers, committee);
 
             // Populate data rows for sorted committee members
             int rowNum = 11;
@@ -124,7 +126,7 @@ public class PerformanceReport implements ReportGenerator {
             System.out.print("Enter the file name (without extension): ");
             String fileName = scanner.nextLine().trim();
 
-            // Modify the outputPath to include the "outputs" folder
+            // Modify the outputPath to use a relative path to the "outputs" folder
             String outputPath = "outputs/" + fileName + ".xlsx";
 
             // Write to file
@@ -132,9 +134,40 @@ public class PerformanceReport implements ReportGenerator {
                 workbook.write(fileOut);
             }
 
-            System.out.println("Camp Participation Report generated successfully. File saved at: " + outputPath);
+            System.out.println("Camp Attendance Report generated successfully. File saved at: " + outputPath);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private int getSortingOption(Scanner scanner) {
+        // Display sorting options
+        System.out.println("Select Sorting Method:");
+        System.out.println("1. Ascending Sort");
+        System.out.println("2. Descending Sort");
+        System.out.println("3. Points Sort");
+
+        // Get user input
+        System.out.print("Enter your choice: ");
+        return scanner.nextInt();
+    }
+
+    private List<String> applySortingMethod(int sortingOption, List<User> committeeMembers, HashMap<String, Integer> committee) {
+        // Handle invalid option, default to ascending sort
+        return switch (sortingOption) {
+            case 1 -> Filter.ascendingSort(committeeMembers.stream()
+                    .map(User::getName)
+                    .collect(Collectors.toList()));
+            case 2 -> Filter.descendingSort(committeeMembers.stream()
+                    .map(User::getName)
+                    .collect(Collectors.toList()));
+            case 3 -> Filter.pointsSort(committeeMembers, committee);
+            default -> {
+                System.out.println("You selected an invalid option, defaulting to ascending sort!");
+                yield Filter.ascendingSort(committeeMembers.stream()
+                        .map(User::getName)
+                        .collect(Collectors.toList()));
+            }
+        };
     }
 }
