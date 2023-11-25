@@ -271,9 +271,10 @@ public class Camp implements Serializable {
 		SerializeUtility.saveObject(this, folderName, getFileName());
 	}
 
-	public List<String> getCommittee() {
-		return new ArrayList<>(committee.keySet());
+	public HashMap<String, Integer> getCommittee() {
+		return new HashMap<>(committee);
 	}
+
 
 	public int getCommitteeSlots() {
 		return committeeSlots;
@@ -323,6 +324,11 @@ public class Camp implements Serializable {
 	public int getNumCommitteeMembers() {
 		return this.committee.size();
 	}
+
+	public void setCommitteeMembers(HashMap<String, Integer> committee) {
+		this.committee = committee;
+	}
+
 
 	public int getRemainingAttendeeSlots(){
 		return this.attendeeSlots - this.getNumAttendees();
