@@ -1,10 +1,10 @@
 package cams.util;
 import java.io.*;
 
-public class SerializeUtility {
+public class SavableObject implements Savable {
     private static final String fileLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
 
-    public static void saveObject(Serializable object, String folderName, String fileName) {
+    public void saveObject(Serializable object, String folderName, String fileName) {
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileLocation + folderName + File.separator + fileName))) {
             out.writeObject(object);
         }
@@ -16,7 +16,7 @@ public class SerializeUtility {
         }
     }
 
-    public static boolean deleteFile(String folderName, String fileName) {
+    public boolean deleteFile(String folderName, String fileName) {
         try{
             File file = new File(fileLocation + folderName + File.separator + fileName);
             if (!file.exists()) {
@@ -30,14 +30,5 @@ public class SerializeUtility {
             System.out.println("Error: " + e.getMessage());
         }
         return false;
-    }
-
-    public static Serializable loadObject(String fileName) {
-        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName))) {
-            return (Serializable) in.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error: " + e.getMessage());
-            return null;
-        }
     }
 }

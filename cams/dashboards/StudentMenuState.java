@@ -1,6 +1,7 @@
 package cams.dashboards;
 
 import cams.dashboards.enquiry_menus.Enquirer;
+import cams.database.UnifiedCampRepository;
 import cams.users.Participant;
 import cams.users.ParticipantAction;
 import cams.users.User;
@@ -108,6 +109,6 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
     }
 
     protected void goToEnquiries(Dashboard dashboard){
-        dashboard.setState(new Enquirer());
+        dashboard.setState(new Enquirer(UnifiedCampRepository.getInstance()));
     }
 }

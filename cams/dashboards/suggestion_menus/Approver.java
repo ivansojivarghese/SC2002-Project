@@ -7,9 +7,7 @@ import cams.post_types.Approval;
 import cams.post_types.Message;
 import cams.post_types.Post;
 import cams.users.User;
-import cams.util.SerializeUtility;
-
-import java.util.InputMismatchException;
+import cams.util.SavableObject;
 
 public class Approver extends ApproverUI {
     @Override
@@ -21,7 +19,7 @@ public class Approver extends ApproverUI {
         CampRepository repo = UnifiedCampRepository.getInstance();
         Camp camp = repo.retrieveCamp(currentPost.getCampName());
         //Save changes
-        SerializeUtility.saveObject(camp, camp.getFolderName(), camp.getFileName());
+        SavableObject.saveObject(camp, camp.getFolderName(), camp.getFileName());
         return true;
     }
 }

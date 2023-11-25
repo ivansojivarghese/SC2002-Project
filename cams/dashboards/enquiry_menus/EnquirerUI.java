@@ -81,11 +81,18 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
             }
         }
     }
-
+    /**
+     * Handles the submission of a new enquiry from a user.
+     * <p>
+     * This method prompts the user for the name of the camp they are enquiring about and the content of their enquiry.
+     * It also checks if the user is a committee member trying to enquire about their own camp, which is not allowed.
+     * @param user The user submitting the enquiry.
+     */
     protected void submitEnquiry(User user) {
         Scanner sc = InputScanner.getInstance();
         System.out.println("Name of camp you are enquiring about: ");
         String campName = sc.nextLine();
+
         // Prevent committee members from submitting enquiries to their camp
         if(user instanceof Committable){
             if(campName.equalsIgnoreCase(((Committable) user).getCommittee()))
@@ -94,8 +101,11 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
                 return;
             }
         }
+
         System.out.println("Input query: ");
         String content = sc.nextLine();
+
+        // Attempt to submit the enquiry
         try {
             if (submit(campName, user.getUserID(), content))
                 System.out.println("Enquiry successfully submitted!");
@@ -104,6 +114,13 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
         }
     }
 
+    /**
+     * Handles the deletion of an existing enquiry.
+     * <p>
+     * The user is prompted to select the index of the enquiry they wish to delete.
+     * @param user         The user who owns the enquiry.
+     * @param numEnquiries The total number of enquiries the user has.
+     */
     protected void deleteEnquiry(User user, int numEnquiries){
         int option = UserInput.getIntegerInput(0, numEnquiries-1, "Enter index of enquiry to delete: ");
         try {
@@ -113,11 +130,21 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
             System.out.println("Deletion unsuccessful: " + e.getMessage());
         }
     }
+
+    /**
+     * Handles editing an existing enquiry.
+     * <p>
+     * The user is prompted to select the index of the enquiry they wish to edit and provide the new content.
+     * @param user         The user who owns the enquiry.
+     * @param numEnquiries The total number of enquiries the user has.
+     */
     protected void editEnquiry(User user, int numEnquiries){
         Scanner sc = InputScanner.getInstance();
         int option = UserInput.getIntegerInput(0, numEnquiries-1, "Enter index of enquiry to edit: ");
         System.out.println("Input modified query: ");
         String content = sc.nextLine();
+
+        // Attempt to edit the enquiry
         try {
             if (edit(user, option, content))
                 System.out.println("Enquiry successfully edited!");

@@ -4,7 +4,8 @@ import cams.dashboards.DashboardState;
 import cams.database.UnifiedCampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
-import cams.util.SerializeUtility;
+import cams.util.Savable;
+import cams.util.SavableObject;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class User implements Serializable {
+    protected static final Savable savable = new SavableObject();
     @Serial
     private static final long serialVersionUID = 50100974955575555L; //crc32b Hash of "User" converted to ASCII
     private static final String folderName = "users";
@@ -63,11 +65,11 @@ public abstract class User implements Serializable {
 
     public void addCamp(Camp camp) {
         this.myCamps.add(camp.getCampName());
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
     }
     public boolean removeCamp(String campName){
         this.myCamps.remove(campName);
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
         return true;
     }
 
@@ -77,7 +79,7 @@ public abstract class User implements Serializable {
 
     public void setName(String name) {
     	this.name = name;
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
     }
 
     public String getUserID() {
@@ -87,7 +89,7 @@ public abstract class User implements Serializable {
     public void setUserID(String userID) {
         //UserID is always set to uppercase
         this.userID = userID.toUpperCase();
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
     }
 
     public String getPassword() {
@@ -97,7 +99,7 @@ public abstract class User implements Serializable {
     public void setPassword(String password) {
         //Set password without any leading or trailing space to prevent user error
         this.password = password.strip();
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
     }
 
     public Faculty getFaculty() {
@@ -106,6 +108,6 @@ public abstract class User implements Serializable {
 
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
     }
 }

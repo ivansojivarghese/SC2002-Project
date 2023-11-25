@@ -2,18 +2,33 @@ package cams.dashboards.enquiry_menus;
 
 import cams.Camp;
 import cams.database.CampRepository;
-import cams.database.UnifiedCampRepository;
 import cams.post_types.*;
 import cams.users.User;
-import cams.util.SerializeUtility;
 
+/**
+ * Represents an enquirer in the dashboard system, extending the functionality of {@link EnquirerUI}.
+ * This class provides implementations for submitting, editing, and deleting enquiries related to camps.
+ */
 public class Enquirer extends EnquirerUI{
-    public Enquirer() {
+    private final CampRepository campRepository;
+    /**
+     * Constructs an Enquirer instance.
+     */
+    public Enquirer(CampRepository campRepository) {
+        super();
+        this.campRepository = campRepository;
     }
 
+    /**
+     * Submits an enquiry about a specific camp.
+     *
+     * @param campName The name of the camp to which the enquiry is addressed.
+     * @param userID   The ID of the user making the enquiry.
+     * @param text     The content of the enquiry.
+     * @return true if the submission is successful, false if the camp does not exist.
+     */
     public boolean submit(String campName, String userID, String text){
-        CampRepository repo = UnifiedCampRepository.getInstance();
-        Camp camp = repo.retrieveCamp(campName);
+        Camp camp = campRepository.retrieveCamp(campName);
         if(camp == null){
             System.out.println("Selected camp does not exist.");
             return false;
@@ -28,6 +43,14 @@ public class Enquirer extends EnquirerUI{
         return true;
     }
 
+    /**
+     * Edits an existing enquiry made by a user.
+     *
+     * @param user      The user who made the enquiry.
+     * @param postIndex The index of the enquiry in the user's list of enquiries.
+     * @param content   The new content of the enquiry.
+     * @return true if the edit is successful, false if the user does not exist.
+     */
     public boolean edit(User user, int postIndex, String content){
         if(user == null){
             System.out.println("User does not exist.");
@@ -36,12 +59,19 @@ public class Enquirer extends EnquirerUI{
         Post currentPost = user.getEnquiries().get(postIndex);
         currentPost.getFirstMessage().setContent(content);
 
-        CampRepository repo = UnifiedCampRepository.getInstance();
-        Camp camp = repo.retrieveCamp(currentPost.getCampName());
+        Camp camp = campRepository.retrieveCamp(currentPost.getCampName());
         //Save changes
-        SerializeUtility.saveObject(camp, camp.getFolderName(), camp.getFileName());
+        camp.save();
         return true;
     }
+
+    /**
+     * Deletes an enquiry made by a user.
+     *
+     * @param user      The user who made the enquiry.
+     * @param postIndex The index of the enquiry in the user's list of enquiries.
+     * @return true if the deletion is successful, false if the user does not exist or if the post has replies.
+     */
     public boolean delete(User user, int postIndex){
         if(user == null) {
             System.out.println("User does not exist.");
@@ -53,11 +83,10 @@ public class Enquirer extends EnquirerUI{
             System.out.println("Unable to delete posts with replies.");
             return false;
         }
-        CampRepository repo = UnifiedCampRepository.getInstance();
-        Camp camp = repo.retrieveCamp(currentPost.getCampName());
+        Camp camp = campRepository.retrieveCamp(currentPost.getCampName());
         camp.removePost(PostType.ENQUIRY, currentPost);
         //Save changes; posts are stored in camp, user does not store posts
-        SerializeUtility.saveObject(camp, camp.getFolderName(), camp.getFileName());
+        camp.save();
         return true;
     }
 }

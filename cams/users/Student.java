@@ -12,7 +12,7 @@ import cams.database.CampRepository;
 import cams.post_types.*;
 import cams.database.UnifiedCampRepository;
 import cams.util.Faculty;
-import cams.util.SerializeUtility;
+import cams.util.SavableObject;
 
 public class Student extends User implements Committable, Serializable { // student class
     @Serial
@@ -39,7 +39,7 @@ public class Student extends User implements Committable, Serializable { // stud
 
     public void setCommittee(String committee) {
         myCommittee = committee;
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
     }
 
     public String getCommittee(){
@@ -49,7 +49,7 @@ public class Student extends User implements Committable, Serializable { // stud
     public Student(String name, String userID, Faculty faculty) {
     	super(name, userID, faculty);
         this.setCommittee("NA");
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
     }
 
     public List<Post> getEnquiries() {
@@ -73,7 +73,7 @@ public class Student extends User implements Committable, Serializable { // stud
         if(this.myCommittee.equalsIgnoreCase(campName))
             return false;
         super.removeCamp(campName);
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
         return true;
     }
 

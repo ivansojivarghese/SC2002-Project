@@ -1,9 +1,10 @@
 package cams.database;
 
 import cams.Camp;
-import cams.users.User;
 import cams.util.Faculty;
-import cams.util.SerializeUtility;
+import cams.util.Loader;
+import cams.util.ObjectLoader;
+import cams.util.SavableObject;
 
 import java.io.File;
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class UnifiedCampRepository implements CampRepository {
+    private static final Loader loader = new ObjectLoader();
     private static final String fileLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator + "camps";
 
     //Use of Singleton design pattern to ensure only one instance exists
@@ -90,7 +92,7 @@ public class UnifiedCampRepository implements CampRepository {
         //Iterate through each file in the folder and load it into the repository
         for (File file : listOfFiles) {
             if (file.isFile()) {
-                Serializable object = SerializeUtility.loadObject(file.getAbsolutePath());
+                Serializable object = loader.loadObject(file.getAbsolutePath());
                 if(!(object instanceof Camp)){
                     System.out.println("Serializable found is not of type Camp, skipping object.");
                     continue;

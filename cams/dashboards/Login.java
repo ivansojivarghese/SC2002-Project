@@ -24,8 +24,7 @@ class Login { //Class is package-private
         }
 
         System.out.print("Enter your password (Case Sensitive): ");
-        password = sc.next(); // get Password
-        sc.nextLine(); //consume new line
+        password = sc.nextLine(); // get Password
         if(user.validateLogin(password)){
             System.out.println("Logging in successfully...");
         }

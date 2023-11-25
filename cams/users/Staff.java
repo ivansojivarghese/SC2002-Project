@@ -7,7 +7,6 @@ import cams.database.CampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
 import cams.database.UnifiedCampRepository;
-import cams.util.SerializeUtility;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -22,7 +21,7 @@ public class Staff extends User implements Serializable {
     private static final String folderName = "users";
     public Staff(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
-        SerializeUtility.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
     }
 
     public DashboardState getMenuState() {

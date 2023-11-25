@@ -7,7 +7,7 @@ import cams.post_types.Message;
 import cams.post_types.Post;
 import cams.post_types.Reply;
 import cams.users.User;
-import cams.util.SerializeUtility;
+import cams.util.SavableObject;
 
 public class Replier extends ReplierUI{
     @Override
@@ -23,7 +23,7 @@ public class Replier extends ReplierUI{
         CampRepository repo = UnifiedCampRepository.getInstance();
         Camp camp = repo.retrieveCamp(post.getCampName());
         //Save changes
-        SerializeUtility.saveObject(camp, camp.getFolderName(), camp.getFileName());
+        SavableObject.saveObject(camp, camp.getFolderName(), camp.getFileName());
         return true;
     }
 }

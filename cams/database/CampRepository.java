@@ -2,6 +2,9 @@ package cams.database;
 
 import cams.Camp;
 import cams.util.Faculty;
+import cams.util.Loader;
+import cams.util.ObjectLoader;
+
 import java.util.List;
 
 public interface CampRepository {

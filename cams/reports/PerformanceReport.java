@@ -40,19 +40,18 @@ public class PerformanceReport implements ReportGenerator {
 
             // Handle user choices
             switch (userChoice) {
-                case 1:
-                    generateCampAttendanceReport(camp);
-                    break;
-                case 2:
+                case 1 -> generateCampAttendanceReport(camp);
+                case 2 -> {
                     // Exit the report generation
                     System.out.println("Exiting camp attendance report generation.");
                     return;
-                case 3:
+                }
+                case 3 -> {
                     // Exit the application
                     System.out.println("Exiting application.");
                     System.exit(0);
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }

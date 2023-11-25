@@ -1,9 +1,10 @@
 package cams.database;
-import cams.Camp;
 import cams.users.Staff;
 import cams.users.Student;
 import cams.users.User;
 import cams.util.Faculty;
+import cams.util.Loader;
+import cams.util.ObjectLoader;
 import cams.util.UserType;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -14,13 +15,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import cams.util.SerializeUtility;
-
 import java.io.Serializable;
 import java.util.HashMap;
 
 public class UnifiedUserRepository implements UserRepository {
     private static UnifiedUserRepository instance;
+    private static final Loader loader = new ObjectLoader();
     private HashMap<String, User> users;
     private static final String fileLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator + "users";
 
@@ -68,7 +68,7 @@ public class UnifiedUserRepository implements UserRepository {
         //Iterate through each file in the folder and load it into the repository
         for (File file : listOfFiles) {
             if (file.isFile()) {
-                Serializable object = SerializeUtility.loadObject(file.getAbsolutePath());
+                Serializable object = loader.loadObject(file.getAbsolutePath());
                 if(!(object instanceof User)){
                     System.out.println("Serializable found is not of type User, skipping object.");
                     continue;

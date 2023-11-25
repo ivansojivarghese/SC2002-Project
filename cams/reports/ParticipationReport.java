@@ -40,19 +40,18 @@ public class ParticipationReport implements ReportGenerator {
 
             // Handle user choices
             switch (userChoice) {
-                case 1:
-                    generateParticipationReport(camp);
-                    break;
-                case 2:
+                case 1 -> generateParticipationReport(camp);
+                case 2 -> {
                     // Exit the report generation
                     System.out.println("Exiting participation report generation.");
                     return;
-                case 3:
+                }
+                case 3 -> {
                     // Exit the application
                     System.out.println("Exiting application.");
                     System.exit(0);
-                default:
-                    System.out.println("Invalid choice. Please try again.");
+                }
+                default -> System.out.println("Invalid choice. Please try again.");
             }
         }
     }
@@ -163,25 +162,22 @@ public class ParticipationReport implements ReportGenerator {
     }
 
     private List<String> applySortingMethod(int sortingOption, List<User> attendeesAndCommittee, HashMap<String, Integer> committee) {
-        switch (sortingOption) {
-            case 1:
-                return Filter.ascendingSort(attendeesAndCommittee.stream()
-                        .map(User::getName)
-                        .collect(Collectors.toList()));
-            case 2:
-                return Filter.descendingSort(attendeesAndCommittee.stream()
-                        .map(User::getName)
-                        .collect(Collectors.toList()));
-            case 3:
-                return Filter.pointsSort(attendeesAndCommittee, committee);
-            case 4:
-                return Filter.roleSort(attendeesAndCommittee, committee);
-            default:
+        return switch (sortingOption) {
+            case 1 -> Filter.ascendingSort(attendeesAndCommittee.stream()
+                    .map(User::getName)
+                    .collect(Collectors.toList()));
+            case 2 -> Filter.descendingSort(attendeesAndCommittee.stream()
+                    .map(User::getName)
+                    .collect(Collectors.toList()));
+            case 3 -> Filter.pointsSort(attendeesAndCommittee, committee);
+            case 4 -> Filter.roleSort(attendeesAndCommittee, committee);
+            default -> {
                 // Handle invalid option, default to ascending sort
                 System.out.println("You selected an invalid option, defaulting to ascending sort!");
-                return Filter.ascendingSort(attendeesAndCommittee.stream()
+                yield Filter.ascendingSort(attendeesAndCommittee.stream()
                         .map(User::getName)
                         .collect(Collectors.toList()));
-        }
+            }
+        };
     }
 }

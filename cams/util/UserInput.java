@@ -31,7 +31,7 @@ public class UserInput {
     public static String getStringInput() { // update string-based input
     	String input;
         Scanner sc = InputScanner.getInstance();
-        input = sc.next();
+        input = sc.nextLine();
         return input;
     }
 

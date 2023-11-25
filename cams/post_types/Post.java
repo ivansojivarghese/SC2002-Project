@@ -1,7 +1,5 @@
 package cams.post_types;
 
-import cams.Camp;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
