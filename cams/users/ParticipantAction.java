@@ -3,6 +3,7 @@ package cams.users;
 import cams.Camp;
 import cams.database.UnifiedCampRepository;
 import cams.util.Date;
+import cams.util.UserInput;
 
 public class ParticipantAction implements Participant{
     @Override
@@ -36,6 +37,10 @@ public class ParticipantAction implements Participant{
 
     @Override
     public void register(User user, String campName) {
+    	
+    	String input;
+    	Boolean committeeCheck;
+    	
         //TODO prevent participants for registering for camps that are closed OR over
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         if (repo.getSize() == 0) {
@@ -75,7 +80,23 @@ public class ParticipantAction implements Participant{
         //SUCCESS outcome
         selectedCamp.addAttendee(user.getUserID()); //add attendee to camp
         user.addCamp(selectedCamp); //add camp to attendee
+        
+        System.out.println("Would you like to be part of the committee? (Y: Yes, N: No)");
+        input = UserInput.getStringInput();
+        committeeCheck = UserInput.validateInput(input);
+
+        if (committeeCheck) {
+	        if(user instanceof Committable) {
+	            // selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
+	            if (selectedCamp.addCommittee(user.getUserID()) == 1) {
+	            	((Committable) user).setCommittee(campName);
+	            }
+	        }
+        }
+        
         System.out.println("Successfully registered.");
+        
+        // System.out.println("Successfully registered.");
 
         /*
         if(user instanceof Committable) {
