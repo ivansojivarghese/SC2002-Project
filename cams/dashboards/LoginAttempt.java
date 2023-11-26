@@ -13,7 +13,7 @@ import java.util.Scanner;
  * and initiating the validation method encapsulated in each {@link User} object.
  * It detects and handles password changes for a first-time successful login attempt.
  */
-class Login { //Class is package-private
+class LoginAttempt { //Class is package-private
     /**
      * Attempts to log in a user with a given user ID and password.
      * <p>
@@ -22,7 +22,7 @@ class Login { //Class is package-private
      *
      * @return The {@link User} object if login is successful; null otherwise.
      */
-    public static User loginAttempt(){
+    public User loginAttempt(){
         Scanner sc = InputScanner.getInstance();
         String LoginID;
         String password;

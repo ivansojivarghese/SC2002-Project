@@ -31,7 +31,7 @@ import java.util.Scanner;
  * functionalities in the dashboard that are core to Staff responsibilities
  * Includes actions like editing camps, creating camps, responding to suggestions, and more.
  */
-public class StaffUI extends UserUI implements DashboardState {
+public class StaffUI extends UserUI {
     private final OrganiserController organiserController = new StaffOrganiserController();
     /**
      * Displays the staff menu to the user and handles user input for various operations.

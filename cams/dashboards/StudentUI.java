@@ -16,7 +16,7 @@ import java.util.Scanner;
 /**
  Represents the state of the dashboard when a student is logged in.
  **/
-public class StudentUI extends UserUI implements DashboardState{
+public class StudentUI extends UserUI{
     protected final ParticipationController participationController;
 
     public StudentUI(){
