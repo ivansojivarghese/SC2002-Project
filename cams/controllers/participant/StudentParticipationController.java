@@ -112,7 +112,7 @@ public class StudentParticipationController implements ParticipationController, 
         user.addCamp(selectedCamp); //add camp to attendee
         
         if (selectedCamp.getCommitteeSlots() > 0) { // if committee vacancy remains
-	        System.out.println("Be part of the committee? (Y: Yes, wN: No)");
+	        System.out.println("Be part of the committee? (Y: Yes, N: No)");
 	        input = UserInput.getStringInput();
 	        committeeCheck = UserInput.validateInput(input);
 	

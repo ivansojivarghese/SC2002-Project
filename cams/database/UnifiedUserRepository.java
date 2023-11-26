@@ -106,11 +106,19 @@ public class UnifiedUserRepository implements UserRepository {
         //Iterate through each file in the folder and load it into the repository
         for (File file : listOfFiles) {
             if (file.isFile()) {
-                Serializable object = loader.loadObject(file.getAbsolutePath());
-                if(!(object instanceof User)){
-                    System.out.println("Serializable found is not of type User, skipping object.");
+                Serializable object;
+                try {
+                    object = loader.loadObject(file.getAbsolutePath());
+                } catch (Exception e) {
+                    System.out.println("Error loading object from file: " + file.getName());
                     continue;
                 }
+
+                if (!(object instanceof User)) {
+                    System.out.println("Object loaded from file is not of type User, skipping object.");
+                    continue;
+                }
+
                 User user = (User) object;
                 this.users.put(user.getUserID(), user);
             }

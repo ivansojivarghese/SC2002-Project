@@ -1,1 +1,0 @@
-This text file serves to contain user resource files.

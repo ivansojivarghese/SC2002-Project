@@ -68,14 +68,19 @@ class LoginAttempt { //Class is package-private
         while (true) {
             System.out.print("Please enter new password (Case Sensitive): ");
             password = sc.nextLine();
-            if (password.equalsIgnoreCase("password") || password.isBlank() || password.length() < 8) {
+
+            if (password.equalsIgnoreCase("password")) {
+                System.out.println("For security reasons you cannot change your password to the default password.");
+            } else if (password.isBlank() || password.length() < 8) {
                 System.out.println("Password must not be blank and must have at least 8 characters.");
             } else {
+                // Valid password, exit the loop
                 break;
             }
         }
         user.setPassword(password);
         System.out.println("Password successfully changed!");
     }
+
 }
 
