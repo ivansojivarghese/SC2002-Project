@@ -6,7 +6,16 @@ import cams.database.UnifiedUserRepository;
 import cams.util.InputScanner;
 import cams.util.UserType;
 
+/**
+ * The main entry point for the Camp Application and Management System (CAMs) application.
+ * Initializes user and camp data, manages user authentication, and launches the application dashboard.
+ */
 public class App {
+	/**
+	 * The main method that serves as the entry point for the CAMs application.
+	 *
+	 * @param args The command-line arguments (unused).
+	 */
 	public static void main(String[] args) {
 		
 		//DECLARE databases
