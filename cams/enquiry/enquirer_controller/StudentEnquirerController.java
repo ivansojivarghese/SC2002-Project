@@ -91,6 +91,7 @@ public class StudentEnquirerController implements EnquirerController, Serializab
         CampRepository campRepository = UnifiedCampRepository.getInstance();
         Camp camp = campRepository.retrieveCamp(currentPost.getCampName());
         camp.removePost(PostType.ENQUIRY, currentPost);
+        ((Enquirer)user).removeEnquiry(currentPost);
 
         //Save changes
         camp.save();

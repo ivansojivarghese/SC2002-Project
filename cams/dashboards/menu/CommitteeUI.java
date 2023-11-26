@@ -1,6 +1,7 @@
 package cams.dashboards.menu;
 
 import cams.camp.Camp;
+import cams.camp.CampRepository;
 import cams.enquiry.enquiry_menus.ReplierUI;
 import cams.suggestion.suggestion_menus.SuggesterUI;
 import cams.database.UnifiedCampRepository;
@@ -56,8 +57,11 @@ public class CommitteeUI extends StudentUI {
         System.out.println("STUDENT Name: " + user.getName());
         System.out.println("Username: " + user.getUserID());
         System.out.println("Faculty: " + user.getFaculty());
-        if (user instanceof Committable)
+        if (user instanceof Committable) {
             System.out.println("Committee Member of: " + ((Committable) user).getCommittee());
+            CampRepository repo = UnifiedCampRepository.getInstance();
+            System.out.println("Points: " + repo.retrieveCamp(((Committable) user).getCommittee()).getPointsOfCommitteeMember(user.getUserID()));
+        }
     }
 
     // Initializing actions for committee-specific functionalities

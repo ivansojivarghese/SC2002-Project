@@ -1,4 +1,4 @@
-package cams.util;
+package cams.database;
 
 import java.io.FileInputStream;
 import java.io.IOException;

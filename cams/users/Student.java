@@ -54,8 +54,8 @@ public class Student extends User implements Committable, Enquirer, Serializable
      */
     Student(){
         this.setCommittee("NA");
-        savable.saveObject(this, folderName, this.getFileName());
         this.myEnquiries = new ArrayList<>();
+        savable.saveObject(this, folderName, this.getFileName());
     }
     /**
      * Constructs a Student with the specified details.
@@ -67,8 +67,8 @@ public class Student extends User implements Committable, Enquirer, Serializable
     public Student(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
         this.setCommittee("NA");
-        savable.saveObject(this, folderName, this.getFileName());
         this.myEnquiries = new ArrayList<>();
+        savable.saveObject(this, folderName, this.getFileName());
     }
     /**
      * Returns the replier controller dependency used by Staff
@@ -124,6 +124,7 @@ public class Student extends User implements Committable, Enquirer, Serializable
      */
     public boolean removeEnquiry(Post post){
         this.myEnquiries.remove(post);
+        savable.saveObject(this, folderName, getFileName());
         return true;
     }
 
@@ -132,6 +133,7 @@ public class Student extends User implements Committable, Enquirer, Serializable
      */
     public void addEnquiry(Post post) {
         this.myEnquiries.add(post);
+        savable.saveObject(this, folderName, getFileName());
     }
 
     /**
