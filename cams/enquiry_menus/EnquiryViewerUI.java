@@ -43,6 +43,13 @@ public abstract class EnquiryViewerUI implements PostViewerUI {
     public int view(User user){
         Post currentPost;
         System.out.println("My Camp Enquiries: ");
+
+        // Catch null pointers
+        if(user.getEnquiries() == null)
+        {
+            System.out.println("No enquiries to display.");
+            return 0;
+        }
         List<Post> myEnquiries = new ArrayList<>(user.getEnquiries());
 
         // Check if the user has no enquiries

@@ -58,7 +58,6 @@ public class Staff extends User implements Serializable {
      */
     public String getFileName() {
         return "Staff_" + this.getUserID().replaceAll("\\s+", "_") + ".ser";
-        //TODO error?
     }
 
     /**

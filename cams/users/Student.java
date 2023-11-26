@@ -52,7 +52,11 @@ public class Student extends User implements Committable, Enquirer, Serializable
     /**
      * Empty constructor for student.
      */
-    Student(){}
+    Student(){
+        this.setCommittee("NA");
+        savable.saveObject(this, folderName, this.getFileName());
+        this.myEnquiries = new ArrayList<>();
+    }
     /**
      * Constructs a Student with the specified details.
      *
@@ -68,10 +72,10 @@ public class Student extends User implements Committable, Enquirer, Serializable
     }
     /**
      * Returns the replier controller dependency used by Staff
-     * @return
+     * @return Returns the committee controller
      */
     public ReplierController getReplierController(){
-        return this.replier;
+        return replier;
     }
     /**
      * Checks whether the student is already a part of a committee.
@@ -141,7 +145,7 @@ public class Student extends User implements Committable, Enquirer, Serializable
         if(this.myCommittee.equalsIgnoreCase(campName))
             return false;
         super.removeCamp(campName);
-        savable.saveObject(this, this.folderName, this.getFileName());
+        savable.saveObject(this, folderName, this.getFileName());
         return true;
     }
 
