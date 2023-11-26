@@ -1,8 +1,9 @@
 package cams.users;
+import cams.camp.CampDisplayService;
+import cams.camp.CampService;
 import cams.camp.Camp;
 import cams.dashboards.DashboardState;
-import cams.dashboards.enquiry_menus.ReplierController;
-import cams.database.UnifiedCampRepository;
+import cams.controllers.replier.ReplierController;
 import cams.post_types.Post;
 import cams.util.Faculty;
 import cams.util.Savable;
@@ -33,18 +34,8 @@ public abstract class User implements Serializable {
     }
 
     public int displayMyCamps() {
-        int index = 0;
-
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-        if(this.getMyCamps() == null)
-            throw new NullPointerException("No camps to display");
-        for (String c : this.getMyCamps()) {
-            System.out.println("_________________________________");
-            System.out.println("Index: " + index++);
-            Camp camp = repo.retrieveCamp(c);
-            camp.display();
-        }
-        return index;
+        CampService campDisplay = new CampDisplayService();
+        return campDisplay.displayMyCamps(this);
     }
     public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();

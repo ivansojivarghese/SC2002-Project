@@ -1,5 +1,9 @@
 package cams.dashboards;
 import cams.camp.CampDetails;
+import cams.camp.CampDisplayService;
+import cams.camp.CampService;
+import cams.controllers.organiser.OrganiserController;
+import cams.controllers.organiser.StaffOrganiserController;
 import cams.users.User;
 import cams.util.Faculty;
 import cams.util.InputScanner;
@@ -28,7 +32,7 @@ public class OrganiserUI implements DashboardState {
         User user = dashboard.getAuthenticatedUser();
 
         //DISPLAYS list of user's camp and gets number of camps
-        int numCamps = user.displayMyCamps();
+        int numCamps = this.displayMyCamps(user);
         if (numCamps == 0) //if no camps to edit
         {
             System.out.println("Returning to main menu...");
@@ -106,6 +110,25 @@ public class OrganiserUI implements DashboardState {
         }
     }
 
+    /**
+     * Displays the camps created by the staff member using the CampDisplayService
+     *
+     * @param user User whose camps are to be displayed
+     * @return The number of camps created by the staff member.
+     */
+    protected int displayMyCamps(User user) {
+        CampService campDisplay = new CampDisplayService();
+        int index = 0;
+        System.out.println("My Created Camps: ");
+        try {
+            index = campDisplay.displayMyCamps(user);
+        } catch (NullPointerException e){
+            System.out.println("No camps created.");
+        }
+        if(index == 0)
+            System.out.println("No camps created.");
+        return index;
+    }
     /**
      * UI interaction that assigns a student to a selected camp as a participationController.
      * This method prompts for the userID of a student and assigns them to the specified camp.

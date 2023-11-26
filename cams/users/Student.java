@@ -7,10 +7,10 @@ import java.util.*;
 import cams.dashboards.CommitteeUI;
 import cams.dashboards.DashboardState;
 import cams.dashboards.StudentUI;
-import cams.dashboards.enquiry_menus.CommitteeReplierController;
-import cams.dashboards.enquiry_menus.ReplierController;
-import cams.dashboards.suggestion_menus.Suggester;
-import cams.dashboards.suggestion_menus.SuggesterService;
+import cams.controllers.replier.CommitteeReplierController;
+import cams.controllers.replier.ReplierController;
+import cams.controllers.suggester.SuggesterController;
+import cams.controllers.suggester.CommitteeSuggesterController;
 import cams.post_types.*;
 import cams.util.Faculty;
 
@@ -22,7 +22,7 @@ public class Student extends User implements Committable, Enquirer, Serializable
     @Serial
     private static final long serialVersionUID = 555657101575497102L; //crc32b Hash of "User" converted to ASCII
     private static final String folderName = "users";
-    private static final Suggester suggester = new SuggesterService();
+    private static final SuggesterController SUGGESTER_CONTROLLER = new CommitteeSuggesterController();
     private final ReplierController replier = new CommitteeReplierController();
     private String myCommittee;
     private List<Post> myEnquiries;
@@ -143,25 +143,6 @@ public class Student extends User implements Committable, Enquirer, Serializable
     }
 
     /**
-     * Displays the camps registered by the student
-     * using a refinement of the same method in User superclass
-     * @return The number of camps joined by the student
-     */
-    public int displayMyCamps(){
-        System.out.println("My registered camps: ");
-        int index = 0;
-        try {
-            index = super.displayMyCamps();
-        }
-        catch (NullPointerException e){
-            System.out.println("No camps registered.");
-        }
-        if(index == 0)
-            System.out.println("No camps registered.");
-        return index;
-    }
-
-    /**
      * Collects all suggestions posted by the student user to
      * the camp that they are a committee member of.
      *
@@ -169,6 +150,6 @@ public class Student extends User implements Committable, Enquirer, Serializable
      */
     @Override
     public List<Post> getSuggestions() {
-        return suggester.getSuggestions(this);
+        return SUGGESTER_CONTROLLER.getSuggestions(this);
     }
 }

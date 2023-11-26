@@ -2,7 +2,7 @@ package cams.reports;
 
 import cams.camp.Camp;
 import cams.database.UnifiedUserRepository;
-import cams.filters.Filter;
+import cams.util.Filter;
 import cams.users.User;
 
 import cams.util.InputScanner;

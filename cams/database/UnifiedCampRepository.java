@@ -1,6 +1,7 @@
 package cams.database;
 
 import cams.camp.Camp;
+import cams.camp.CampRepository;
 import cams.util.Faculty;
 import cams.util.Loader;
 import cams.util.ObjectLoader;

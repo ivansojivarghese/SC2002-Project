@@ -2,9 +2,9 @@ package cams.users;
 
 import cams.dashboards.DashboardState;
 import cams.dashboards.StaffUI;
-import cams.dashboards.enquiry_menus.ReplierController;
-import cams.dashboards.enquiry_menus.StaffReplierController;
-import cams.dashboards.suggestion_menus.ApproverService;
+import cams.controllers.replier.ReplierController;
+import cams.controllers.replier.StaffReplierController;
+import cams.controllers.approver.StaffApproverController;
 import cams.post_types.Post;
 import cams.util.Faculty;
 
@@ -23,7 +23,7 @@ public class Staff extends User implements Serializable {
     private static final long serialVersionUID = 565197102100995754L; // CRC32b hash of "Staff" converted to ASCII
     private static final String folderName = "users";
     private final ReplierController replier;
-    private final ApproverService approver;
+    private final StaffApproverController approver;
 
     /**
      * Constructs a Staff member with the specified details and saves it.
@@ -35,7 +35,7 @@ public class Staff extends User implements Serializable {
     public Staff(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
         this.replier = new StaffReplierController();
-        this.approver = new ApproverService();
+        this.approver = new StaffApproverController();
         savable.saveObject(this, folderName, this.getFileName());
     }
 
@@ -90,17 +90,4 @@ public class Staff extends User implements Serializable {
      * using a refinement of the same method in User superclass
      * @return The number of camps created by the staff member.
      */
-    @Override
-    public int displayMyCamps(){
-        int index = 0;
-        System.out.println("My Created Camps: ");
-        try {
-            index = super.displayMyCamps();
-        } catch (NullPointerException e){
-            System.out.println("No camps created.");
-        }
-        if(index == 0)
-            System.out.println("No camps created.");
-        return index;
-    }
 }

@@ -2,13 +2,17 @@ package cams.dashboards;
 
 import cams.camp.Camp;
 import cams.camp.CampDetails;
-import cams.dashboards.enquiry_menus.ReplierUI;
-import cams.dashboards.suggestion_menus.ApproverService;
-import cams.dashboards.suggestion_menus.ApproverUI;
-import cams.database.CampRepository;
+import cams.camp.CampDisplayService;
+import cams.camp.CampService;
+import cams.controllers.organiser.OrganiserController;
+import cams.controllers.organiser.StaffOrganiserController;
+import cams.enquiry_menus.ReplierUI;
+import cams.controllers.approver.StaffApproverController;
+import cams.suggestion_menus.ApproverUI;
+import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
-import cams.database.UserRepository;
+import cams.users.UserRepository;
 import cams.reports.ParticipationReport;
 import cams.reports.PerformanceReport;
 import cams.reports.ReportGenerator;
@@ -62,7 +66,7 @@ public class StaffUI extends UserUI implements DashboardState {
 
         actions.put(0, dashboard::logout);
         actions.put(1, () -> changePassword(user));
-        actions.put(2, user::displayMyCamps);
+        actions.put(2, () -> displayMyCamps(user));
         actions.put(3, () -> viewAllCamps(user));
         actions.put(4, () -> editCamp(dashboard));
         actions.put(5, () -> createCamp(dashboard));
@@ -94,6 +98,26 @@ public class StaffUI extends UserUI implements DashboardState {
                 case 10 -> System.out.println("(10) Generate Performance Report");
             }
         }
+    }
+
+    /**
+     * Displays the camps created by the staff member using the CampDisplayService
+     *
+     * @param user User whose camps are to be displayed
+     * @return The number of camps created by the staff member.
+     */
+    protected int displayMyCamps(User user) {
+        CampService campDisplay = new CampDisplayService();
+        int index = 0;
+        System.out.println("My Created Camps: ");
+        try {
+            index = campDisplay.displayMyCamps(user);
+        } catch (NullPointerException e){
+            System.out.println("No camps created.");
+        }
+        if(index == 0)
+            System.out.println("No camps created.");
+        return index;
     }
 
     /**
@@ -228,7 +252,7 @@ public class StaffUI extends UserUI implements DashboardState {
     }
 
     /**
-     * Transitions the dashboard the {@link ApproverService} menu state to respond to suggestions.
+     * Transitions the dashboard the {@link StaffApproverController} menu state to respond to suggestions.
      *
      * @param dashboard The dashboard context.
      */

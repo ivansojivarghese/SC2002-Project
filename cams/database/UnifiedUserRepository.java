@@ -2,6 +2,7 @@ package cams.database;
 import cams.users.Staff;
 import cams.users.Student;
 import cams.users.User;
+import cams.users.UserRepository;
 import cams.util.Faculty;
 import cams.util.Loader;
 import cams.util.ObjectLoader;

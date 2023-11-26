@@ -1,6 +1,10 @@
 package cams.dashboards;
 
-import cams.dashboards.enquiry_menus.EnquirerUI;
+import cams.camp.CampDisplayService;
+import cams.camp.CampService;
+import cams.controllers.participant.ParticipationController;
+import cams.controllers.participant.StudentParticipationController;
+import cams.enquiry_menus.EnquirerUI;
 import cams.users.User;
 import cams.util.InputScanner;
 import cams.util.UserInput;
@@ -52,7 +56,7 @@ public class StudentUI extends UserUI implements DashboardState{
 
         actions.put(1, () -> changePassword(user));
         actions.put(0, dashboard::logout);
-        actions.put(2, user::displayMyCamps);
+        actions.put(2, () -> displayMyCamps(user));
         actions.put(3, () -> registerCamp(dashboard));
         actions.put(4, () -> deregisterCamp(dashboard));
         actions.put(5, () -> goToEnquiries(dashboard));
@@ -90,6 +94,27 @@ public class StudentUI extends UserUI implements DashboardState{
         System.out.println("STUDENT Name: " + user.getName());
         System.out.println("Username: " + user.getUserID());
         System.out.println("Faculty: " + user.getFaculty());
+    }
+
+    /**
+     * Displays the camps registered by the student using the CampDisplayService
+     *
+     * @param user User whose camps are to be displayed
+     * @return The number of camps joined by the student
+     */
+    protected int displayMyCamps(User user) {
+        System.out.println("My registered camps: ");
+        int index = 0;
+        CampService campDisplay = new CampDisplayService();
+        try {
+            index = campDisplay.displayMyCamps(user);
+        }
+        catch (NullPointerException e){
+            System.out.println("No camps registered.");
+        }
+        if(index == 0)
+            System.out.println("No camps registered.");
+        return campDisplay.displayMyCamps(user);
     }
 
     /**
