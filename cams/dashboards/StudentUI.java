@@ -127,7 +127,9 @@ public class StudentUI extends UserUI{
     protected void registerCamp(Dashboard dashboard){
         User user = dashboard.getAuthenticatedUser();
         Scanner sc = InputScanner.getInstance();
-        participationController.viewAllCamps(user);
+        if(participationController.viewAllCamps(user) < 1)
+            return;
+
         System.out.println("\nEnter name of camp to register for: ");
         String registerInput = sc.nextLine();
 

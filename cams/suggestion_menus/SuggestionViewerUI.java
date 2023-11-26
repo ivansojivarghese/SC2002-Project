@@ -31,6 +31,14 @@ public class SuggestionViewerUI implements PostViewerUI {
      */
     public int view(User user){
         System.out.println("Camp Suggestions: ");
+
+        //Catch null pointer
+        if(user.getSuggestions() == null)
+        {
+            System.out.println("No suggestions to display.");
+            return 0;
+        }
+
         List<Post> mySuggestions = new ArrayList<>(user.getSuggestions());
 
         if(mySuggestions.isEmpty()){
