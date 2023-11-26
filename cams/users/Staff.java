@@ -23,9 +23,13 @@ public class Staff extends User implements Serializable {
     @Serial
     private static final long serialVersionUID = 565197102100995754L; // CRC32b hash of "Staff" converted to ASCII
     private static final String folderName = "users";
-    private final ReplierController replier;
-    private final ApproverController approver;
+    private static final ReplierController replier = new StaffReplierController();;
+    private static final ApproverController approver = new StaffApproverController();;
 
+    /**
+     * Empty constructor for staff
+     */
+    public Staff(){}
     /**
      * Constructs a Staff member with the specified details and saves it.
      *
@@ -35,8 +39,6 @@ public class Staff extends User implements Serializable {
      */
     public Staff(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
-        this.replier = new StaffReplierController();
-        this.approver = new StaffApproverController();
         savable.saveObject(this, folderName, this.getFileName());
     }
 
