@@ -19,7 +19,7 @@ public abstract class User implements Serializable {
     protected static final Savable savable = new SavableObject();
     @Serial
     private static final long serialVersionUID = 50100974955575555L; //crc32b Hash of "User" converted to ASCII
-    private static final String folderName = "users";
+    protected static final String folderName = "users";
     private String name;
     private String userID;
     private String password;

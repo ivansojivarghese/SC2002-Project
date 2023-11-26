@@ -1,5 +1,6 @@
 package cams.users;
 
+import cams.controllers.approver.ApproverController;
 import cams.dashboards.DashboardState;
 import cams.dashboards.StaffUI;
 import cams.controllers.replier.ReplierController;
@@ -23,7 +24,7 @@ public class Staff extends User implements Serializable {
     private static final long serialVersionUID = 565197102100995754L; // CRC32b hash of "Staff" converted to ASCII
     private static final String folderName = "users";
     private final ReplierController replier;
-    private final StaffApproverController approver;
+    private final ApproverController approver;
 
     /**
      * Constructs a Staff member with the specified details and saves it.

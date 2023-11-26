@@ -21,9 +21,8 @@ import cams.util.Faculty;
 public class Student extends User implements Committable, Enquirer, Serializable { // student class
     @Serial
     private static final long serialVersionUID = 555657101575497102L; //crc32b Hash of "User" converted to ASCII
-    private static final String folderName = "users";
-    private static final SuggesterController SUGGESTER_CONTROLLER = new CommitteeSuggesterController();
-    private final ReplierController replier = new CommitteeReplierController();
+    private static final SuggesterController suggester = new CommitteeSuggesterController();
+    private static final ReplierController replier = new CommitteeReplierController();
     private String myCommittee;
     private List<Post> myEnquiries;
 
@@ -50,6 +49,10 @@ public class Student extends User implements Committable, Enquirer, Serializable
             return new StudentUI();
     }
 
+    /**
+     * Empty constructor for student.
+     */
+    Student(){}
     /**
      * Constructs a Student with the specified details.
      *
@@ -138,7 +141,7 @@ public class Student extends User implements Committable, Enquirer, Serializable
         if(this.myCommittee.equalsIgnoreCase(campName))
             return false;
         super.removeCamp(campName);
-        savable.saveObject(this, folderName, this.getFileName());
+        savable.saveObject(this, this.folderName, this.getFileName());
         return true;
     }
 
@@ -150,6 +153,6 @@ public class Student extends User implements Committable, Enquirer, Serializable
      */
     @Override
     public List<Post> getSuggestions() {
-        return SUGGESTER_CONTROLLER.getSuggestions(this);
+        return suggester.getSuggestions(this);
     }
 }
