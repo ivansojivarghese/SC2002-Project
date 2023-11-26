@@ -15,7 +15,7 @@ public class Date {
 
 /** 
  *
- * Do dates clash
+ * Do dates clash. Important for user registration and withdrawal, etc.
  *
  * @param start1  the start1. 
  * @param end1  the end1. 

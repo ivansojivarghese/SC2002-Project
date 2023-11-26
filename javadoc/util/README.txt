@@ -1,1 +1,0 @@
-This is the javadoc for the 'util' interface. Click on the index.html file to begin.

@@ -13,7 +13,7 @@ public class InputScanner {
 
 /** 
  *
- * It is a constructor. 
+ * It is a constructor. Gets instances of mul. scanners - for user input.
  *
  */
     private InputScanner() {} 

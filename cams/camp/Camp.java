@@ -16,6 +16,7 @@ import cams.util.SavableObject;
 
  /**
  * The class Camp implements serializable. Allocate properties under certain data types.
+ * Allows for saving of object variables to user device
  */ 
 public class Camp implements Serializable {
     @Serial
@@ -74,7 +75,7 @@ public class Camp implements Serializable {
  * Camp. Builds the camp.
  *
  * @param builder  the builder. 
- * @return 	private
+ * @return 	private: file name from folder
  */
 	private Camp(Builder builder) { 
 
@@ -96,7 +97,13 @@ public class Camp implements Serializable {
 		this.bannedUsers = builder.bannedUsers;
 		savable.saveObject(this, folderName, getFileName());
 	}
-
+	/** 
+	 *
+	 * Camp. Builds the camp.
+	 *
+	 * @param builder  the builder. 
+	 * @return 	public
+	 */
 	public static class Builder {
 		private String campName;
 		private LocalDate startDate;
@@ -122,7 +129,7 @@ public class Camp implements Serializable {
  *
  * Builder
  *
- * @return 		public
+ * @return 		public Builder
  */
 		public Builder() { 
 
@@ -140,7 +147,7 @@ public class Camp implements Serializable {
  * Camp name
  *
  * @param campName  the camp name. 
- * @return Builder
+ * @return Builder 
  */
 		public Builder campName(String campName) { 
 
@@ -347,7 +354,7 @@ public class Camp implements Serializable {
 
 /** 
  *
- * Build
+ * Build a camp
  *
  * @return Camp
  */
@@ -398,7 +405,7 @@ public class Camp implements Serializable {
 
 /** 
  *
- * Who are banned
+ * Checks if the user has been banned.
  *
  * @param UserID  the user identifier. 
  * @return boolean
@@ -661,7 +668,7 @@ public class Camp implements Serializable {
  * Add committee
  *
  * @param userID  the user identifier. 
- * @return int
+ * @return int: 1 or 0, determinant to see if the user has been added.
  */
 	public int addCommittee(String userID) { 
 

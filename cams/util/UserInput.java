@@ -11,7 +11,7 @@ public class UserInput {
 
 /** 
  *
- * Gets the integer input
+ * Gets the integer input. ONLY integers allowed. Returns error if not.
  *
  * @param min  the min. 
  * @param max  the max. 
@@ -76,7 +76,7 @@ public class UserInput {
  *
  * Validate input
  *
- * @param bool  the bool. 
+ * @param bool  the boolean. Provides 2-values determinants to questions (during registration, etc.). Support for Yes/No questions.
  * @return Boolean
  */
     public static Boolean validateInput(String bool){ 

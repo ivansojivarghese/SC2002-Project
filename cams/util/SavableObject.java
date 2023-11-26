@@ -3,7 +3,7 @@ import java.io.*;
 
 
  /**
- * The class Savable object implements savable
+ * The class Savable object implements savable. 
  */ 
 public class SavableObject implements Savable {
     private static final String fileLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;

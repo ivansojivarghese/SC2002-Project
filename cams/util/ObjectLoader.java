@@ -15,8 +15,8 @@ public class ObjectLoader implements Loader{
  *
  * Load object
  *
- * @param fileName  the file name. 
- * @return Serializable
+ * @param fileName  the file name in focus
+ * @return Serializable updates of the file
  */
     public Serializable loadObject(String fileName) { 
 
