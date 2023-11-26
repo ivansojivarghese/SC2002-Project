@@ -18,22 +18,6 @@ import java.util.Set;
  * This class applies the business logic to perform these actions, such as checking camp availability.
  */
 public class StudentParticipationController implements ParticipationController, Serializable {
-	private static ParticipationController instance;
-
-    /**
-     * Provides a global point of access to the {@link StudentParticipationController} instance.
-     *
-     * @return The singleton instance of {@link StudentParticipationController}.
-     */
-	public static ParticipationController getInstance() {
-        // If the instance is null, create a new one
-        if (instance == null) {
-            instance = new StudentParticipationController();
-        }
-        // Return the existing/new instance
-        return instance;
-    }
-
     /**
      * Deregisters a user from a specified camp.
      * <p>
@@ -128,13 +112,13 @@ public class StudentParticipationController implements ParticipationController, 
         user.addCamp(selectedCamp); //add camp to attendee
         
         if (selectedCamp.getCommitteeSlots() > 0) { // if committee vacancy remains
-	        System.out.println("Be part of the committee? (Y: Yes, N: No)");
+	        System.out.println("Be part of the committee? (Y: Yes, wN: No)");
 	        input = UserInput.getStringInput();
 	        committeeCheck = UserInput.validateInput(input);
 	
 	        if (Boolean.TRUE.equals(committeeCheck)) {
 		        if(user instanceof Committable) {
-		            // selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
+		            // if committee slots are vacant, auto add the user
 		            if (selectedCamp.addCommittee(user.getUserID()) == 1) {
 		            	((Committable) user).setCommittee(campName);
 		            }
@@ -143,16 +127,6 @@ public class StudentParticipationController implements ParticipationController, 
         }
         
         System.out.println("Successfully registered.");
-        
-        // System.out.println("Successfully registered.");
-
-        /*
-        if(user instanceof Committable) {
-            // selectedCamp.addCommittee(user.getUserID()); // if committee slots are vacant, auto add the user
-            if (selectedCamp.addCommittee(user.getUserID()) == 1) {
-            	((Committable) user).setCommittee(campName);
-            }
-        }*/
     }
 
     /**

@@ -132,7 +132,7 @@ public class StaffOrganiserController implements OrganiserController, Serializab
         //TODO implement camp assignment
     	
     	UserRepository userRepo = UnifiedUserRepository.getInstance();
-    	ParticipationController participationController = StudentParticipationController.getInstance();
+    	ParticipationController participationController = new StudentParticipationController();
 
         participationController.register(userRepo.retrieveUser(UserID), campName);
     }

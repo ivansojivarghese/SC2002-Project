@@ -76,7 +76,7 @@ public class OrganiserUI implements DashboardState {
         CampDetails details = organiserController.getCampDetails(selectedCamp);
         actions.put(0, dashboard::loggedIn);
         actions.put(1, () -> assignStudent(dashboard, selectedCamp));
-        actions.put(2, () -> changeName(dashboard, details));
+        actions.put(2, () -> changeCampName(dashboard, details));
         actions.put(3, () -> toggleVisibility(dashboard, details));
         actions.put(4, () -> changeFaculty(dashboard, details));
         actions.put(5, () -> changeAttendeeSlots(dashboard, details));
@@ -150,7 +150,7 @@ public class OrganiserUI implements DashboardState {
      * @param dashboard The dashboard context.
      * @param details   The {@link CampDetails} object containing information about the camp.
      */
-    protected void changeName(Dashboard dashboard, CampDetails details) {
+    protected void changeCampName(Dashboard dashboard, CampDetails details) {
         String updatedName;
         System.out.println("Camp's current name is: " + details.getCampName());
         System.out.println("Set a new name for the Camp: ");

@@ -23,7 +23,7 @@ public class LogoutState implements DashboardState{
 
         // START main menu
         System.out.println("Welcome to the Camp Application and Management System (CAMs).");
-        System.out.println("1: LoginAttempt");
+        System.out.println("1: Login");
         System.out.println("0: Quit");
         option = UserInput.getIntegerInput(0, 1, "SELECT AN ACTION: ");
 
@@ -35,7 +35,7 @@ public class LogoutState implements DashboardState{
                     dashboard.setQuit(true);
                 }
                 case 1 -> {
-                    System.out.println("Attempting LoginAttempt...");
+                    System.out.println("Attempting Login...");
                     System.out.println("______________________________________________________________");
                     authenticatedUser = new LoginAttempt().loginAttempt();
                 }
