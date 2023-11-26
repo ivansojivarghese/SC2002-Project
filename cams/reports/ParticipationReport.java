@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
@@ -115,7 +116,7 @@ public class ParticipationReport implements ReportGenerator {
             String fileName = scanner.nextLine().trim();
 
             // Modify the outputPath to use a relative path to the "outputs" folder
-            String outputPath = "outputs/" + fileName + ".xlsx";
+            String outputPath = "outputs" + File.separator + fileName + ".xlsx";
 
             // Write to file
             try (FileOutputStream fileOut = new FileOutputStream(outputPath)) {
