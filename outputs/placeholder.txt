@@ -1,1 +1,0 @@
-this document serves to be a placeholder for the output folder so it is not empty.
