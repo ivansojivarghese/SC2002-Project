@@ -1,0 +1,1 @@
+This text file serves to contain user and camp resource files.
