@@ -2,8 +2,8 @@ package cams.dashboards.menu;
 
 import cams.camp.CampDisplayService;
 import cams.camp.CampService;
-import cams.dashboards.controllers.participant.ParticipationController;
-import cams.dashboards.controllers.participant.StudentParticipationController;
+import cams.dashboards.participant_controllers.ParticipationController;
+import cams.dashboards.participant_controllers.StudentParticipationController;
 import cams.enquiry.enquiry_menus.EnquirerUI;
 import cams.users.User;
 import cams.util.InputScanner;
