@@ -16,7 +16,13 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
+/**
+ * Implementation of the {@link ReportGenerator} interface for generating performance reports.
+ */
 public class PerformanceReport implements ReportGenerator {
+    /**
+     * Displays the menu options for the performance report.
+     */
     @Override
     public void displayMenu() {
         // Display performance report menu options
@@ -24,7 +30,11 @@ public class PerformanceReport implements ReportGenerator {
         System.out.println("2. Back to Main Menu");
         System.out.println("3. Exit"); // Added option to exit the application
     }
-
+    /**
+     * Generates a performance report for the given camp based on user input.
+     *
+     * @param camp The camp for which the performance report is generated.
+     */
     @Override
     public void generateReport(Camp camp) {
         Scanner scanner = new Scanner(System.in);
@@ -55,7 +65,11 @@ public class PerformanceReport implements ReportGenerator {
             }
         }
     }
-
+    /**
+     * Generates a camp attendance report and saves it to an Excel file.
+     *
+     * @param camp The camp for which the attendance report is generated.
+     */
     private void generateCampAttendanceReport(Camp camp) {
         try (Workbook workbook = new XSSFWorkbook()) {
             Scanner scanner = new Scanner(System.in);
@@ -141,7 +155,12 @@ public class PerformanceReport implements ReportGenerator {
             System.out.println("Error: " + e.getMessage());
         }
     }
-
+    /**
+     * Gets the user's choice for the sorting method.
+     *
+     * @param scanner The scanner object for user input.
+     * @return The user's choice for the sorting method.
+     */
     private int getSortingOption(Scanner scanner) {
         // Display sorting options
         System.out.println("Select Sorting Method:");
@@ -153,7 +172,14 @@ public class PerformanceReport implements ReportGenerator {
         System.out.print("Enter your choice: ");
         return scanner.nextInt();
     }
-
+    /**
+     * Applies the selected sorting method to the list of committee members.
+     *
+     * @param sortingOption     The selected sorting method.
+     * @param committeeMembers  The list of committee members.
+     * @param committee         The committee members and their associated points.
+     * @return                  The list of sorted committee member names.
+     */
     private List<String> applySortingMethod(int sortingOption, List<User> committeeMembers, HashMap<String, Integer> committee) {
         // Handle invalid option, default to ascending sort
         return switch (sortingOption) {

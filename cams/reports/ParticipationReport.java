@@ -19,10 +19,14 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
+/**
+ * Implementation of the {@link ReportGenerator} interface for generating participation reports.
+ */
 public class ParticipationReport implements ReportGenerator {
     private Scanner scanner; // Declare scanner as an instance variable
-
+    /**
+     * Displays the menu options for the participation report.
+     */
     @Override
     public void displayMenu() {
         // Display participation report menu options
@@ -30,7 +34,11 @@ public class ParticipationReport implements ReportGenerator {
         System.out.println("2. Back to Main Menu");
         System.out.println("3. Exit"); // Added option to exit the application
     }
-
+    /**
+     * Generates a participation report for the given camp.
+     *
+     * @param camp The camp for which the participation report is generated.
+     */
     @Override
     public void generateReport(Camp camp) {
         try (Workbook workbook = new XSSFWorkbook()) {
@@ -128,7 +136,11 @@ public class ParticipationReport implements ReportGenerator {
             System.out.println("Error: " + e.getMessage());
         }
     }
-
+    /**
+     * Gets the user's choice for the sorting method.
+     *
+     * @return The user's choice for the sorting method.
+     */
     private int getSortingOption() {
         // Display sorting options
         System.out.println("Select Sorting Method:");
@@ -141,7 +153,14 @@ public class ParticipationReport implements ReportGenerator {
         int choice = UserInput.getIntegerInput(0, 4, "Enter your choice: ");
         return choice;
     }
-
+    /**
+     * Applies the selected sorting method to the list of attendees and committee members.
+     *
+     * @param sortingOption           The selected sorting method.
+     * @param attendeesAndCommittee   The list of attendees and committee members.
+     * @param committee               The committee members and their associated points.
+     * @return                        The list of sorted attendee and committee member names.
+     */
     private List<String> applySortingMethod(int sortingOption, List<User> attendeesAndCommittee, HashMap<String, Integer> committee) {
         return switch (sortingOption) {
             case 1 -> Filter.ascendingSort(attendeesAndCommittee.stream()
