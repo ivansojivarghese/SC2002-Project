@@ -1,5 +1,9 @@
 package cams.util;
 
+/**
+ * Faculty enumerator
+ */ 
+
 public enum Faculty {
     SCSE,
     NBS,
