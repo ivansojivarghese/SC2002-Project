@@ -4,13 +4,13 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-import cams.dashboards.CommitteeUI;
-import cams.dashboards.DashboardState;
-import cams.dashboards.StudentUI;
-import cams.controllers.replier.CommitteeReplierController;
-import cams.controllers.replier.ReplierController;
-import cams.controllers.suggester.SuggesterController;
-import cams.controllers.suggester.CommitteeSuggesterController;
+import cams.dashboards.UI.CommitteeUI;
+import cams.dashboards.UI.DashboardState;
+import cams.dashboards.UI.StudentUI;
+import cams.enquiry.replier_controller.CommitteeReplierController;
+import cams.enquiry.replier_controller.ReplierController;
+import cams.suggestion.suggester_controllers.SuggesterController;
+import cams.suggestion.suggester_controllers.CommitteeSuggesterController;
 import cams.post_types.*;
 import cams.util.Faculty;
 

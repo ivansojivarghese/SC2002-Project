@@ -1,9 +1,7 @@
 package cams.users;
-import cams.camp.CampDisplayService;
-import cams.camp.CampService;
 import cams.camp.Camp;
-import cams.dashboards.DashboardState;
-import cams.controllers.replier.ReplierController;
+import cams.dashboards.UI.DashboardState;
+import cams.enquiry.replier_controller.ReplierController;
 import cams.post_types.Post;
 import cams.util.Faculty;
 import cams.util.Savable;
@@ -33,10 +31,6 @@ public abstract class User implements Serializable {
         return Objects.equals(password, this.password);
     }
 
-    public int displayMyCamps() {
-        CampService campDisplay = new CampDisplayService();
-        return campDisplay.displayMyCamps(this);
-    }
     public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();
     public abstract ReplierController getReplierController();
