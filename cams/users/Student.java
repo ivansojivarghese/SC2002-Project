@@ -4,9 +4,9 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-import cams.dashboards.UI.CommitteeUI;
-import cams.dashboards.UI.DashboardState;
-import cams.dashboards.UI.StudentUI;
+import cams.dashboards.menu.CommitteeUI;
+import cams.dashboards.menu.DashboardState;
+import cams.dashboards.menu.StudentUI;
 import cams.enquiry.replier_controller.CommitteeReplierController;
 import cams.enquiry.replier_controller.ReplierController;
 import cams.suggestion.suggester_controllers.SuggesterController;

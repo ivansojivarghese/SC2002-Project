@@ -1,8 +1,8 @@
 package cams.users;
 
 import cams.suggestion.approver_controller.ApproverController;
-import cams.dashboards.UI.DashboardState;
-import cams.dashboards.UI.StaffUI;
+import cams.dashboards.menu.DashboardState;
+import cams.dashboards.menu.StaffUI;
 import cams.enquiry.replier_controller.ReplierController;
 import cams.enquiry.replier_controller.StaffReplierController;
 import cams.suggestion.approver_controller.StaffApproverController;
@@ -65,7 +65,7 @@ public class Staff extends User implements Serializable {
      * @return
      */
     public ReplierController getReplierController(){
-        return this.replier;
+        return replier;
     }
 
     /**
@@ -75,7 +75,7 @@ public class Staff extends User implements Serializable {
      */
     @Override
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff
-        return this.replier.getEnquiries(this);
+        return replier.getEnquiries(this);
     }
 
     /**
@@ -85,7 +85,7 @@ public class Staff extends User implements Serializable {
      */
     @Override
     public List<Post> getSuggestions() {
-        return new ArrayList<>(this.approver.getSuggestions(this));
+        return new ArrayList<>(approver.getSuggestions(this));
     }
     /**
      * Displays the camps created by the staff member

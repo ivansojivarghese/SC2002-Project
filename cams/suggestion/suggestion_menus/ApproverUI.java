@@ -2,8 +2,8 @@ package cams.suggestion.suggestion_menus;
 
 import cams.suggestion.approver_controller.ApproverController;
 import cams.suggestion.approver_controller.StaffApproverController;
-import cams.dashboards.UI.Dashboard;
-import cams.dashboards.UI.MenuAction;
+import cams.dashboards.menu.Dashboard;
+import cams.dashboards.menu.MenuAction;
 import cams.post_menus.PostApproverUI;
 import cams.users.User;
 import cams.util.UserInput;

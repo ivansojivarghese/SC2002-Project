@@ -2,8 +2,8 @@ package cams.enquiry.enquiry_menus;
 
 import cams.enquiry.enquirer_controller.EnquirerController;
 import cams.enquiry.enquirer_controller.StudentEnquirerController;
-import cams.dashboards.UI.Dashboard;
-import cams.dashboards.UI.MenuAction;
+import cams.dashboards.menu.Dashboard;
+import cams.dashboards.menu.MenuAction;
 import cams.post_menus.PosterUI;
 import cams.post_types.Post;
 import cams.users.Committable;

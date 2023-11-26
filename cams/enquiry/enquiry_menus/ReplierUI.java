@@ -1,8 +1,8 @@
 package cams.enquiry.enquiry_menus;
 
 import cams.enquiry.replier_controller.ReplierController;
-import cams.dashboards.UI.Dashboard;
-import cams.dashboards.UI.MenuAction;
+import cams.dashboards.menu.Dashboard;
+import cams.dashboards.menu.MenuAction;
 import cams.post_menus.PostReplierUI;
 import cams.post_types.Post;
 import cams.users.User;

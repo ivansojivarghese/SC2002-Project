@@ -1,4 +1,4 @@
-package cams.dashboards.UI;
+package cams.dashboards.menu;
 import cams.camp.CampDetails;
 import cams.camp.CampDisplayService;
 import cams.camp.CampService;

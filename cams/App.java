@@ -1,6 +1,6 @@
 package cams;
 
-import cams.dashboards.UI.Dashboard;
+import cams.dashboards.menu.Dashboard;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
 import cams.util.InputScanner;

@@ -1,4 +1,4 @@
-package cams.dashboards.UI;
+package cams.dashboards.menu;
 
 /**
  * Functional interface encapsulating a behavior or a block of code that can be executed on demand.

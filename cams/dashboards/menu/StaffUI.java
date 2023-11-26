@@ -1,4 +1,4 @@
-package cams.dashboards.UI;
+package cams.dashboards.menu;
 
 import cams.camp.Camp;
 import cams.camp.CampDetails;
@@ -12,7 +12,6 @@ import cams.suggestion.suggestion_menus.ApproverUI;
 import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
-import cams.users.UserRepository;
 import cams.reports.ParticipationReport;
 import cams.reports.PerformanceReport;
 import cams.reports.ReportGenerator;

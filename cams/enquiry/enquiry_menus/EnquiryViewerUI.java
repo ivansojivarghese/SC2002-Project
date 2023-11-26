@@ -1,6 +1,6 @@
 package cams.enquiry.enquiry_menus;
 
-import cams.dashboards.UI.Dashboard;
+import cams.dashboards.menu.Dashboard;
 import cams.post_menus.PostViewerUI;
 import cams.post_types.Post;
 import cams.users.User;

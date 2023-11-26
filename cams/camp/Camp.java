@@ -45,7 +45,7 @@ public class Camp implements Serializable {
  *
  * Gets the file name
  *
- * @return the file name
+ * @return The name of the serialized camp file.
  */
 	public String getFileName() { 
 
@@ -57,28 +57,25 @@ public class Camp implements Serializable {
  *
  * Gets the folder name
  *
- * @return the folder name
- * @throws return folderName;}
-	//Best practice to always have an empty constructor
-	public Camp(
+ * @return The name of the folder where the object will be stored after being serialized.
  */
-	public String getFolderName(){return folderName;} 
-	//Best practice to always have an empty constructor
-	public Camp() {
+	public String getFolderName(){return folderName;}
 
+	 /**
+	  * Empty camp constructor
+	  */
+	public Camp() {
 	}
 
 	//Camp class has complex construction so using a builder provides better readability
 
 /** 
  *
- * Camp. Builds the camp.
+ * Constructor for the complex camp object through the use of the Builder object.
  *
- * @param builder  the builder. 
- * @return 	private: file name from folder
+ * @param builder The builder for the camp.
  */
-	private Camp(Builder builder) { 
-
+	private Camp(Builder builder) {
 		this.campName = builder.campName;
 		this.startDate = builder.startDate;
 		this.endDate = builder.endDate;
@@ -97,12 +94,9 @@ public class Camp implements Serializable {
 		this.bannedUsers = builder.bannedUsers;
 		savable.saveObject(this, folderName, getFileName());
 	}
-	/** 
-	 *
-	 * Camp. Builds the camp.
-	 *
-	 * @param builder  the builder. 
-	 * @return 	public
+
+	/**
+	 * Builder for the camp object to ensure readability
 	 */
 	public static class Builder {
 		private String campName;
@@ -122,15 +116,9 @@ public class Camp implements Serializable {
 		private HashMap<String, Integer> committee;
 		private HashSet<String> bannedUsers;
 
-
-
-
-/** 
- *
- * Builder
- *
- * @return 		public Builder
- */
+		/**
+		 * Builder
+		 */
 		public Builder() { 
 
 			// Default values can be set here
@@ -141,28 +129,25 @@ public class Camp implements Serializable {
 			this.bannedUsers = new HashSet<>();
 		}
 
-
-/** 
- *
- * Camp name
- *
- * @param campName  the camp name. 
- * @return Builder 
- */
+		/**
+		 * Camp name
+		 *
+		 * @param campName  the camp name.
+		 * @return Builder
+		 */
 		public Builder campName(String campName) { 
 
 			this.campName = campName;
 			return this;
 		}
 
-
-/** 
- *
- * Set start date of camp.
- *
- * @param startDate  the start date. 
- * @return Builder
- */
+		/**
+		 *
+		 * Set start date of camp.
+		 *
+		 * @param startDate  the start date.
+		 * @return Builder
+		 */
 		public Builder startDate(LocalDate startDate) { 
 
 			this.startDate = startDate;
@@ -170,13 +155,13 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * Set End date of camp
- *
- * @param endDate  the end date. 
- * @return Builder
- */
+		/**
+		 *
+		 * Set End date of camp
+		 *
+		 * @param endDate  the end date.
+		 * @return Builder
+		 */
 		public Builder endDate(LocalDate endDate) { 
 
 			this.endDate = endDate;
@@ -184,13 +169,13 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * Set Closing date of camp.
- *
- * @param closingDate  the closing date. 
- * @return Builder
- */
+		/**
+		 *
+		 * Set Closing date of camp.
+		 *
+		 * @param closingDate  the closing date.
+		 * @return Builder
+		 */
 		public Builder closingDate(LocalDate closingDate) { 
 
 			this.closingDate = closingDate;
@@ -198,13 +183,13 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * Set Location
- *
- * @param location  the location. 
- * @return Builder
- */
+		/**
+		 *
+		 * Set Location
+		 *
+		 * @param location  the location.
+		 * @return Builder
+		 */
 		public Builder location(String location) { 
 
 			this.location = location;
@@ -212,13 +197,12 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * Set Attendee slots
- *
- * @param attendeeSlots  the attendee slots. 
- * @return Builder
- */
+		/**
+		 * Set Attendee slots
+		 *
+		 * @param attendeeSlots  the total number attendee slots in this camp.
+		 * @return Builder
+		 */
 		public Builder attendeeSlots(int attendeeSlots) { 
 
 			this.attendeeSlots = attendeeSlots;
@@ -226,13 +210,13 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * Set Committee slots
- *
- * @param slots  the slots. 
- * @return Builder
- */
+		/**
+		 *
+		 * Set number of Committee slots in the camp.
+		 *
+		 * @param slots  the total number of slots.
+		 * @return Builder
+		 */
 		public Builder committeeSlots(int slots) { 
 
 			this.committeeSlots = slots;
@@ -240,27 +224,26 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * Set Description
- *
- * @param description  the description. 
- * @return Builder
- */
+		/**
+		 *
+		 * Set Description of the camp
+		 *
+		 * @param description  the description.
+		 * @return Builder
+		 */
 		public Builder description(String description) { 
 
 			this.description = description;
 			return this;
 		}
 
-
-/** 
- *
- * Who is In charge? Likely a staff member.
- *
- * @param inCharge  the in charge. 
- * @return Builder
- */
+		/**
+		 *
+		 * Set the user in charge of the camp.
+		 *
+		 * @param inCharge  the in charge.
+		 * @return Builder
+		 */
 		public Builder inCharge(String inCharge) { 
 
 			this.inCharge = inCharge;
@@ -268,13 +251,13 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * Set the Faculty restriction.
- *
- * @param faculty  the faculty. 
- * @return Builder
- */
+		/**
+		 *
+		 * Set the Faculty restriction.
+		 *
+		 * @param faculty  the faculty.
+		 * @return Builder
+		 */
 		public Builder facultyRestriction(Faculty faculty) { 
 
 			this.facultyRestriction = faculty;
@@ -282,13 +265,13 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * List the Enquiries
- *
- * @param enquiries  the enquiries. 
- * @return Builder
- */
+		/**
+		 *
+		 * List the Enquiries
+		 *
+		 * @param enquiries  A list of enquiries stored as Post objects.
+		 * @return Builder
+		 */
 		public Builder enquiries(List<Post> enquiries) { 
 
 			this.enquiries = enquiries;
@@ -296,41 +279,34 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * List the Suggestions
- *
- * @param suggestions  the suggestions. 
- * @return Builder
- */
-		public Builder suggestions(List<Post> suggestions) { 
-
+		/**
+		 * List the Suggestions
+		 *
+		 * @param suggestions Adds a list of suggestions to the builder
+		 * @return Builder
+		 */
+		public Builder suggestions(List<Post> suggestions) {
 			this.suggestions = suggestions;
 			return this;
 		}
 
-
-/** 
- *
- * Who are the Attendees
- *
- * @param attendees  the attendees. 
- * @return Builder
- */
-		public Builder attendees(List<String> attendees) { 
-
+		/**
+		 * Sets a list of attendees to the camp builder
+		 * @param attendees String list of attendees' UserIDs
+		 */
+		public Builder attendees(List<String> attendees) {
 			this.attendees = attendees;
 			return this;
 		}
 
 
-/** 
- *
- * Define the Committee structure
- *
- * @param committee  the committee. 
- * @return Builder
- */
+	/**
+	 *
+	 * Adds a committee into the builder
+	 *
+	 * @param committee Hashmap object containing the key-value pairs the UserID string of a committee member and their number of points
+	 * @return Builder
+	 */
 		public Builder committee(HashMap<String, Integer> committee) { 
 
 			this.committee = committee;
@@ -338,40 +314,34 @@ public class Camp implements Serializable {
 		}
 
 
-/** 
- *
- * Visible
- *
- * @param visibility  the visibility. 
- * @return Builder
- */
+		/**
+		 * Sets the visibility of the camp.
+		 *
+		 * @param visibility The boolean value to set the camp's visibility to;
+		 * if true, it represents that the camp will be visible.
+		 * @return Builder
+		 */
 		public Builder visible(boolean visibility) { 
 
 			this.visible = visibility;
 			return this;
 		}
 
-
-/** 
- *
- * Build a camp
- *
- * @return Camp
- */
-		public Camp build() { 
-
+		/**
+		 * Method to call the camp constructor after building it.
+		 *
+		 * @return Camp
+		 */
+		public Camp build() {
 			return new Camp(this);
 		}
-
-
 	}
-
 
 /** 
  *
  * Update details
  *
- * @param details  the details. 
+ * @param details CampDetails object storing the updated camp details to set the camp attributes to.
  */
 	public void updateDetails(CampDetails details) { 
 
@@ -392,9 +362,9 @@ public class Camp implements Serializable {
 
 /** 
  *
- * Add banned users. Banned from those camps they have registered previously.
+ * Add banned users. Users may be banned from a camp once they deregister it.
  *
- * @param UserID  the user identifier. 
+ * @param UserID The user identifier.
  */
 	public void addBannedUser(String UserID){ 
 
@@ -407,8 +377,8 @@ public class Camp implements Serializable {
  *
  * Checks if the user has been banned.
  *
- * @param UserID  the user identifier. 
- * @return boolean
+ * @param UserID The user identifier.
+ * @return boolean value representing whether the student is banned from the camp.
  */
 	public boolean isBanned(String UserID){ 
 
@@ -421,7 +391,7 @@ public class Camp implements Serializable {
  *
  * Gets the camp name
  *
- * @return the camp name
+ * @return The current camp name.
  */
 	public String getCampName() { 
 
@@ -432,7 +402,7 @@ public class Camp implements Serializable {
  *
  * Sets the camp name
  *
- * @param campName  the camp name. 
+ * @param campName The updated name of the camp.
  * @return Camp
  */
 	public Camp setCampName(String campName) { 
@@ -720,35 +690,33 @@ public class Camp implements Serializable {
  *
  * Add point to committee member
  *
- * @param userID  the user identifier. 
+ * @param userID  the user identifier.
  * @param pointsAdded  the points added. 
  */
-	public void addPointToCommitteeMember(String userID, int pointsAdded){ 
-
+	public void addPointToCommitteeMember(String userID, int pointsAdded){
 		int currentPoints = this.committee.get(userID);
 		this.committee.put(userID, currentPoints + pointsAdded);
 	}
 
-	//if specified user has already joined the camp as an attendee or committee, returns true
 
 /** 
  *
  * Check for member
  *
- * @param userID  the user identifier. 
- * @return boolean
+ * @param userID The userID to be checked.
+ * @return boolean value representing whether the user has registered for the camp.
+ *	if specified user has already joined the camp as an attendee or committee, returns true
  */
-	public boolean checkForMember(String userID) { 
-
+	public boolean checkForMember(String userID) {
 		return this.committee.containsKey(userID) || this.attendees.contains(userID);
 	}
 
 
 /** 
  *
- * Gets the num attendees
+ * Gets the number of attendees
  *
- * @return the num attendees
+ * @return the number of attendees
  */
 	public int getNumAttendees() { 
 
@@ -758,9 +726,9 @@ public class Camp implements Serializable {
 
 /** 
  *
- * Gets the remaining committee slots
+ * Gets the number of remaining committee slots.
  *
- * @return the remaining committee slots
+ * @return the number of remaining committee slots.
  */
 	public int getRemainingCommitteeSlots() { 
 
@@ -770,9 +738,9 @@ public class Camp implements Serializable {
 
 /** 
  *
- * Gets the num committee members
+ * Gets the number of committee members
  *
- * @return the num committee members
+ * @return the number of committee members
  */
 	public int getNumCommitteeMembers() { 
 
@@ -804,15 +772,13 @@ public class Camp implements Serializable {
 		return this.attendeeSlots - this.getNumAttendees();
 	}
 
-
 /** 
  *
  * Gets the description
  *
  * @return the description
  */
-	public String getDescription() { 
-
+	public String getDescription() {
 		return description;
 	}
 
@@ -820,16 +786,14 @@ public class Camp implements Serializable {
  *
  * Sets the description
  *
- * @param description  the description. 
+ * @param description The camp's description.
  * @return Camp
  */
-	public Camp setDescription(String description) { 
-
+	public Camp setDescription(String description) {
 		this.description = description;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
-
 
 /** 
  *
@@ -849,31 +813,28 @@ public class Camp implements Serializable {
  * @param inCharge  the in charge. 
  * @return Camp
  */
-	public Camp setInCharge(String inCharge) { 
-
+	public Camp setInCharge(String inCharge) {
 		this.inCharge = inCharge;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-
 /** 
  *
- * Gets the visible
+ * Gets the visibility value of the camp as a boolean.
  *
- * @return the visible
+ * @return the visibility value of the camp
  */
-	public boolean getVisible() { 
-
+	public boolean getVisible() {
 		return visible;
 	}
 
 /** 
  *
- * Sets the visible
+ * Sets the visibility of the camp.
  *
- * @param visible  the visible. 
- * @return Camp
+ * @param visible boolean value to set the camp visibility to. If true, camp is visible.
+ * @return Camp for method chaining.
  */
 	public Camp setVisible(boolean visible) { 
 
@@ -911,9 +872,9 @@ public class Camp implements Serializable {
 
 /** 
  *
- * Sets the enquiries
+ * Sets the enquiries to a specified list of enquiry objects upcasted to post objects.
  *
- * @param enquiries  the enquiries. 
+ * @param enquiries  A list of enquiries stored as post objects.
  */
 	public void setEnquiries(List<Post> enquiries) { 
 
@@ -922,9 +883,9 @@ public class Camp implements Serializable {
 
 /** 
  *
- * Add enquiry
+ * Adds enquiry to the camp.
  *
- * @param post  the post. 
+ * @param post  The post to be added.
  */
 	public void addEnquiry(Post post){ 
 
@@ -935,12 +896,9 @@ public class Camp implements Serializable {
 
 /** 
  *
- * Gets the enquiries
+ * Gets all the camp's enquiries.
  *
- * @return the enquiries
- * @throws  return this.enquiries; }
-
-	public void addSuggestion(Post post
+ * @return A list of posts representing the enquiries of a camp.
  */
 	public List<Post> getEnquiries(){ return this.enquiries; } 
 
@@ -951,29 +909,24 @@ public class Camp implements Serializable {
 	}
 
 
-/** 
- *
- * Sets the suggestions
- *
- * @param suggestions  the suggestions. 
- */
-	public void setSuggestions(List<Post> suggestions) { 
-
+	/**
+	 *
+	 * Sets the suggestions of a camp
+	 *
+	 * @param suggestions  A list of post objects representing the suggestions to set the camp suggestions to.
+	 */
+	public void setSuggestions(List<Post> suggestions) {
 		this.suggestions = suggestions;
 		savable.saveObject(this, folderName, getFileName());
 	}
 
 
-/** 
- *
- * Gets the suggestions
- *
- * @return the suggestions
- * @throws  return this.suggestions; }
-
-	public void removePost(PostType postType
- * @throws  Post post
- */
+	/**
+	 *
+	 * Gets a list of the camp's suggestions
+	 *
+	 * @return A list of suggestions stored as post objects.
+	 */
 	public List<Post> getSuggestions(){ return this.suggestions; } 
 
 	public void removePost(PostType postType, Post post){
@@ -986,10 +939,8 @@ public class Camp implements Serializable {
 	}
 
 
-/** 
- *
- * Save
- *
+/**
+ * Saves the current camp object by serializing it into a location.
  */
 	public void save(){ 
 
@@ -998,11 +949,10 @@ public class Camp implements Serializable {
 
 	//Prints formatted camp information to user
 
-/** 
- *
- * Display
- *
- */
+	/**
+	 * Displays the camp's basic information.
+	 * Does not display the visibility of the camp. Visibility attribute is hidden from the UI.
+	 */
 	public void display() { 
 
 		System.out.println("Name: " + this.campName);
@@ -1015,14 +965,14 @@ public class Camp implements Serializable {
 		System.out.println("Description: " + this.description);
 		System.out.println("Staff-in-Charge: " + this.inCharge);
 	}
-	@Override
 
-/** 
- *
- * To string
- *
- * @return String
- */
+	/**
+	 *
+	 * Converts the camp's attributes to a string.
+	 *
+	 * @return String value containing the camp information.
+	 */
+	@Override
 	public String toString() { 
 
 	    return "Name: " + this.campName + ", Starting Date: " + this.startDate + ", Ending Date: "

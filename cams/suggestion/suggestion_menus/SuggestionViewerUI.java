@@ -1,6 +1,6 @@
 package cams.suggestion.suggestion_menus;
 
-import cams.dashboards.UI.Dashboard;
+import cams.dashboards.menu.Dashboard;
 import cams.post_menus.PostViewerUI;
 import cams.post_types.Post;
 import cams.users.User;
@@ -27,7 +27,7 @@ public class SuggestionViewerUI implements PostViewerUI {
     /**
      * Logic for displaying the suggestions of a specified user
      * @param user The user whose posts are to be displayed.
-     * @return
+     * @return Integer value representing the total suggestions available to be displayed
      */
     public int view(User user){
         System.out.println("Camp Suggestions: ");

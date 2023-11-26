@@ -1,4 +1,4 @@
-package cams.dashboards.UI;
+package cams.dashboards.menu;
 import cams.users.User;
 /**
  * The main dashboard user interface for the application.

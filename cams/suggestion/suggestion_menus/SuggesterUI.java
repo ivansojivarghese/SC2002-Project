@@ -2,8 +2,8 @@ package cams.suggestion.suggestion_menus;
 
 import cams.suggestion.suggester_controllers.CommitteeSuggesterController;
 import cams.suggestion.suggester_controllers.SuggesterController;
-import cams.dashboards.UI.Dashboard;
-import cams.dashboards.UI.MenuAction;
+import cams.dashboards.menu.Dashboard;
+import cams.dashboards.menu.MenuAction;
 import cams.post_menus.PostViewerUI;
 import cams.users.Committable;
 import cams.users.User;
@@ -83,7 +83,7 @@ public class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
      * Handles the user interaction required for the inputs of a new suggestion.
      * Submits a new suggestion to a camp.
      * Adds one point for every suggestion added.
-     * The user enters the information and the method {@link #submitSuggestion} handles the abstracted logic
+     * The user enters the information and the method {@link #submit(String, User, String)} handles the abstracted logic
      * @param user The user making the suggestion.
      */
     protected void submitSuggestion(User user){
@@ -121,7 +121,7 @@ public class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
 
     /**
      * Handles the user interaction required for deleting one of the user's existing suggestions.
-     * The user selects a suggestion to delete and the method {@link #deleteSuggestion} handles the abstracted logic
+     * The user selects a suggestion to delete and the method {@link #delete(User, int)} handles the abstracted logic
      * @param user Current owner of the suggestion.
      * @param numSuggestions Total number of suggestions owned by the user.
      */

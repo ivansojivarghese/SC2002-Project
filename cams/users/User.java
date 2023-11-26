@@ -1,6 +1,6 @@
 package cams.users;
 import cams.camp.Camp;
-import cams.dashboards.UI.DashboardState;
+import cams.dashboards.menu.DashboardState;
 import cams.enquiry.replier_controller.ReplierController;
 import cams.post_types.Post;
 import cams.util.Faculty;
@@ -16,11 +16,11 @@ import java.util.Objects;
 /**
  * Abstract class representing a user in the system.
  * Subclasses must implement specific functionality for different user types.
- *
+ * <p>
  * This class provides common properties and methods for all user types,
  * including basic information such as name, user ID, password, and faculty.
  * It also defines abstract methods for retrieving user-specific data and actions.
- *
+ * <p>
  * The class is Serializable and implements Savable to enable saving and loading
  * user objects to and from files using the SavableObject utility.
  *
