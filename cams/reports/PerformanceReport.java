@@ -150,7 +150,7 @@ public class PerformanceReport implements ReportGenerator {
                 workbook.write(fileOut);
             }
 
-            System.out.println("Camp Attendance Report generated successfully. File saved at: " + outputPath);
+            System.out.println("Camp Performance Report generated successfully. File saved at: " + outputPath);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
