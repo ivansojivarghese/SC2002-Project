@@ -7,11 +7,37 @@ import cams.database.UnifiedCampRepository;
 import java.time.LocalDate;
 
 //Utility Functions related to Date
+
+ /**
+ * The class Date
+ */ 
 public class Date {
-    public static boolean doDatesClash(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
+
+/** 
+ *
+ * Do dates clash. Important for user registration and withdrawal, etc.
+ *
+ * @param start1  the start1. 
+ * @param end1  the end1. 
+ * @param start2  the start2. 
+ * @param end2  the end2. 
+ * @return boolean
+ */
+    public static boolean doDatesClash(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) { 
+
         return !start1.isAfter(end2) && !end1.isBefore(start2); //returns true if there is an overlap (clash) and false otherwise.
     }
-    public static boolean checkClashes(User user, Camp camp){
+
+/** 
+ *
+ * Check clashes
+ *
+ * @param user  the user. 
+ * @param camp  the camp. 
+ * @return boolean
+ */
+    public static boolean checkClashes(User user, Camp camp){ 
+
         UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
         boolean clash = false;
         for (String c: user.getMyCamps()){

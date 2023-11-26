@@ -1,5 +1,9 @@
 package cams.util;
 
+/**
+ * Faculty enumerator. Constant values for appropriate faculty handling. No other values for this property allowed.
+ */ 
+
 public enum Faculty {
     SCSE,
     NBS,

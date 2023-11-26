@@ -2,9 +2,24 @@ package cams.util;
 
 import java.util.Scanner;
 
+
+ /**
+ * The class User input from scanner
+ */ 
 public class UserInput {
     //Method to safely get and returns an integer input
-    public static int getIntegerInput(int min, int max, String request) {
+
+/** 
+ *
+ * Gets the integer input. ONLY integers allowed. Returns error if not.
+ *
+ * @param min  the min. 
+ * @param max  the max. 
+ * @param request  the request. 
+ * @return the integer input
+ */
+    public static int getIntegerInput(int min, int max, String request) { 
+
         Scanner sc = InputScanner.getInstance();
         int option = min - 1; // Initialize to an invalid value
         while (true) {
@@ -28,7 +43,15 @@ public class UserInput {
         }
     }
     
-    public static String getStringInput() { // update string-based input
+
+
+/** 
+ *
+ * Gets the string input
+ *
+ * @return the string input
+ */
+    public static String getStringInput() { // update string-based input 
     	String input;
         Scanner sc = InputScanner.getInstance();
         input = sc.nextLine();
@@ -37,6 +60,7 @@ public class UserInput {
 
 
     public static boolean getBoolInput(String request){
+
         String input;
         Scanner sc = InputScanner.getInstance();
         Boolean bool;
@@ -47,7 +71,16 @@ public class UserInput {
         } while (bool == null);
         return bool;
     }
-    public static Boolean validateInput(String bool){
+
+/** 
+ *
+ * Validate input
+ *
+ * @param bool  the boolean. Provides 2-values determinants to questions (during registration, etc.). Support for Yes/No questions.
+ * @return Boolean
+ */
+    public static Boolean validateInput(String bool){ 
+
         if ("1".equalsIgnoreCase(bool) || "yes".equalsIgnoreCase(bool) || bool.equalsIgnoreCase("y") ||
                 "true".equalsIgnoreCase(bool)) {
             return true;

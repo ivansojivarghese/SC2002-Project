@@ -1,10 +1,24 @@
 package cams.util;
 import java.io.*;
 
+
+ /**
+ * The class Savable object implements savable. 
+ */ 
 public class SavableObject implements Savable {
     private static final String fileLocation = System.getProperty("user.dir") + File.separator + "resources" + File.separator;
 
-    public void saveObject(Serializable object, String folderName, String fileName) {
+
+/** 
+ *
+ * Save object
+ *
+ * @param object  the object. 
+ * @param folderName  the folder name. 
+ * @param fileName  the file name. 
+ */
+    public void saveObject(Serializable object, String folderName, String fileName) { 
+
         try (ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileLocation + folderName + File.separator + fileName))) {
             out.writeObject(object);
         }
@@ -16,7 +30,17 @@ public class SavableObject implements Savable {
         }
     }
 
-    public boolean deleteFile(String folderName, String fileName) {
+
+/** 
+ *
+ * Delete file
+ *
+ * @param folderName  the folder name. 
+ * @param fileName  the file name. 
+ * @return boolean
+ */
+    public boolean deleteFile(String folderName, String fileName) { 
+
         try{
             File file = new File(fileLocation + folderName + File.separator + fileName);
             if (!file.exists()) {

@@ -13,6 +13,11 @@ import cams.util.Faculty;
 import cams.util.Savable;
 import cams.util.SavableObject;
 
+
+ /**
+ * The class Camp implements serializable. Allocate properties under certain data types.
+ * Allows for saving of object variables to user device
+ */ 
 public class Camp implements Serializable {
     @Serial
     private static final long serialVersionUID = 5449975410110048101L; //crc32b Hash of "Camp" converted to ASCII
@@ -35,16 +40,45 @@ public class Camp implements Serializable {
 	private HashMap<String, Integer> committee;
 	private HashSet<String> bannedUsers;
 
-	public String getFileName() {
+
+/** 
+ *
+ * Gets the file name
+ *
+ * @return the file name
+ */
+	public String getFileName() { 
+
 		return "Camp_" + this.campName.replaceAll("\\s+", "_") + ".ser";
 	}
-	public String getFolderName(){return folderName;}
+
+
+/** 
+ *
+ * Gets the folder name
+ *
+ * @return the folder name
+ * @throws return folderName;}
+	//Best practice to always have an empty constructor
+	public Camp(
+ */
+	public String getFolderName(){return folderName;} 
 	//Best practice to always have an empty constructor
 	public Camp() {
+
 	}
 
 	//Camp class has complex construction so using a builder provides better readability
-	private Camp(Builder builder) {
+
+/** 
+ *
+ * Camp. Builds the camp.
+ *
+ * @param builder  the builder. 
+ * @return 	private: file name from folder
+ */
+	private Camp(Builder builder) { 
+
 		this.campName = builder.campName;
 		this.startDate = builder.startDate;
 		this.endDate = builder.endDate;
@@ -63,7 +97,13 @@ public class Camp implements Serializable {
 		this.bannedUsers = builder.bannedUsers;
 		savable.saveObject(this, folderName, getFileName());
 	}
-
+	/** 
+	 *
+	 * Camp. Builds the camp.
+	 *
+	 * @param builder  the builder. 
+	 * @return 	public
+	 */
 	public static class Builder {
 		private String campName;
 		private LocalDate startDate;
@@ -84,7 +124,15 @@ public class Camp implements Serializable {
 
 
 
-		public Builder() {
+
+/** 
+ *
+ * Builder
+ *
+ * @return 		public Builder
+ */
+		public Builder() { 
+
 			// Default values can be set here
 			this.suggestions = new ArrayList<>();
 			this.enquiries = new ArrayList<>();
@@ -93,89 +141,240 @@ public class Camp implements Serializable {
 			this.bannedUsers = new HashSet<>();
 		}
 
-		public Builder campName(String campName) {
+
+/** 
+ *
+ * Camp name
+ *
+ * @param campName  the camp name. 
+ * @return Builder 
+ */
+		public Builder campName(String campName) { 
+
 			this.campName = campName;
 			return this;
 		}
 
-		public Builder startDate(LocalDate startDate) {
+
+/** 
+ *
+ * Set start date of camp.
+ *
+ * @param startDate  the start date. 
+ * @return Builder
+ */
+		public Builder startDate(LocalDate startDate) { 
+
 			this.startDate = startDate;
 			return this;
 		}
 
-		public Builder endDate(LocalDate endDate) {
+
+/** 
+ *
+ * Set End date of camp
+ *
+ * @param endDate  the end date. 
+ * @return Builder
+ */
+		public Builder endDate(LocalDate endDate) { 
+
 			this.endDate = endDate;
 			return this;
 		}
 
-		public Builder closingDate(LocalDate closingDate) {
+
+/** 
+ *
+ * Set Closing date of camp.
+ *
+ * @param closingDate  the closing date. 
+ * @return Builder
+ */
+		public Builder closingDate(LocalDate closingDate) { 
+
 			this.closingDate = closingDate;
 			return this;
 		}
 
-		public Builder location(String location) {
+
+/** 
+ *
+ * Set Location
+ *
+ * @param location  the location. 
+ * @return Builder
+ */
+		public Builder location(String location) { 
+
 			this.location = location;
 			return this;
 		}
 
-		public Builder attendeeSlots(int attendeeSlots) {
+
+/** 
+ *
+ * Set Attendee slots
+ *
+ * @param attendeeSlots  the attendee slots. 
+ * @return Builder
+ */
+		public Builder attendeeSlots(int attendeeSlots) { 
+
 			this.attendeeSlots = attendeeSlots;
 			return this;
 		}
 
-		public Builder committeeSlots(int slots) {
+
+/** 
+ *
+ * Set Committee slots
+ *
+ * @param slots  the slots. 
+ * @return Builder
+ */
+		public Builder committeeSlots(int slots) { 
+
 			this.committeeSlots = slots;
 			return this;
 		}
 
-		public Builder description(String description) {
+
+/** 
+ *
+ * Set Description
+ *
+ * @param description  the description. 
+ * @return Builder
+ */
+		public Builder description(String description) { 
+
 			this.description = description;
 			return this;
 		}
 
-		public Builder inCharge(String inCharge) {
+
+/** 
+ *
+ * Who is In charge? Likely a staff member.
+ *
+ * @param inCharge  the in charge. 
+ * @return Builder
+ */
+		public Builder inCharge(String inCharge) { 
+
 			this.inCharge = inCharge;
 			return this;
 		}
 
-		public Builder facultyRestriction(Faculty faculty) {
+
+/** 
+ *
+ * Set the Faculty restriction.
+ *
+ * @param faculty  the faculty. 
+ * @return Builder
+ */
+		public Builder facultyRestriction(Faculty faculty) { 
+
 			this.facultyRestriction = faculty;
 			return this;
 		}
 
-		public Builder enquiries(List<Post> enquiries) {
+
+/** 
+ *
+ * List the Enquiries
+ *
+ * @param enquiries  the enquiries. 
+ * @return Builder
+ */
+		public Builder enquiries(List<Post> enquiries) { 
+
 			this.enquiries = enquiries;
 			return this;
 		}
 
-		public Builder suggestions(List<Post> suggestions) {
+
+/** 
+ *
+ * List the Suggestions
+ *
+ * @param suggestions  the suggestions. 
+ * @return Builder
+ */
+		public Builder suggestions(List<Post> suggestions) { 
+
 			this.suggestions = suggestions;
 			return this;
 		}
 
-		public Builder attendees(List<String> attendees) {
+
+/** 
+ *
+ * Who are the Attendees
+ *
+ * @param attendees  the attendees. 
+ * @return Builder
+ */
+		public Builder attendees(List<String> attendees) { 
+
 			this.attendees = attendees;
 			return this;
 		}
 
-		public Builder committee(HashMap<String, Integer> committee) {
+
+/** 
+ *
+ * Define the Committee structure
+ *
+ * @param committee  the committee. 
+ * @return Builder
+ */
+		public Builder committee(HashMap<String, Integer> committee) { 
+
 			this.committee = committee;
 			return this;
 		}
 
-		public Builder visible(boolean visibility) {
+
+/** 
+ *
+ * Visible
+ *
+ * @param visibility  the visibility. 
+ * @return Builder
+ */
+		public Builder visible(boolean visibility) { 
+
 			this.visible = visibility;
 			return this;
 		}
 
-		public Camp build() {
+
+/** 
+ *
+ * Build a camp
+ *
+ * @return Camp
+ */
+		public Camp build() { 
+
 			return new Camp(this);
 		}
 
 
 	}
 
-	public void updateDetails(CampDetails details) {
+
+/** 
+ *
+ * Update details
+ *
+ * @param details  the details. 
+ */
+	public void updateDetails(CampDetails details) { 
+
 		// Each of these methods returns 'this' for method chaining
 		this.setCampName(details.getCampName())
 			.setAttendeeSlots(details.getAttendeeSlots())
@@ -190,20 +389,54 @@ public class Camp implements Serializable {
 		savable.saveObject(this, folderName, getFileName());
 	}
 
-	public void addBannedUser(String UserID){
+
+/** 
+ *
+ * Add banned users. Banned from those camps they have registered previously.
+ *
+ * @param UserID  the user identifier. 
+ */
+	public void addBannedUser(String UserID){ 
+
 		this.bannedUsers.add(UserID);
 		savable.saveObject(this, folderName, getFileName());
 	}
 
-	public boolean isBanned(String UserID){
+
+/** 
+ *
+ * Checks if the user has been banned.
+ *
+ * @param UserID  the user identifier. 
+ * @return boolean
+ */
+	public boolean isBanned(String UserID){ 
+
 		return this.bannedUsers.contains(UserID);
 	}
 
 	//Getters and Setters
-	public String getCampName() {
+
+/** 
+ *
+ * Gets the camp name
+ *
+ * @return the camp name
+ */
+	public String getCampName() { 
+
 		return campName;
 	}
-	public Camp setCampName(String campName) {
+
+/** 
+ *
+ * Sets the camp name
+ *
+ * @param campName  the camp name. 
+ * @return Camp
+ */
+	public Camp setCampName(String campName) { 
+
 		String oldFileName = getFileName();
 		this.campName = campName;
 		savable.deleteFile(folderName, oldFileName);
@@ -211,83 +444,234 @@ public class Camp implements Serializable {
 		return this;
 	}
 
-	public LocalDate getStartDate() {
+
+/** 
+ *
+ * Gets the start date
+ *
+ * @return the start date
+ */
+	public LocalDate getStartDate() { 
+
 		return startDate;
 	}
-	public Camp setStartDate(LocalDate startDate) {
+
+/** 
+ *
+ * Sets the start date
+ *
+ * @param startDate  the start date. 
+ * @return Camp
+ */
+	public Camp setStartDate(LocalDate startDate) { 
+
 		this.startDate = startDate;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-	public LocalDate getEndDate() {
+
+/** 
+ *
+ * Gets the end date
+ *
+ * @return the end date
+ */
+	public LocalDate getEndDate() { 
+
 		return endDate;
 	}
-	public Camp setEndDate(LocalDate endDate) {
+
+/** 
+ *
+ * Sets the end date
+ *
+ * @param endDate  the end date. 
+ * @return Camp
+ */
+	public Camp setEndDate(LocalDate endDate) { 
+
 		this.endDate = endDate;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-	public LocalDate getClosingDate() {
+
+/** 
+ *
+ * Gets the closing date
+ *
+ * @return the closing date
+ */
+	public LocalDate getClosingDate() { 
+
 		return closingDate;
 	}
-	public Camp setClosingDate(LocalDate closingDate) {
+
+/** 
+ *
+ * Sets the closing date
+ *
+ * @param closingDate  the closing date. 
+ * @return Camp
+ */
+	public Camp setClosingDate(LocalDate closingDate) { 
+
 		this.closingDate = closingDate;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-	public String getLocation() {
+
+/** 
+ *
+ * Gets the location
+ *
+ * @return the location
+ */
+	public String getLocation() { 
+
 		return location;
 	}
-	public Camp setLocation(String location) {
+
+/** 
+ *
+ * Sets the location
+ *
+ * @param location  the location. 
+ * @return Camp
+ */
+	public Camp setLocation(String location) { 
+
 		this.location = location;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-	public int getAttendeeSlots() {
+
+/** 
+ *
+ * Gets the attendee slots
+ *
+ * @return the attendee slots
+ */
+	public int getAttendeeSlots() { 
+
 		return this.attendeeSlots;
 	}
-	public Camp setAttendeeSlots(int attendeeSlots) {
+
+/** 
+ *
+ * Sets the attendee slots
+ *
+ * @param attendeeSlots  the attendee slots. 
+ * @return Camp
+ */
+	public Camp setAttendeeSlots(int attendeeSlots) { 
+
 		this.attendeeSlots = attendeeSlots;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-	public List<String> getAttendees() {
+
+/** 
+ *
+ * Gets the attendees
+ *
+ * @return the attendees
+ */
+	public List<String> getAttendees() { 
+
 		return attendees;
 	}
-	public void setAttendees(List<String> attendees) {
+
+/** 
+ *
+ * Sets the attendees
+ *
+ * @param attendees  the attendees. 
+ */
+	public void setAttendees(List<String> attendees) { 
+
 		this.attendees = attendees;
 		savable.saveObject(this, folderName, getFileName());
 	}
-	public void addAttendee(String userID) {
+
+/** 
+ *
+ * Add attendee
+ *
+ * @param userID  the user identifier. 
+ */
+	public void addAttendee(String userID) { 
+
 		this.attendees.add(userID);
 		savable.saveObject(this, folderName, getFileName());
 	}
-	public void removeAttendee(String userID){
+
+/** 
+ *
+ * Remove attendee
+ *
+ * @param userID  the user identifier. 
+ */
+	public void removeAttendee(String userID){ 
+
 		this.attendees.remove(userID);
 		savable.saveObject(this, folderName, getFileName());
 	}
 
-	public HashMap<String, Integer> getCommittee() {
+
+/** 
+ *
+ * Gets the committee
+ *
+ * @return the committee
+ */
+	public HashMap<String, Integer> getCommittee() { 
+
 		return new HashMap<>(committee);
 	}
 
 
-	public int getCommitteeSlots() {
+
+/** 
+ *
+ * Gets the committee slots
+ *
+ * @return the committee slots
+ */
+	public int getCommitteeSlots() { 
+
 		return committeeSlots;
 	}
 
-	public Camp setCommitteeSlots(int committeeSlots) {
+
+/** 
+ *
+ * Sets the committee slots
+ *
+ * @param committeeSlots  the committee slots. 
+ * @return Camp
+ */
+	public Camp setCommitteeSlots(int committeeSlots) { 
+
 		this.committeeSlots = committeeSlots;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-	public int addCommittee(String userID) {
+
+/** 
+ *
+ * Add committee
+ *
+ * @param userID  the user identifier. 
+ * @return int: 1 or 0, determinant to see if the user has been added.
+ */
+	public int addCommittee(String userID) { 
+
 		if(this.getRemainingCommitteeSlots() > 0){
 			System.out.println("User has been added to the camp committee!");
 			this.committee.put(userID, 0); //Put UserID with points initialised to 0 into the committee
@@ -300,7 +684,15 @@ public class Camp implements Serializable {
 		}
 		// 
 	}
-	public void removeCommittee(String userID){
+
+/** 
+ *
+ * Remove committee
+ *
+ * @param userID  the user identifier. 
+ */
+	public void removeCommittee(String userID){ 
+
 		if(checkForMember(userID)){
 			System.out.println("User has been removed from the camp committee!");
 			this.committee.remove(userID);
@@ -310,98 +702,282 @@ public class Camp implements Serializable {
 			System.out.println("User is in the camp committee.");
 	}
 
-	public int getPointsOfCommitteeMember(String userID){
+
+/** 
+ *
+ * Gets the points of committee member
+ *
+ * @param userID  the user identifier. 
+ * @return the points of committee member
+ */
+	public int getPointsOfCommitteeMember(String userID){ 
+
 		return this.committee.get(userID);
 	}
 
-	public void addPointToCommitteeMember(String userID, int pointsAdded){
+
+/** 
+ *
+ * Add point to committee member
+ *
+ * @param userID  the user identifier. 
+ * @param pointsAdded  the points added. 
+ */
+	public void addPointToCommitteeMember(String userID, int pointsAdded){ 
+
 		int currentPoints = this.committee.get(userID);
 		this.committee.put(userID, currentPoints + pointsAdded);
 	}
 
 	//if specified user has already joined the camp as an attendee or committee, returns true
-	public boolean checkForMember(String userID) {
+
+/** 
+ *
+ * Check for member
+ *
+ * @param userID  the user identifier. 
+ * @return boolean
+ */
+	public boolean checkForMember(String userID) { 
+
 		return this.committee.containsKey(userID) || this.attendees.contains(userID);
 	}
 
-	public int getNumAttendees() {
+
+/** 
+ *
+ * Gets the num attendees
+ *
+ * @return the num attendees
+ */
+	public int getNumAttendees() { 
+
 		return this.attendees.size();
 	}
 
-	public int getRemainingCommitteeSlots() {
+
+/** 
+ *
+ * Gets the remaining committee slots
+ *
+ * @return the remaining committee slots
+ */
+	public int getRemainingCommitteeSlots() { 
+
 		return this.committeeSlots - this.committee.size();
 	}
 
-	public int getNumCommitteeMembers() {
+
+/** 
+ *
+ * Gets the num committee members
+ *
+ * @return the num committee members
+ */
+	public int getNumCommitteeMembers() { 
+
 		return this.committee.size();
 	}
 
-	public void setCommitteeMembers(HashMap<String, Integer> committee) {
+
+/** 
+ *
+ * Sets the committee members
+ *
+ * @param committee  the committee. 
+ */
+	public void setCommitteeMembers(HashMap<String, Integer> committee) { 
+
 		this.committee = committee;
 	}
 
 
-	public int getRemainingAttendeeSlots(){
+
+/** 
+ *
+ * Gets the remaining attendee slots
+ *
+ * @return the remaining attendee slots
+ */
+	public int getRemainingAttendeeSlots(){ 
+
 		return this.attendeeSlots - this.getNumAttendees();
 	}
 
-	public String getDescription() {
+
+/** 
+ *
+ * Gets the description
+ *
+ * @return the description
+ */
+	public String getDescription() { 
+
 		return description;
 	}
-	public Camp setDescription(String description) {
+
+/** 
+ *
+ * Sets the description
+ *
+ * @param description  the description. 
+ * @return Camp
+ */
+	public Camp setDescription(String description) { 
+
 		this.description = description;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-	public String getInCharge() {
+
+/** 
+ *
+ * Gets the in charge
+ *
+ * @return the in charge
+ */
+	public String getInCharge() { 
+
 		return inCharge;
 	}
-	public Camp setInCharge(String inCharge) {
+
+/** 
+ *
+ * Sets the in charge
+ *
+ * @param inCharge  the in charge. 
+ * @return Camp
+ */
+	public Camp setInCharge(String inCharge) { 
+
 		this.inCharge = inCharge;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-	public boolean getVisible() {
+
+/** 
+ *
+ * Gets the visible
+ *
+ * @return the visible
+ */
+	public boolean getVisible() { 
+
 		return visible;
 	}
-	public Camp setVisible(boolean visible) {
+
+/** 
+ *
+ * Sets the visible
+ *
+ * @param visible  the visible. 
+ * @return Camp
+ */
+	public Camp setVisible(boolean visible) { 
+
 		this.visible = visible;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
     }
 
-	public Faculty getFacultyRestriction() {
+
+/** 
+ *
+ * Gets the faculty restriction
+ *
+ * @return the faculty restriction
+ */
+	public Faculty getFacultyRestriction() { 
+
 		return facultyRestriction;
 	}
-	public Camp setFacultyRestriction(Faculty faculty) {
+
+/** 
+ *
+ * Sets the faculty restriction
+ *
+ * @param faculty  the faculty. 
+ * @return Camp
+ */
+	public Camp setFacultyRestriction(Faculty faculty) { 
+
 		this.facultyRestriction = faculty;
 		savable.saveObject(this, folderName, getFileName());
 		return this;
 	}
 
-	public void setEnquiries(List<Post> enquiries) {
+
+/** 
+ *
+ * Sets the enquiries
+ *
+ * @param enquiries  the enquiries. 
+ */
+	public void setEnquiries(List<Post> enquiries) { 
+
 		this.enquiries = enquiries;
 	}
-	public void addEnquiry(Post post){
+
+/** 
+ *
+ * Add enquiry
+ *
+ * @param post  the post. 
+ */
+	public void addEnquiry(Post post){ 
+
 		this.enquiries.add(post);
 		savable.saveObject(this, folderName, getFileName());
 	}
-	public List<Post> getEnquiries(){ return this.enquiries; }
+
+
+/** 
+ *
+ * Gets the enquiries
+ *
+ * @return the enquiries
+ * @throws  return this.enquiries; }
+
+	public void addSuggestion(Post post
+ */
+	public List<Post> getEnquiries(){ return this.enquiries; } 
 
 	public void addSuggestion(Post post){
+
 		this.suggestions.add(post);
 		savable.saveObject(this, folderName, getFileName());
 	}
 
-	public void setSuggestions(List<Post> suggestions) {
+
+/** 
+ *
+ * Sets the suggestions
+ *
+ * @param suggestions  the suggestions. 
+ */
+	public void setSuggestions(List<Post> suggestions) { 
+
 		this.suggestions = suggestions;
 		savable.saveObject(this, folderName, getFileName());
 	}
-	public List<Post> getSuggestions(){ return this.suggestions; }
+
+
+/** 
+ *
+ * Gets the suggestions
+ *
+ * @return the suggestions
+ * @throws  return this.suggestions; }
+
+	public void removePost(PostType postType
+ * @throws  Post post
+ */
+	public List<Post> getSuggestions(){ return this.suggestions; } 
 
 	public void removePost(PostType postType, Post post){
+
         switch (postType) {
             case ENQUIRY -> this.getEnquiries().remove(post);
             case SUGGESTION -> this.getSuggestions().remove(post);
@@ -409,12 +985,26 @@ public class Camp implements Serializable {
 		savable.saveObject(this, folderName, getFileName());
 	}
 
-	public void save(){
+
+/** 
+ *
+ * Save
+ *
+ */
+	public void save(){ 
+
 		savable.saveObject(this, this.getFolderName(), this.getFileName());
 	}
 
 	//Prints formatted camp information to user
-	public void display() {
+
+/** 
+ *
+ * Display
+ *
+ */
+	public void display() { 
+
 		System.out.println("Name: " + this.campName);
 		System.out.println("Dates: " + this.startDate + " to " + this.endDate);
 		System.out.println("Registration closes on: " + this.closingDate);
@@ -426,7 +1016,15 @@ public class Camp implements Serializable {
 		System.out.println("Staff-in-Charge: " + this.inCharge);
 	}
 	@Override
-	public String toString() {
+
+/** 
+ *
+ * To string
+ *
+ * @return String
+ */
+	public String toString() { 
+
 	    return "Name: " + this.campName + ", Starting Date: " + this.startDate + ", Ending Date: "
 	+ this.endDate + ", Closing Date: " + this.closingDate + ", Open to: "
 	    		+ this.facultyRestriction + ", Location: " + this.location + ", Attendee Slots: " + this.attendeeSlots + ", Committee Slots: " + this.committeeSlots + ", Committee Members: "
