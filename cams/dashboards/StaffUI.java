@@ -73,8 +73,8 @@ public class StaffUI extends UserUI {
         actions.put(6, () -> respondSuggestions(dashboard));
         actions.put(7, () -> respondEnquiries(dashboard));
         actions.put(8, this::seeAttendees);
-        actions.put(9, () -> generateParticipationReport(dashboard, new ParticipationReport())); // Add the option for generating the participation report
-        actions.put(10, () -> generatePerformanceReport(dashboard, new PerformanceReport())); // Add the option for generating the performance report
+        actions.put(9, () -> generatePerformanceReport(dashboard, new PerformanceReport())); // Add the option for generating the performance report
+        actions.put(10, () -> generateParticipationReport(dashboard, new ParticipationReport())); // Add the option for generating the participation report
         return actions;
     }
 

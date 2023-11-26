@@ -97,8 +97,6 @@ public class ParticipationReport implements ReportGenerator {
             // Get user input for sorting method
             int sortingOption = getSortingOption();
 
-            scanner.nextLine();
-
             List<String> sortedAttendeesAndCommitteeNames = applySortingMethod(sortingOption, attendeesAndCommittee, committee);
 
             // Populate data rows for sorted attendees and committee members

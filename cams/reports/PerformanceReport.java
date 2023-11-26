@@ -26,7 +26,7 @@ public class PerformanceReport implements ReportGenerator {
     @Override
     public void displayMenu() {
         // Display performance report menu options
-        System.out.println("1. Generate Camp Attendance Report");
+        System.out.println("1. Generate Committee Member Performance Report");
         System.out.println("2. Back to Main Menu");
         System.out.println("3. Exit"); // Added option to exit the application
     }
@@ -53,7 +53,7 @@ public class PerformanceReport implements ReportGenerator {
                 case 1 -> generateCampAttendanceReport(camp);
                 case 2 -> {
                     // Exit the report generation
-                    System.out.println("Exiting camp attendance report generation.");
+                    System.out.println("Exiting committee member report generation.");
                     return;
                 }
                 case 3 -> {
@@ -73,7 +73,7 @@ public class PerformanceReport implements ReportGenerator {
     private void generateCampAttendanceReport(Camp camp) {
         try (Workbook workbook = new XSSFWorkbook()) {
             Scanner scanner = new Scanner(System.in);
-            Sheet sheet = workbook.createSheet("Camp Attendance Report");
+            Sheet sheet = workbook.createSheet("Camp Committee Member Performance Report");
 
             // Add camp details at the top of the Excel file
             Row detailsRow = sheet.createRow(0);
