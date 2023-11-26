@@ -4,7 +4,7 @@ import cams.camp.Camp;
 import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.post_types.*;
-import cams.suggestion.suggestion_menus.SuggesterUI;
+import cams.suggestion.SuggesterUI;
 import cams.users.Committable;
 import cams.users.User;
 

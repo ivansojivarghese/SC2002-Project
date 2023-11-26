@@ -1,4 +1,4 @@
-package cams.enquiry.replier_controller;
+package cams.replier.replier_controller;
 
 import cams.post_types.Post;
 import cams.users.User;

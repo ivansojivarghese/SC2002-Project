@@ -1,4 +1,4 @@
-package cams.suggestion.approver_controller;
+package cams.approver.approver_controller;
 
 import cams.post_types.Post;
 import cams.users.User;

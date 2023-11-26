@@ -1,5 +1,7 @@
 package cams.dashboards.menu;
 
+import cams.dashboards.Dashboard;
+import cams.dashboards.DashboardState;
 import cams.users.User;
 import cams.util.InputScanner;
 
@@ -21,7 +23,7 @@ public abstract class UserUI implements DashboardState {
      * Common method for interacting with the user to change the password
      * @param user The user whose password is to be changed
      */
-    protected void changePassword(User user){
+    protected void changePassword(User user, Dashboard dashboard){
         Scanner sc = InputScanner.getInstance();
 
         System.out.println("\nEnter new password (Case Sensitive): ");
@@ -43,5 +45,7 @@ public abstract class UserUI implements DashboardState {
         //Success
         user.setPassword(newPassword);
         System.out.println("Password successfully changed!");
+        System.out.println("Please log in again.");
+        dashboard.logout();
     }
 }

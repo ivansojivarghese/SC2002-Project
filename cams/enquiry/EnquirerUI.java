@@ -1,9 +1,9 @@
-package cams.enquiry.enquiry_menus;
+package cams.enquiry;
 
 import cams.enquiry.enquirer_controller.EnquirerController;
 import cams.enquiry.enquirer_controller.StudentEnquirerController;
-import cams.dashboards.menu.Dashboard;
-import cams.dashboards.menu.MenuAction;
+import cams.dashboards.Dashboard;
+import cams.dashboards.MenuAction;
 import cams.post_menus.PosterUI;
 import cams.post_types.Post;
 import cams.users.Committable;
@@ -11,9 +11,7 @@ import cams.users.User;
 import cams.util.InputScanner;
 import cams.util.UserInput;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Class representing the user interface for enquiry operations.
@@ -21,7 +19,7 @@ import java.util.Scanner;
  * editing, and deleting enquiries.
  * It extends {@link EnquirerUI} and provides the implementation for the reply method in {@link PosterUI}.
  */
-public class EnquirerUI extends EnquiryViewerUI implements PosterUI {
+public class EnquirerUI implements PosterUI {
     //Instantiate dependency
     private final EnquirerController enquirerController = new StudentEnquirerController();
     public EnquirerUI() {}
@@ -194,5 +192,41 @@ public class EnquirerUI extends EnquiryViewerUI implements PosterUI {
     @Override
     public boolean delete(User user, int postIndex) {
         return enquirerController.delete(user, postIndex);
+    }
+
+    /**
+     * Displays the enquiries of the user and returns the count of those enquiries.
+     * Each enquiry is displayed with its index and content.
+     *
+     * @param user The user whose enquiries are to be displayed.
+     * @return The number of enquiries displayed.
+     */
+    @Override
+    public int view(User user){
+        Post currentPost;
+        System.out.println("My Camp Enquiries: ");
+
+        // Catch null pointers
+        if(user.getEnquiries() == null)
+        {
+            System.out.println("No enquiries to display.");
+            return 0;
+        }
+        List<Post> myEnquiries = new ArrayList<>(user.getEnquiries());
+
+        // Check if the user has no enquiries
+        if(myEnquiries.isEmpty()){
+            System.out.println("No enquiries to display.");
+            return 0;
+        }
+
+        // Display each enquiry with its index and content
+        for (int i = 0; i < myEnquiries.size(); i++) {
+            currentPost = myEnquiries.get(i);
+            System.out.println("Index " + i + ": ");
+            currentPost.displayContent();
+            System.out.println("__________________________");
+        }
+        return myEnquiries.size();
     }
 }

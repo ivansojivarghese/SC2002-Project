@@ -1,13 +1,11 @@
-package cams.suggestion.approver_controller;
+package cams.approver.approver_controller;
 
 import cams.camp.Camp;
 import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
 import cams.users.UserRepository;
-import cams.post_types.Approval;
-import cams.post_types.Message;
-import cams.post_types.Post;
+import cams.post_types.*;
 import cams.users.Committable;
 import cams.users.User;
 

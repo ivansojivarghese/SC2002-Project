@@ -1,23 +1,23 @@
-package cams.suggestion.suggestion_menus;
+package cams.suggestion;
 
+import cams.post_types.Post;
 import cams.suggestion.suggester_controllers.CommitteeSuggesterController;
 import cams.suggestion.suggester_controllers.SuggesterController;
-import cams.dashboards.menu.Dashboard;
-import cams.dashboards.menu.MenuAction;
+import cams.dashboards.Dashboard;
+import cams.dashboards.MenuAction;
 import cams.post_menus.PostViewerUI;
 import cams.users.Committable;
 import cams.users.User;
 import cams.util.InputScanner;
 import cams.util.UserInput;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
+
 /**
  * Abstract class providing the user interface for suggesting, editing, and deleting suggestions.
  * Implements {@link PostViewerUI} to handle the display and interaction logic for suggestion management.
  */
-public class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
+public class SuggesterUI implements PostViewerUI {
     private final SuggesterController suggesterController = new CommitteeSuggesterController();
     /**
      * Displays the suggestion menu to the user
@@ -134,7 +134,35 @@ public class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
             System.out.println("Error: " + e.getMessage());
         }
     }
+    /**
+     * Logic for displaying the suggestions of a specified user
+     * @param user The user whose posts are to be displayed.
+     * @return Integer value representing the total suggestions available to be displayed
+     */
+    public int view(User user){
+        System.out.println("Camp Suggestions: ");
 
+        //Catch null pointer
+        if(user.getSuggestions() == null)
+        {
+            System.out.println("No suggestions to display.");
+            return 0;
+        }
+
+        List<Post> mySuggestions = new ArrayList<>(user.getSuggestions());
+
+        if(mySuggestions.isEmpty()){
+            System.out.println("No suggestions to display.");
+            return 0;
+        }
+        for (int i = 0; i < mySuggestions.size(); i++) {
+            Post currentPost = mySuggestions.get(i);
+            System.out.println(i + ": ");
+            currentPost.displayContent();
+            System.out.println("__________________________");
+        }
+        return mySuggestions.size();
+    }
     public boolean submit(String camp, User user, String text){
         return suggesterController.submit(camp, user, text);
     }

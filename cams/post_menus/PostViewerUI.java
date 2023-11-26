@@ -1,5 +1,5 @@
 package cams.post_menus;
-import cams.dashboards.menu.DashboardState;
+import cams.dashboards.DashboardState;
 import cams.users.User;
 
 /**

@@ -1,4 +1,5 @@
-package cams.dashboards.menu;
+package cams.dashboards;
+import cams.dashboards.menu.LogoutState;
 import cams.users.User;
 /**
  * The main dashboard user interface for the application.
@@ -11,10 +12,16 @@ public class Dashboard {
 	private User authenticatedUser;
 
 	/**
+	 * Constructs a Dashboard instance initializing it to the specified state.
+	 */
+	public Dashboard(DashboardState state) {
+		this.currentState = state;
+	}
+
+	/**
 	 * Constructs a Dashboard instance initializing it to the LogoutState.
 	 */
 	public Dashboard() {
-		// Initially, the dashboard might be in the options state
 		this.currentState = new LogoutState();
 	}
 

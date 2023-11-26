@@ -1,7 +1,10 @@
 package cams.dashboards.menu;
 import cams.camp.CampDetails;
-import cams.camp.CampDisplayService;
-import cams.camp.CampService;
+import cams.dashboards.camp_display_controllers.CampDisplayService;
+import cams.dashboards.camp_display_controllers.CampService;
+import cams.dashboards.Dashboard;
+import cams.dashboards.DashboardState;
+import cams.dashboards.MenuAction;
 import cams.dashboards.organiser_controllers.OrganiserController;
 import cams.dashboards.organiser_controllers.StaffOrganiserController;
 import cams.users.User;

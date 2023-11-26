@@ -1,11 +1,11 @@
 package cams.users;
 
-import cams.suggestion.approver_controller.ApproverController;
-import cams.dashboards.menu.DashboardState;
+import cams.approver.approver_controller.ApproverController;
+import cams.dashboards.DashboardState;
 import cams.dashboards.menu.StaffUI;
-import cams.enquiry.replier_controller.ReplierController;
-import cams.enquiry.replier_controller.StaffReplierController;
-import cams.suggestion.approver_controller.StaffApproverController;
+import cams.replier.replier_controller.ReplierController;
+import cams.replier.replier_controller.StaffReplierController;
+import cams.approver.approver_controller.StaffApproverController;
 import cams.post_types.Post;
 import cams.util.Faculty;
 

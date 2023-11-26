@@ -1,4 +1,4 @@
-package cams.camp;
+package cams.dashboards.camp_display_controllers;
 
 import cams.users.User;
 

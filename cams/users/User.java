@@ -1,7 +1,7 @@
 package cams.users;
 import cams.camp.Camp;
-import cams.dashboards.menu.DashboardState;
-import cams.enquiry.replier_controller.ReplierController;
+import cams.dashboards.DashboardState;
+import cams.replier.replier_controller.ReplierController;
 import cams.post_types.Post;
 import cams.util.Faculty;
 import cams.util.Savable;

@@ -2,13 +2,15 @@ package cams.dashboards.menu;
 
 import cams.camp.Camp;
 import cams.camp.CampDetails;
-import cams.camp.CampDisplayService;
-import cams.camp.CampService;
+import cams.dashboards.camp_display_controllers.CampDisplayService;
+import cams.dashboards.camp_display_controllers.CampService;
+import cams.dashboards.Dashboard;
+import cams.dashboards.MenuAction;
 import cams.dashboards.organiser_controllers.OrganiserController;
 import cams.dashboards.organiser_controllers.StaffOrganiserController;
-import cams.enquiry.enquiry_menus.ReplierUI;
-import cams.suggestion.approver_controller.StaffApproverController;
-import cams.suggestion.suggestion_menus.ApproverUI;
+import cams.replier.ReplierUI;
+import cams.approver.approver_controller.StaffApproverController;
+import cams.approver.ApproverUI;
 import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
@@ -64,7 +66,7 @@ public class StaffUI extends UserUI {
         User user = dashboard.getAuthenticatedUser();
 
         actions.put(0, dashboard::logout);
-        actions.put(1, () -> changePassword(user));
+        actions.put(1, () -> changePassword(user, dashboard));
         actions.put(2, () -> displayMyCamps(user));
         actions.put(3, () -> viewAllCamps(user));
         actions.put(4, () -> editCamp(dashboard));

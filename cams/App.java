@@ -1,6 +1,7 @@
 package cams;
 
-import cams.dashboards.menu.Dashboard;
+import cams.dashboards.Dashboard;
+import cams.dashboards.menu.LogoutState;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
 import cams.util.InputScanner;
@@ -42,7 +43,7 @@ public class App {
 		InputScanner.getInstance();
 
 		//Proceed to login page
-		Dashboard dashboard = new Dashboard();
+		Dashboard dashboard = new Dashboard(new LogoutState());
 		dashboard.startMain();
 
 		while(!dashboard.isQuit()) {

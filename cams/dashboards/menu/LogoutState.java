@@ -1,5 +1,7 @@
 package cams.dashboards.menu;
 
+import cams.dashboards.Dashboard;
+import cams.dashboards.DashboardState;
 import cams.users.User;
 import cams.util.UserInput;
 /**

@@ -2,8 +2,10 @@ package cams.dashboards.menu;
 
 import cams.camp.Camp;
 import cams.camp.CampRepository;
-import cams.enquiry.enquiry_menus.ReplierUI;
-import cams.suggestion.suggestion_menus.SuggesterUI;
+import cams.dashboards.Dashboard;
+import cams.dashboards.MenuAction;
+import cams.replier.ReplierUI;
+import cams.suggestion.SuggesterUI;
 import cams.database.UnifiedCampRepository;
 import cams.reports.PerformanceReport;
 import cams.reports.ReportGenerator;

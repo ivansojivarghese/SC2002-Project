@@ -1,10 +1,12 @@
 package cams.dashboards.menu;
 
-import cams.camp.CampDisplayService;
-import cams.camp.CampService;
+import cams.dashboards.camp_display_controllers.CampDisplayService;
+import cams.dashboards.camp_display_controllers.CampService;
+import cams.dashboards.Dashboard;
+import cams.dashboards.MenuAction;
 import cams.dashboards.participant_controllers.ParticipationController;
 import cams.dashboards.participant_controllers.StudentParticipationController;
-import cams.enquiry.enquiry_menus.EnquirerUI;
+import cams.enquiry.EnquirerUI;
 import cams.users.User;
 import cams.util.InputScanner;
 import cams.util.UserInput;
@@ -54,7 +56,7 @@ public class StudentUI extends UserUI{
         Map<Integer, MenuAction> actions = new HashMap<>();
         User user = dashboard.getAuthenticatedUser();
 
-        actions.put(1, () -> changePassword(user));
+        actions.put(1, () -> changePassword(user, dashboard));
         actions.put(0, dashboard::logout);
         actions.put(2, () -> displayMyCamps(user));
         actions.put(3, () -> registerCamp(dashboard));

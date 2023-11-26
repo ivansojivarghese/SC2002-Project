@@ -1,5 +1,6 @@
-package cams.camp;
+package cams.dashboards.camp_display_controllers;
 
+import cams.camp.Camp;
 import cams.database.UnifiedCampRepository;
 import cams.users.User;
 

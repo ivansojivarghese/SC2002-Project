@@ -1,4 +1,4 @@
-package cams.dashboards.menu;
+package cams.dashboards;
 
 /**
  * Represents a state of the {@link Dashboard}

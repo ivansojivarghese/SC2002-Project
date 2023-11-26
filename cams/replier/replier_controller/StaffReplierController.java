@@ -1,9 +1,9 @@
-package cams.enquiry.replier_controller;
+package cams.replier.replier_controller;
 
 import cams.camp.Camp;
 import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
-import cams.enquiry.enquiry_menus.ReplierUI;
+import cams.replier.ReplierUI;
 import cams.post_types.Message;
 import cams.post_types.Post;
 import cams.post_types.Reply;

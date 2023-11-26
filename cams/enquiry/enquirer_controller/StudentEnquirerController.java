@@ -3,7 +3,7 @@ package cams.enquiry.enquirer_controller;
 import cams.camp.Camp;
 import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
-import cams.enquiry.enquiry_menus.EnquirerUI;
+import cams.enquiry.EnquirerUI;
 import cams.post_types.*;
 import cams.users.Enquirer;
 import cams.users.User;

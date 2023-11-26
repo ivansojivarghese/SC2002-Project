@@ -1,21 +1,24 @@
-package cams.suggestion.suggestion_menus;
+package cams.approver;
 
-import cams.suggestion.approver_controller.ApproverController;
-import cams.suggestion.approver_controller.StaffApproverController;
-import cams.dashboards.menu.Dashboard;
-import cams.dashboards.menu.MenuAction;
+import cams.approver.approver_controller.ApproverController;
+import cams.approver.approver_controller.StaffApproverController;
+import cams.dashboards.Dashboard;
+import cams.dashboards.MenuAction;
 import cams.post_menus.PostApproverUI;
+import cams.post_types.Post;
 import cams.users.User;
 import cams.util.UserInput;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Abstract class providing the user interface for the approval process of posts.
  * Implements {@link PostApproverUI} to handle the display and interaction logic for post approvals.
  */
-public class ApproverUI extends SuggestionViewerUI implements PostApproverUI {
+public class ApproverUI implements PostApproverUI {
     private final ApproverController approverController = new StaffApproverController();
     /**
      * Displays the approval menu to the user and handles user input for various approval operations.
@@ -110,5 +113,35 @@ public class ApproverUI extends SuggestionViewerUI implements PostApproverUI {
      */
     public boolean approve(User user, int postIndex, boolean isApproved){
         return this.approverController.approve(user, postIndex, isApproved);
+    }
+
+    /**
+     * Logic for displaying the suggestions of a specified user
+     * @param user The user whose posts are to be displayed.
+     * @return Integer value representing the total suggestions available to be displayed
+     */
+    public int view(User user){
+        System.out.println("Camp Suggestions: ");
+
+        //Catch null pointer
+        if(user.getSuggestions() == null)
+        {
+            System.out.println("No suggestions to display.");
+            return 0;
+        }
+
+        List<Post> mySuggestions = new ArrayList<>(user.getSuggestions());
+
+        if(mySuggestions.isEmpty()){
+            System.out.println("No suggestions to display.");
+            return 0;
+        }
+        for (int i = 0; i < mySuggestions.size(); i++) {
+            Post currentPost = mySuggestions.get(i);
+            System.out.println(i + ": ");
+            currentPost.displayContent();
+            System.out.println("__________________________");
+        }
+        return mySuggestions.size();
     }
 }
