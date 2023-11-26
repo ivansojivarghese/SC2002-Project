@@ -13,6 +13,12 @@ public class CampDetails {
     private LocalDate endDate;
     private LocalDate closingDate;
     private String location;
+    private int attendeeSlots;
+    private int committeeSlots;
+    private String inCharge;
+    private String description;
+    private Faculty facultyRestriction = Faculty.ALL;
+    private boolean visibility = false;
 
     /**
      * Retrieves the name of the camp.
@@ -210,10 +216,5 @@ public class CampDetails {
         this.visibility = visibility;
     }
 
-    private int attendeeSlots;
-    private int committeeSlots;
-    private String inCharge;
-    private String description;
-    private Faculty facultyRestriction = Faculty.ALL;
-    private boolean visibility = false;
+
 }

@@ -82,7 +82,7 @@ public class CommitteeUI extends StudentUI {
                 case 5 -> System.out.println("(5) View enquiries menu");
                 case 6 -> System.out.println("(6) View suggestions menu");
                 case 7 -> System.out.println("(7) Reply to enquiries for my camp");
-                case 8 -> System.out.println("(8) Generate participation report for my camp");
+                case 8 -> System.out.println("(8) Generate performance report for my camp");
             }
         }
     }
@@ -118,7 +118,7 @@ public class CommitteeUI extends StudentUI {
             System.out.println("You are not part of any camps. Unable to generate reports.");
         } else {
             // Display the list of camps the user is part of
-            System.out.println("Generating reports for your camps:");
+            System.out.println("Generating performance report for your camp:");
 
             // Iterate over each camp
             for (String campName : userCamps) {

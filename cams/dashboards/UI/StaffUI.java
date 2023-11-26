@@ -73,8 +73,8 @@ public class StaffUI extends UserUI {
         actions.put(6, () -> respondSuggestions(dashboard));
         actions.put(7, () -> respondEnquiries(dashboard));
         actions.put(8, this::seeAttendees);
-        actions.put(9, () -> generateParticipationReport(dashboard, new ParticipationReport())); // Add the option for generating the participation report
-        actions.put(10, () -> generatePerformanceReport(dashboard, new PerformanceReport())); // Add the option for generating the performance report
+        actions.put(9, () -> generatePerformanceReport(dashboard, new PerformanceReport())); // Add the option for generating the performance report
+        actions.put(10, () -> generateParticipationReport(dashboard, new ParticipationReport())); // Add the option for generating the participation report
         return actions;
     }
 
@@ -94,8 +94,8 @@ public class StaffUI extends UserUI {
                 case 6 -> System.out.println("(6) Respond to camp suggestions");
                 case 7 -> System.out.println("(7) Respond to camp enquiries");
                 case 8 -> System.out.println("(8) View Participants/Committee Members for a camp");
-                case 9 -> System.out.println("(9) Generate Participation Report");
-                case 10 -> System.out.println("(10) Generate Performance Report");
+                case 9 -> System.out.println("(9) Generate Committee Members Performance Report");
+                case 10 -> System.out.println("(10) Generate All Participants Participation Report");
             }
         }
     }
@@ -332,10 +332,10 @@ public class StaffUI extends UserUI {
         List<String> staffCamps = (user).getMyCamps();
 
         if (staffCamps.isEmpty()) {
-            System.out.println("You have not organized any camps. Unable to generate the report.");
+            System.out.println("You have not organized any camps. Unable to generate the participation report.");
         } else {
             // Display the list of camps organized by the staff
-            System.out.println("Select a camp to generate the report:");
+            System.out.println("Select a camp to generate the participation report:");
             for (int i = 0; i < staffCamps.size(); i++) {
                 System.out.println((i + 1) + ". " + staffCamps.get(i));
             }
@@ -371,10 +371,10 @@ public class StaffUI extends UserUI {
         List<String> staffCamps = (user).getMyCamps();
 
         if (staffCamps.isEmpty()) {
-            System.out.println("You have not organized any camps. Unable to generate the report.");
+            System.out.println("You have not organized any camps. Unable to generate the performance report.");
         } else {
             // Display the list of camps organized by the staff
-            System.out.println("Select a camp to generate the report:");
+            System.out.println("Select a camp to generate the committee member performance report:");
             for (int i = 0; i < staffCamps.size(); i++) {
                 System.out.println((i + 1) + ". " + staffCamps.get(i));
             }

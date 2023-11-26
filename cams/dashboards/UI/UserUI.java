@@ -36,6 +36,10 @@ public abstract class UserUI implements DashboardState {
             System.out.println("Password must not be blank and must have at least 8 characters.");
             return;
         }
+        if(newPassword.equalsIgnoreCase(user.getPassword())){
+            System.out.println("You cannot change to the same password!");
+            return;
+        }
         //Success
         user.setPassword(newPassword);
         System.out.println("Password successfully changed!");
