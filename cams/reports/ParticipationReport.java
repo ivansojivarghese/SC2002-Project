@@ -129,7 +129,7 @@ public class ParticipationReport implements ReportGenerator {
                 workbook.write(fileOut);
             }
 
-            System.out.println("Participation Report generated successfully. File saved at: " + outputPath);
+            System.out.println("Camp Participation Report generated successfully. File saved at: " + outputPath);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
