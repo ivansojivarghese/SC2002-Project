@@ -1,7 +1,5 @@
 package cams.post_types;
 
-import java.io.Serializable;
-
 /**
  * A factory class for creating {@link Post} objects.
  * Provides a method to create a new post with an initial empty message of a specified type.

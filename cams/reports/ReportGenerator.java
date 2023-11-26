@@ -1,5 +1,5 @@
 package cams.reports;
-import cams.Camp;
+import cams.camp.Camp;
 
 public interface ReportGenerator {
     void displayMenu();

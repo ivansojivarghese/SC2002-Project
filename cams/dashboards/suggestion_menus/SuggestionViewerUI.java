@@ -5,6 +5,7 @@ import cams.dashboards.post_menus.PostViewerUI;
 import cams.post_types.Post;
 import cams.users.User;
 
+import java.util.ArrayList;
 import java.util.List;
 /**
  * Abstract class providing the user interface for viewing suggestions.
@@ -29,15 +30,15 @@ public class SuggestionViewerUI implements PostViewerUI {
      * @return
      */
     public int view(User user){
-        Post currentPost;
         System.out.println("Camp Suggestions: ");
-        List<Post> mySuggestions = user.getSuggestions();
+        List<Post> mySuggestions = new ArrayList<>(user.getSuggestions());
+
         if(mySuggestions.isEmpty()){
             System.out.println("No suggestions to display.");
             return 0;
         }
         for (int i = 0; i < mySuggestions.size(); i++) {
-            currentPost = mySuggestions.get(i);
+            Post currentPost = mySuggestions.get(i);
             System.out.println(i + ": ");
             currentPost.displayContent();
             System.out.println("__________________________");

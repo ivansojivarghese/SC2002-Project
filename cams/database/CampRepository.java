@@ -1,6 +1,6 @@
 package cams.database;
 
-import cams.Camp;
+import cams.camp.Camp;
 import cams.util.Faculty;
 import java.util.List;
 /**

@@ -4,18 +4,17 @@ import cams.dashboards.Dashboard;
 import cams.dashboards.MenuAction;
 import cams.dashboards.post_menus.PostApproverUI;
 import cams.users.User;
-import cams.util.InputScanner;
 import cams.util.UserInput;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 /**
  * Abstract class providing the user interface for the approval process of posts.
  * Implements {@link PostApproverUI} to handle the display and interaction logic for post approvals.
  */
-public abstract class ApproverUI extends SuggestionViewerUI implements PostApproverUI {
+public class ApproverUI extends SuggestionViewerUI implements PostApproverUI {
+    private final Approver approver = new ApproverService();
     /**
      * Displays the approval menu to the user and handles user input for various approval operations.
      * <p>
@@ -32,6 +31,7 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
             System.out.println();
 
             if (numSuggestions < 1){
+                System.out.println("Returning to dashboard...");
                 dashboard.loggedIn();
                 return;
             }
@@ -47,6 +47,7 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
             options.getOrDefault(option, () -> System.out.println("Invalid option selected")).execute();
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
+            dashboard.loggedIn();
         }
     //At the end of the display method, the main APP will redisplay the set menu
     }
@@ -87,7 +88,6 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
      * @param numSuggestions The total number of suggestions that the user has in their camps
      */
     protected void approveSuggestion(User user, int numSuggestions) {
-        Scanner sc = InputScanner.getInstance();
         int postIndex = UserInput.getIntegerInput(0, numSuggestions-1, "Enter index of suggestion: ");
         boolean isApproved = UserInput.getBoolInput("Enter 0 to reject, or 1 to approve: ");
 
@@ -106,5 +106,7 @@ public abstract class ApproverUI extends SuggestionViewerUI implements PostAppro
      * @param isApproved Boolean flag indicating whether the post is approved (true) or disapproved (false).
      * @return true if the post has been successfully approved or rejected, otherwise false
      */
-    public abstract boolean approve(User user, int postIndex, boolean isApproved);
+    public boolean approve(User user, int postIndex, boolean isApproved){
+        return this.approver.approve(user, postIndex, isApproved);
+    }
 }

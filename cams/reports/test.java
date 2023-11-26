@@ -1,6 +1,6 @@
 package cams.reports;
 
-import cams.Camp;
+import cams.camp.Camp;
 import cams.database.UnifiedUserRepository;
 import cams.users.Student;
 import cams.users.Staff;

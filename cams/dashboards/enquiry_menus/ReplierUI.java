@@ -3,6 +3,7 @@ package cams.dashboards.enquiry_menus;
 import cams.dashboards.Dashboard;
 import cams.dashboards.MenuAction;
 import cams.dashboards.post_menus.PostReplierUI;
+import cams.post_types.Post;
 import cams.users.User;
 import cams.util.InputScanner;
 import cams.util.UserInput;
@@ -15,20 +16,25 @@ import java.util.*;
  * including displaying a menu to choose an enquiry to reply to, and handling the user interaction.
  * It extends {@link EnquiryViewerUI} and implements {@link PostReplierUI}
  */
-public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI {
+public class ReplierUI extends EnquiryViewerUI implements PostReplierUI {
+    private ReplierController replierController;
     /**
      * Constructs a ReplierUI instance.
      */
     public ReplierUI() {
     }
     /**
-     * Displays the replier menu to the user and allows the user to select an enquiry to reply to.
+     * Displays the replierController menu to the user and allows the user to select an enquiry to reply to.
      * Subsequently, the method facilitates the reply process.
      * If there are no enquiries, it redirects back to the main menu of the dashboard.
      *
      * @param dashboard The dashboard through which the user interacts.
      */
+    @Override
     public void display(Dashboard dashboard) {
+        //Polymorphism to get the right controller based on the user type
+        this.replierController = dashboard.getAuthenticatedUser().getReplierController();
+
         try {
             // Displays the enquiries of the user and gets the user's number of enquiries
             int numEnquiries = view(dashboard.getAuthenticatedUser());
@@ -115,5 +121,34 @@ public abstract class ReplierUI extends EnquiryViewerUI implements PostReplierUI
      * @return true if the reply was successful, false otherwise.
      */
     @Override
-    public abstract boolean reply(User user, int postIndex, String reply);
+    public boolean reply(User user, int postIndex, String reply){
+        return replierController.reply(user, postIndex, reply);
+    }
+    /**
+     * Displays the enquiries of the user to reply to and returns the count of those enquiries.
+     * Each enquiry is displayed with its index and content.
+     *
+     * @param user The user whose enquiries to reply to are to be displayed.
+     * @return The number of enquiries displayed.
+     */
+    public int view(User user){
+        Post currentPost;
+        System.out.println("My Camp's Enquiries: ");
+        List<Post> myEnquiries = new ArrayList<>(replierController.getEnquiries(user));
+
+        // Check if the user has no enquiries
+        if(myEnquiries.isEmpty()){
+            System.out.println("No enquiries to display.");
+            return 0;
+        }
+
+        // Display each enquiry with its index and content
+        for (int i = 0; i < myEnquiries.size(); i++) {
+            currentPost = myEnquiries.get(i);
+            System.out.println("Index " + i + ": ");
+            currentPost.displayContent();
+            System.out.println("__________________________");
+        }
+        return myEnquiries.size();
+    }
 }

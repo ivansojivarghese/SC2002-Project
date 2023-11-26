@@ -4,23 +4,26 @@ import java.io.Serial;
 import java.io.Serializable;
 import java.util.*;
 
-import cams.Camp;
-import cams.dashboards.CommitteeMenuState;
+import cams.dashboards.CommitteeUI;
 import cams.dashboards.DashboardState;
-import cams.dashboards.StudentMenuState;
-import cams.database.CampRepository;
+import cams.dashboards.StudentUI;
+import cams.dashboards.enquiry_menus.CommitteeReplierController;
+import cams.dashboards.enquiry_menus.ReplierController;
+import cams.dashboards.suggestion_menus.Suggester;
+import cams.dashboards.suggestion_menus.SuggesterService;
 import cams.post_types.*;
-import cams.database.UnifiedCampRepository;
 import cams.util.Faculty;
 
 /**
  * Represents a student, extending {@link User}, implementing {@link Committable} and {@link Serializable}.
  * Students can join committees, register for camps, and interact with camp-related posts.
  */
-public class Student extends User implements Committable, Serializable { // student class
+public class Student extends User implements Committable, Enquirer, Serializable { // student class
     @Serial
     private static final long serialVersionUID = 555657101575497102L; //crc32b Hash of "User" converted to ASCII
     private static final String folderName = "users";
+    private static final Suggester suggester = new SuggesterService();
+    private final ReplierController replier = new CommitteeReplierController();
     private String myCommittee;
     private List<Post> myEnquiries;
 
@@ -42,9 +45,9 @@ public class Student extends User implements Committable, Serializable { // stud
     @Override
     public DashboardState getMenuState() {
         if(this.isCommittee())
-            return new CommitteeMenuState();
+            return new CommitteeUI();
         else
-            return new StudentMenuState();
+            return new StudentUI();
     }
 
     /**
@@ -58,8 +61,15 @@ public class Student extends User implements Committable, Serializable { // stud
         super(name, userID, faculty);
         this.setCommittee("NA");
         savable.saveObject(this, folderName, this.getFileName());
+        this.myEnquiries = new ArrayList<>();
     }
-
+    /**
+     * Returns the replier controller dependency used by Staff
+     * @return
+     */
+    public ReplierController getReplierController(){
+        return this.replier;
+    }
     /**
      * Checks whether the student is already a part of a committee.
      * @return false if student's myCommittee variable is "NA"
@@ -101,9 +111,18 @@ public class Student extends User implements Committable, Serializable { // stud
     }
 
     /**
+     * Removes specified post from the user
+     * @param post Post to be removed.
+     * @return true
+     */
+    public boolean removeEnquiry(Post post){
+        this.myEnquiries.remove(post);
+        return true;
+    }
+
+    /**
      * Adds an enquiry to the student's myEnquiries attribute.
      */
-    @Override
     public void addEnquiry(Post post) {
         this.myEnquiries.add(post);
     }
@@ -141,36 +160,6 @@ public class Student extends User implements Committable, Serializable { // stud
             System.out.println("No camps registered.");
         return index;
     }
-    /**
-     * Displays camp information for all camps visible and available to the user
-     *
-     * @return The number of camps displayed.
-     */
-    public int viewAllCamps() {
-        CampRepository repo = UnifiedCampRepository.getInstance();
-
-        // Get camps from both categories in a hashset of unique values to avoid duplicates
-        Set<Camp> allCamps = new HashSet<>();
-        allCamps.addAll(repo.filterCampByFaculty(Faculty.ALL));
-        allCamps.addAll(repo.filterCampByFaculty(this.getFaculty()));
-
-        if (allCamps.isEmpty()) {
-            System.out.println("No camps available.");
-            return 0;
-        }
-
-        for (Camp c : allCamps) {
-            //If camp is not visible, skip
-            if (!c.getVisible()) {
-                continue;
-            }
-            //Print divider
-            System.out.println("_________________________________");
-            //Display camp
-            c.display();
-        }
-        return allCamps.size();
-    }
 
     /**
      * Collects all suggestions posted by the student user to
@@ -180,21 +169,6 @@ public class Student extends User implements Committable, Serializable { // stud
      */
     @Override
     public List<Post> getSuggestions() {
-        List<Post> mySuggestions = new ArrayList<>();
-        UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-
-        if(this.isCommittee()){
-            Camp camp = repo.retrieveCamp(this.getCommittee());
-            if(camp == null) {
-                System.out.println("Camp not found.");
-                return null;
-            }
-            for (Post post : camp.getSuggestions()) {
-                if (Objects.equals(post.getFirstMessage().getPostedBy(), this.getUserID())) {
-                    mySuggestions.add(post);
-                }
-            }
-        }
-        return mySuggestions;
+        return suggester.getSuggestions(this);
     }
 }

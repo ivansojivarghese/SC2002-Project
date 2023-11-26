@@ -1,22 +1,23 @@
 package cams.dashboards.enquiry_menus;
 
-import cams.Camp;
+import cams.camp.Camp;
 import cams.database.CampRepository;
+import cams.database.UnifiedCampRepository;
 import cams.post_types.*;
+import cams.users.Enquirer;
 import cams.users.User;
+
+import java.io.Serializable;
 
 /**
  * Represents an enquirer in the dashboard system, extending the functionality of {@link EnquirerUI}.
  * This class provides implementations for submitting, editing, and deleting enquiries related to camps.
  */
-public class Enquirer extends EnquirerUI{
-    private final CampRepository campRepository;
+public class StudentEnquirerController implements EnquirerController, Serializable {
     /**
-     * Constructs an Enquirer instance.
+     * Constructs an EnquirerController instance.
      */
-    public Enquirer(CampRepository campRepository) {
-        super();
-        this.campRepository = campRepository;
+    public StudentEnquirerController() {
     }
 
     /**
@@ -28,6 +29,7 @@ public class Enquirer extends EnquirerUI{
      * @return true if the submission is successful, false if the camp does not exist.
      */
     public boolean submit(String campName, User user, String text){
+        CampRepository campRepository = UnifiedCampRepository.getInstance();
         Camp camp = campRepository.retrieveCamp(campName);
         if(camp == null){
             System.out.println("Selected camp does not exist.");
@@ -40,7 +42,7 @@ public class Enquirer extends EnquirerUI{
         newEnquiry.setPostedBy(user.getUserID());
         newPost.setCamp(campName);
         camp.addEnquiry(newPost);
-        user.addEnquiry(newPost);
+        ((Enquirer)user).addEnquiry(newPost);
         return true;
     }
 
@@ -59,7 +61,7 @@ public class Enquirer extends EnquirerUI{
         }
         Post currentPost = user.getEnquiries().get(postIndex);
         currentPost.getFirstMessage().setContent(content);
-
+        CampRepository campRepository = UnifiedCampRepository.getInstance();
         Camp camp = campRepository.retrieveCamp(currentPost.getCampName());
         //Save changes
         camp.save();
@@ -84,9 +86,12 @@ public class Enquirer extends EnquirerUI{
             System.out.println("Unable to delete posts with replies.");
             return false;
         }
+
+        CampRepository campRepository = UnifiedCampRepository.getInstance();
         Camp camp = campRepository.retrieveCamp(currentPost.getCampName());
         camp.removePost(PostType.ENQUIRY, currentPost);
-        //Save changes; posts are stored in camp, user does not store posts
+
+        //Save changes
         camp.save();
         return true;
     }

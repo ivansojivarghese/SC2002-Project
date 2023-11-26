@@ -1,6 +1,6 @@
 package cams.util;
 
-import cams.Camp;
+import cams.camp.Camp;
 import cams.users.User;
 import cams.database.UnifiedCampRepository;
 

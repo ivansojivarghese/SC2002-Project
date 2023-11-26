@@ -9,7 +9,7 @@ import java.util.Scanner;
  * Defines a template base class for user menus
  * and provides the common change password method
  */
-public abstract class UserMenuState implements DashboardState {
+public abstract class UserUI implements DashboardState {
     /**
      * Displays information about the user on the dashboard.
      *

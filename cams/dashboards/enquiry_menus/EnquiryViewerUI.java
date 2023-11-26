@@ -5,6 +5,7 @@ import cams.dashboards.post_menus.PostViewerUI;
 import cams.post_types.Post;
 import cams.users.User;
 
+import java.util.ArrayList;
 import java.util.List;
 /**
  * Abstract class functioning as a UI component for viewing enquiries.
@@ -42,7 +43,7 @@ public abstract class EnquiryViewerUI implements PostViewerUI {
     public int view(User user){
         Post currentPost;
         System.out.println("My Camp Enquiries: ");
-        List<Post> myEnquiries = user.getEnquiries();
+        List<Post> myEnquiries = new ArrayList<>(user.getEnquiries());
 
         // Check if the user has no enquiries
         if(myEnquiries.isEmpty()){

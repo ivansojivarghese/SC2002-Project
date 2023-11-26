@@ -1,10 +1,12 @@
-package cams.users;
+package cams.dashboards;
+
+import cams.users.User;
 
 /**
- * Interface defining the core behaviours of a participant.
+ * Interface defining the core behaviours of a participationController.
  * Includes methods for registering and de-registering from camps.
  */
-public interface Participant {
+public interface ParticipationController {
     /**
      * Registers a user to a specified camp.
      * <p>
@@ -24,4 +26,5 @@ public interface Participant {
      * @param campName The name of the camp from which the user is deregistering.
      */
     void deregister(User user, String campName);
+    int viewAllCamps(User user);
 }

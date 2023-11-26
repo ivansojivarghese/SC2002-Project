@@ -1,10 +1,13 @@
-package cams.users;
+package cams.dashboards;
+
+import cams.camp.CampDetails;
+import cams.users.User;
 
 /**
  * Interface defining the responsibilities of an organiser.
  * Includes methods for creating, editing, and deleting camps, as well as managing camp assignments.
  */
-public interface Organiser {
+public interface OrganiserController {
     /**
      * Creates a new camp with the specified details.
      *
@@ -58,4 +61,11 @@ public interface Organiser {
      * @return The number of attendees registered for the camp.
      */
     int getNumAttendees(String campName);
+
+    /**
+     * Displays all camps created by the user
+     * @param user The current user
+     * @return Number of camps created.
+     */
+    int viewAllCamps(User user);
 }

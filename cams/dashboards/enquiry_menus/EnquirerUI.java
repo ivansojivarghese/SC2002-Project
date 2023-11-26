@@ -3,6 +3,7 @@ package cams.dashboards.enquiry_menus;
 import cams.dashboards.Dashboard;
 import cams.dashboards.MenuAction;
 import cams.dashboards.post_menus.PosterUI;
+import cams.post_types.Post;
 import cams.users.Committable;
 import cams.users.User;
 import cams.util.InputScanner;
@@ -13,13 +14,14 @@ import java.util.Map;
 import java.util.Scanner;
 
 /**
- * Abstract class representing the user interface for enquiry operations.
+ * Class representing the user interface for enquiry operations.
  * This class provides the template for enquiry related actions such as submitting,
  * editing, and deleting enquiries.
  * It extends {@link EnquirerUI} and provides the implementation for the reply method in {@link PosterUI}.
  */
-public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
-
+public class EnquirerUI extends EnquiryViewerUI implements PosterUI {
+    //Instantiate dependency
+    private final EnquirerController enquirerController = new StudentEnquirerController();
     public EnquirerUI() {}
 
     /**
@@ -154,7 +156,41 @@ public abstract class EnquirerUI extends EnquiryViewerUI implements PosterUI {
         }
     }
 
-    public abstract boolean submit(String campName, User user, String text);
-    public abstract boolean edit(User user, int postIndex, String content);
-    public abstract boolean delete(User user, int postIndex);
+    /**
+     * Submits a new post to a specified camp.
+     *
+     * @param campName The name of the camp to which the post is being submitted.
+     * @param user     The user submitting the post.
+     * @param text     The content of the post.
+     * @return true if the submission is successful, false otherwise.
+     */
+    @Override
+    public boolean submit(String campName, User user, String text) {
+        return enquirerController.submit(campName, user, text);
+    }
+
+    /**
+     * Edits an existing {@link Post post}.
+     *
+     * @param user      The user who owns the post.
+     * @param postIndex The index of the post in the user's list of posts.
+     * @param content   The new content for the post.
+     * @return true if the edit is successful, false otherwise.
+     */
+    @Override
+    public boolean edit(User user, int postIndex, String content) {
+        return enquirerController.edit(user, postIndex, content);
+    }
+
+    /**
+     * Deletes a post.
+     *
+     * @param user      The user who owns the post.
+     * @param postIndex The index of the post in the user's list of posts.
+     * @return true if the deletion is successful, false otherwise.
+     */
+    @Override
+    public boolean delete(User user, int postIndex) {
+        return enquirerController.delete(user, postIndex);
+    }
 }

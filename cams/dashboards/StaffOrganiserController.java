@@ -1,23 +1,30 @@
-package cams.users;
+package cams.dashboards;
 
-import cams.Camp;
+import cams.camp.Camp;
 import cams.database.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
 import cams.database.UserRepository;
+import cams.camp.CampDetails;
+import cams.users.User;
 
-import cams.users.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Concrete class responsible for implementing the functionalities defined in Organiser.
+ * Concrete class responsible for implementing the functionalities defined in OrganiserController.
  * Handles the behaviours related to a Staff member camp organiser,
  * such as creating camps, editing camps, assigning students and deleting camps
  */
-public class StaffOrganiserActions implements Organiser{
+public class StaffOrganiserController implements OrganiserController, Serializable {
+    private final CampRepository campRepo;
     /**
      * Constructor instantiates the class
      */
-    public StaffOrganiserActions() {}
+    public StaffOrganiserController() {
+        this.campRepo = UnifiedCampRepository.getInstance();
+    }
 
     /**
      * Gets details of the camp
@@ -25,9 +32,6 @@ public class StaffOrganiserActions implements Organiser{
      * @return Returns details of the specified camp as a {@link CampDetails} object
      */
     public CampDetails getCampDetails(String campName){
-        CampRepository campRepo = UnifiedCampRepository.getInstance();
-        UnifiedUserRepository userRepo = UnifiedUserRepository.getInstance();
-
         CampDetails details = new CampDetails();
         Camp camp = campRepo.retrieveCamp(campName);
 
@@ -52,7 +56,6 @@ public class StaffOrganiserActions implements Organiser{
      */
     @Override
     public void createCamp(CampDetails details) {
-        CampRepository campRepo = UnifiedCampRepository.getInstance();
         UnifiedUserRepository userRepo = UnifiedUserRepository.getInstance();
 
         User creator = userRepo.retrieveUser(details.getInCharge());
@@ -83,9 +86,6 @@ public class StaffOrganiserActions implements Organiser{
      */
     @Override
     public void editCamp(String campName, CampDetails details) {
-        CampRepository campRepo = UnifiedCampRepository.getInstance();
-        UnifiedUserRepository userRepo = UnifiedUserRepository.getInstance();
-
         Camp camp = campRepo.retrieveCamp(campName);
         if (camp == null) {
             // Handle the case where camp is not found
@@ -111,7 +111,6 @@ public class StaffOrganiserActions implements Organiser{
      */
     @Override
     public void deleteCamp(String campName) {
-        CampRepository campRepo = UnifiedCampRepository.getInstance();
         UserRepository userRepo = UnifiedUserRepository.getInstance();
 
         Camp camp = campRepo.retrieveCamp(campName);
@@ -122,7 +121,7 @@ public class StaffOrganiserActions implements Organiser{
     }
 
     /**
-     * Assigns a user to a specified camp as a participant.
+     * Assigns a user to a specified camp as a participationController.
      * @param UserID   The user ID of the user to be assigned to the camp.
      * @param campName The name of the camp to which the user is being assigned.
      */
@@ -131,11 +130,9 @@ public class StaffOrganiserActions implements Organiser{
         //TODO implement camp assignment
     	
     	UserRepository userRepo = UnifiedUserRepository.getInstance();
-    	Participant participant = ParticipantAction.getInstance();
+    	ParticipationController participationController = StudentParticipationController.getInstance();
 
-        participant.register(userRepo.retrieveUser(UserID), campName);
-        
-        // dashboard.loggedIn(); // Refresh dashboard state
+        participationController.register(userRepo.retrieveUser(UserID), campName);
     }
 
     /**
@@ -145,8 +142,6 @@ public class StaffOrganiserActions implements Organiser{
      */
     public boolean isCampNameUnique(String campName) {
         CampRepository campRepo = UnifiedCampRepository.getInstance();
-        UnifiedUserRepository userRepo = UnifiedUserRepository.getInstance();
-
         return !campRepo.Exists(campName);
     }
 
@@ -157,10 +152,27 @@ public class StaffOrganiserActions implements Organiser{
      */
     public int getNumAttendees(String campName){
         CampRepository campRepo = UnifiedCampRepository.getInstance();
-        UnifiedUserRepository userRepo = UnifiedUserRepository.getInstance();
-
         Camp camp = campRepo.retrieveCamp(campName);
-        User creator = userRepo.retrieveUser(camp.getInCharge());
         return camp.getNumAttendees();
+    }
+
+    /**
+     * Displays all available camps.
+     *
+     * @return The number of camps displayed.
+     */
+    public int viewAllCamps(User user) {
+        CampRepository repo = UnifiedCampRepository.getInstance();
+        Set<Camp> allCamps = new HashSet<>(repo.allCamps());
+
+        if(allCamps.isEmpty()) {
+            System.out.println("No camps available.");
+            return 0;
+        }
+        for(Camp c : allCamps){
+            System.out.println("_________________________________");
+            c.display();
+        }
+        return allCamps.size();
     }
 }

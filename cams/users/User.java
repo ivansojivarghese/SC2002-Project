@@ -1,6 +1,7 @@
 package cams.users;
-import cams.Camp;
+import cams.camp.Camp;
 import cams.dashboards.DashboardState;
+import cams.dashboards.enquiry_menus.ReplierController;
 import cams.database.UnifiedCampRepository;
 import cams.post_types.Post;
 import cams.util.Faculty;
@@ -31,7 +32,6 @@ public abstract class User implements Serializable {
         return Objects.equals(password, this.password);
     }
 
-    public abstract int viewAllCamps();
     public int displayMyCamps() {
         int index = 0;
 
@@ -48,8 +48,7 @@ public abstract class User implements Serializable {
     }
     public abstract List<Post> getSuggestions();
     public abstract List<Post> getEnquiries();
-
-    public abstract void addEnquiry(Post post);
+    public abstract ReplierController getReplierController();
 
     public User(){}
     public User(String name, String userID, Faculty faculty){

@@ -1,30 +1,28 @@
 package cams.dashboards;
 
-import cams.Camp;
-import cams.dashboards.enquiry_menus.Replier;
-import cams.dashboards.suggestion_menus.Suggester;
+import cams.camp.Camp;
+import cams.dashboards.enquiry_menus.ReplierUI;
+import cams.dashboards.suggestion_menus.SuggesterUI;
 import cams.database.UnifiedCampRepository;
-import cams.reports.ParticipationReport;
 import cams.reports.PerformanceReport;
 import cams.reports.ReportGenerator;
 import cams.users.Committable;
 import cams.users.User;
 import cams.util.UserInput;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Represents the dashboard state for a committee member.
- * This class extends {@link StudentMenuState} and adds additional functionalities specific to {@link Committable committee members},
+ * This class extends {@link StudentUI} and adds additional functionalities specific to {@link Committable committee members},
  * such as managing suggestions, replying to enquiries, and generating reports.
  */
-public class CommitteeMenuState extends StudentMenuState {
+public class CommitteeUI extends StudentUI {
     /**
-     * Constructs a CommitteeMenuState instance.
+     * Constructs a CommitteeUI instance.
      */
-    public CommitteeMenuState() {
+    public CommitteeUI() {
         super();
     }
 
@@ -94,7 +92,7 @@ public class CommitteeMenuState extends StudentMenuState {
      * @param dashboard The current dashboard context object
      */
     protected void goToSuggest(Dashboard dashboard) {
-        dashboard.setState(new Suggester());
+        dashboard.setState(new SuggesterUI());
     }
 
     /**
@@ -102,7 +100,7 @@ public class CommitteeMenuState extends StudentMenuState {
      * @param dashboard The current dashboard context object
      */
     protected void goToReply(Dashboard dashboard) {
-        dashboard.setState(new Replier());
+        dashboard.setState(new ReplierUI());
     }
 
     /**

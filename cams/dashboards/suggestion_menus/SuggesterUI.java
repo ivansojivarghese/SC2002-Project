@@ -15,7 +15,8 @@ import java.util.Scanner;
  * Abstract class providing the user interface for suggesting, editing, and deleting suggestions.
  * Implements {@link PostViewerUI} to handle the display and interaction logic for suggestion management.
  */
-public abstract class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
+public class SuggesterUI extends SuggestionViewerUI implements PostViewerUI {
+    private final Suggester suggester = new SuggesterService();
     /**
      * Displays the suggestion menu to the user
      * and handles user input for various suggestion operations.
@@ -92,9 +93,6 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
         try {
             if (submit(campName, user, content))
                 System.out.println("Success!");
-            if(user instanceof Committable){
-                System.out.println("1 point has been added.");
-            }
         } catch (Exception e) {
             System.out.println("Unsuccessful: " + e.getMessage());
         }
@@ -122,8 +120,8 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
     /**
      * Handles the user interaction required for deleting one of the user's existing suggestions.
      * The user selects a suggestion to delete and the method {@link #deleteSuggestion} handles the abstracted logic
-     * @param user
-     * @param numSuggestions
+     * @param user Current owner of the suggestion.
+     * @param numSuggestions Total number of suggestions owned by the user.
      */
     protected void deleteSuggestion(User user, int numSuggestions){
         int option = UserInput.getIntegerInput(0, numSuggestions-1, "Enter index of suggestion to delete: ");
@@ -135,7 +133,13 @@ public abstract class SuggesterUI extends SuggestionViewerUI implements PostView
         }
     }
 
-    public abstract boolean submit(String camp, User user, String text);
-    public abstract boolean edit(User user, int postIndex, String content);
-    public abstract boolean delete(User user, int postIndex);
+    public boolean submit(String camp, User user, String text){
+        return suggester.submit(camp, user, text);
+    }
+    public boolean edit(User user, int postIndex, String content){
+        return suggester.edit(user, postIndex, content);
+    }
+    public boolean delete(User user, int postIndex){
+        return suggester.delete(user, postIndex);
+    }
 }

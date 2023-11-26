@@ -1,7 +1,5 @@
 package cams.dashboards;
-import cams.users.CampDetails;
-import cams.users.Organiser;
-import cams.users.StaffOrganiserActions;
+import cams.camp.CampDetails;
 import cams.users.User;
 import cams.util.Faculty;
 import cams.util.InputScanner;
@@ -18,11 +16,11 @@ import java.util.Scanner;
  * These methods include actions like assigning students to camps, changing camp details,
  * and deleting camps.
  */
-public class OrganiserMenu implements DashboardState {
-    private final Organiser organiser;
+public class OrganiserUI implements DashboardState {
+    private final OrganiserController organiserController;
 
-    OrganiserMenu() {
-        this.organiser = new StaffOrganiserActions();
+    OrganiserUI() {
+        this.organiserController = new StaffOrganiserController();
     }
 
     @Override
@@ -42,7 +40,7 @@ public class OrganiserMenu implements DashboardState {
         int option = UserInput.getIntegerInput(0, numCamps - 1, "Select a Camp to edit through its index number: ");
         String selectedCamp = user.getMyCamps().get(option);
         //If camp does not exist
-        if (organiser.isCampNameUnique(selectedCamp)) {
+        if (organiserController.isCampNameUnique(selectedCamp)) {
             System.out.println("Camp selected not found, returning to main menu.");
             dashboard.loggedIn();
             return;
@@ -71,7 +69,7 @@ public class OrganiserMenu implements DashboardState {
      */
     protected Map<Integer, MenuAction> initializeActions(Dashboard dashboard, String selectedCamp) {
         Map<Integer, MenuAction> actions = new HashMap<>();
-        CampDetails details = organiser.getCampDetails(selectedCamp);
+        CampDetails details = organiserController.getCampDetails(selectedCamp);
         actions.put(0, dashboard::loggedIn);
         actions.put(1, () -> assignStudent(dashboard, selectedCamp));
         actions.put(2, () -> changeName(dashboard, details));
@@ -109,7 +107,7 @@ public class OrganiserMenu implements DashboardState {
     }
 
     /**
-     * UI interaction that assigns a student to a selected camp as a participant.
+     * UI interaction that assigns a student to a selected camp as a participationController.
      * This method prompts for the userID of a student and assigns them to the specified camp.
      * @param dashboard     The dashboard context.
      * @param selectedCamp  The name of the camp to assign the student to.
@@ -117,7 +115,7 @@ public class OrganiserMenu implements DashboardState {
     protected void assignStudent(Dashboard dashboard, String selectedCamp) {
         System.out.println("Enter the userID of a student to be assigned: ");
         String student = UserInput.getStringInput();
-        organiser.assignCamp(student, selectedCamp);
+        organiserController.assignCamp(student, selectedCamp);
         dashboard.loggedIn();
     }
 
@@ -136,7 +134,7 @@ public class OrganiserMenu implements DashboardState {
         updatedName = UserInput.getStringInput();
         details.setCampName(updatedName);
 
-        organiser.editCamp(details.getCampName(), details);
+        organiserController.editCamp(details.getCampName(), details);
         System.out.println("New Camp name: " + details.getCampName());
         dashboard.loggedIn();
     }
@@ -157,7 +155,7 @@ public class OrganiserMenu implements DashboardState {
         if (bool) {
             System.out.println("Proceeding to change visibility to " + String.valueOf(!details.isVisible()).toUpperCase() + ".");
             details.setVisibility(!details.isVisible());
-            organiser.editCamp(details.getCampName(), details);
+            organiserController.editCamp(details.getCampName(), details);
         }
         dashboard.loggedIn();
     }
@@ -174,7 +172,7 @@ public class OrganiserMenu implements DashboardState {
         } else {
             details.setFacultyRestriction(dashboard.getAuthenticatedUser().getFaculty());
         }
-        organiser.editCamp(details.getCampName(), details);
+        organiserController.editCamp(details.getCampName(), details);
         System.out.println("Camp is now open to " + details.getFacultyRestriction() + ".");
         dashboard.loggedIn();
     }
@@ -192,7 +190,7 @@ public class OrganiserMenu implements DashboardState {
         int option = UserInput.getIntegerInput(10, 5000, "No. of new attendee slots: ");
         details.setAttendeeSlots(option);
 
-        organiser.editCamp(details.getCampName(), details);
+        organiserController.editCamp(details.getCampName(), details);
         System.out.println("Camp has been set to a total of " + details.getAttendeeSlots() + " attendee slots.");
         dashboard.loggedIn();
     }
@@ -213,7 +211,7 @@ public class OrganiserMenu implements DashboardState {
         int option = UserInput.getIntegerInput(1, 10, "No. of new committee member slots available (Max 10): ");
         details.setCommitteeSlots(option);
 
-        organiser.editCamp(details.getCampName(), details);
+        organiserController.editCamp(details.getCampName(), details);
         System.out.println("Camp has been set to a total of " + details.getCommitteeSlots() + " committee slots.");
         dashboard.loggedIn();
     }
@@ -233,7 +231,7 @@ public class OrganiserMenu implements DashboardState {
         update = UserInput.getStringInput();
         details.setDescription(update);
 
-        organiser.editCamp(details.getCampName(), details);
+        organiserController.editCamp(details.getCampName(), details);
         System.out.println("New Camp description: " + details.getDescription());
         dashboard.loggedIn();
     }
@@ -272,7 +270,7 @@ public class OrganiserMenu implements DashboardState {
             }
         }
 
-        organiser.editCamp(details.getCampName(), details);
+        organiserController.editCamp(details.getCampName(), details);
         System.out.println("New closing date of registration: " + details.getClosingDate());
         dashboard.loggedIn();
     }
@@ -322,7 +320,7 @@ public class OrganiserMenu implements DashboardState {
             }
         }
 
-        organiser.editCamp(details.getCampName(), details);
+        organiserController.editCamp(details.getCampName(), details);
         System.out.println("Current period of dates: " + details.getStartDate() + " - " + details.getEndDate());
         dashboard.loggedIn();
     }
@@ -336,14 +334,14 @@ public class OrganiserMenu implements DashboardState {
      * @param selectedCamp The name of the camp to be deleted.
      */
     protected void deleteCamp(Dashboard dashboard, String selectedCamp) {
-        if (organiser.getNumAttendees(selectedCamp) > 0) {
+        if (organiserController.getNumAttendees(selectedCamp) > 0) {
             System.out.println("Camps with participants cannot be deleted.");
             return;
         }
 
         boolean bool = UserInput.getBoolInput("Are you sure you want to delete " + selectedCamp + " ? (Y / N)");
         if (bool) {
-            organiser.deleteCamp(selectedCamp);
+            organiserController.deleteCamp(selectedCamp);
             System.out.println("This Camp has been deleted.");
         } else {
             System.out.println("Abandoning delete action, returning to main menu...");

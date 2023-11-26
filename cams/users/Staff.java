@@ -1,19 +1,17 @@
 package cams.users;
 
-import cams.Camp;
 import cams.dashboards.DashboardState;
-import cams.dashboards.StaffMenuState;
-import cams.database.CampRepository;
+import cams.dashboards.StaffUI;
+import cams.dashboards.enquiry_menus.ReplierController;
+import cams.dashboards.enquiry_menus.StaffReplierController;
+import cams.dashboards.suggestion_menus.ApproverService;
 import cams.post_types.Post;
 import cams.util.Faculty;
-import cams.database.UnifiedCampRepository;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Represents a staff member specialisation of {@link User}.
@@ -24,6 +22,8 @@ public class Staff extends User implements Serializable {
     @Serial
     private static final long serialVersionUID = 565197102100995754L; // CRC32b hash of "Staff" converted to ASCII
     private static final String folderName = "users";
+    private final ReplierController replier;
+    private final ApproverService approver;
 
     /**
      * Constructs a Staff member with the specified details and saves it.
@@ -34,6 +34,8 @@ public class Staff extends User implements Serializable {
      */
     public Staff(String name, String userID, Faculty faculty) {
         super(name, userID, faculty);
+        this.replier = new StaffReplierController();
+        this.approver = new ApproverService();
         savable.saveObject(this, folderName, this.getFileName());
     }
 
@@ -43,7 +45,7 @@ public class Staff extends User implements Serializable {
      * @return The {@link DashboardState} specific to staff members.
      */
     public DashboardState getMenuState() {
-        return new StaffMenuState();
+        return new StaffUI();
     }
 
     /**
@@ -57,55 +59,21 @@ public class Staff extends User implements Serializable {
     }
 
     /**
+     * Returns the replier controller dependency used by Staff
+     * @return
+     */
+    public ReplierController getReplierController(){
+        return this.replier;
+    }
+
+    /**
      * Collects all enquiries related to the camps created by the staff member.
      *
      * @return A list of {@link Post} objects representing enquiries.
      */
     @Override
     public List<Post> getEnquiries() { //COLLECTS all enquiries in Camps created by Staff
-        List<Post> myEnquiries = new ArrayList<>();
-        try{
-            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-            for (String campName : this.getMyCamps()) {
-                Camp camp = repo.retrieveCamp(campName);
-                if(camp == null)
-                    continue;
-                myEnquiries.addAll(camp.getEnquiries());
-            }
-        }
-        catch (NullPointerException e){
-                System.out.println("No camp to retrieve suggestions from.");
-        }
-        return myEnquiries;
-    }
-
-    /**
-     * This method is not implemented.
-     */
-    @Override
-    public void addEnquiry(Post post) {
-        throw new UnsupportedOperationException("This method is not implemented. Staffs do not post enquiries.");
-    }
-
-    /**
-     * Displays all available camps.
-     *
-     * @return The number of camps displayed.
-     */
-    @Override
-    public int viewAllCamps() {
-        CampRepository repo = UnifiedCampRepository.getInstance();
-        Set<Camp> allCamps = new HashSet<>(repo.allCamps());
-
-        if(allCamps.isEmpty()) {
-            System.out.println("No camps available.");
-            return 0;
-        }
-        for(Camp c : allCamps){
-            System.out.println("_________________________________");
-            c.display();
-        }
-        return allCamps.size();
+        return this.replier.getEnquiries(this);
     }
 
     /**
@@ -115,20 +83,7 @@ public class Staff extends User implements Serializable {
      */
     @Override
     public List<Post> getSuggestions() {
-        List<Post> mySuggestions = new ArrayList<>();
-        try{
-            UnifiedCampRepository repo = UnifiedCampRepository.getInstance();
-            for (String campName : this.getMyCamps()) {
-                Camp camp = repo.retrieveCamp(campName);
-                if(camp == null)
-                    continue;
-                mySuggestions.addAll(camp.getSuggestions());
-            }
-        }
-        catch (NullPointerException e){
-            System.out.println("No camp to retrieve suggestions from.");
-        }
-        return mySuggestions;
+        return new ArrayList<>(this.approver.getSuggestions(this));
     }
     /**
      * Displays the camps created by the staff member

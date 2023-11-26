@@ -1,26 +1,34 @@
-package cams.users;
+package cams.dashboards;
 
-import cams.Camp;
+import cams.camp.Camp;
+import cams.database.CampRepository;
 import cams.database.UnifiedCampRepository;
+import cams.users.Committable;
+import cams.users.User;
 import cams.util.Date;
+import cams.util.Faculty;
 import cams.util.UserInput;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
- * Implements the {@link Participant} interface, handling actions related to camp registration and deregistration.
+ * Implements the {@link ParticipationController} interface, handling actions related to camp registration and deregistration.
  * This class applies the business logic to perform these actions, such as checking camp availability.
  */
-public class ParticipantAction implements Participant{
-	private static Participant instance;
+public class StudentParticipationController implements ParticipationController, Serializable {
+	private static ParticipationController instance;
 
     /**
-     * Provides a global point of access to the {@link ParticipantAction} instance.
+     * Provides a global point of access to the {@link StudentParticipationController} instance.
      *
-     * @return The singleton instance of {@link ParticipantAction}.
+     * @return The singleton instance of {@link StudentParticipationController}.
      */
-	public static Participant getInstance() {
+	public static ParticipationController getInstance() {
         // If the instance is null, create a new one
         if (instance == null) {
-            instance = new ParticipantAction();
+            instance = new StudentParticipationController();
         }
         // Return the existing/new instance
         return instance;
@@ -145,5 +153,36 @@ public class ParticipantAction implements Participant{
             	((Committable) user).setCommittee(campName);
             }
         }*/
+    }
+
+    /**
+     * Displays camp information for all camps visible and available to the user
+     *
+     * @return The number of camps displayed.
+     */
+    public int viewAllCamps(User user) {
+        CampRepository repo = UnifiedCampRepository.getInstance();
+
+        // Get camps from both categories in a hashset of unique values to avoid duplicates
+        Set<Camp> allCamps = new HashSet<>();
+        allCamps.addAll(repo.filterCampByFaculty(Faculty.ALL));
+        allCamps.addAll(repo.filterCampByFaculty(user.getFaculty()));
+
+        if (allCamps.isEmpty()) {
+            System.out.println("No camps available.");
+            return 0;
+        }
+
+        for (Camp c : allCamps) {
+            //If camp is not visible, skip
+            if (!c.getVisible()) {
+                continue;
+            }
+            //Print divider
+            System.out.println("_________________________________");
+            //Display camp
+            c.display();
+        }
+        return allCamps.size();
     }
 }

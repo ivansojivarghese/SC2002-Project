@@ -1,9 +1,6 @@
 package cams.dashboards;
 
-import cams.dashboards.enquiry_menus.Enquirer;
-import cams.database.UnifiedCampRepository;
-import cams.users.Participant;
-import cams.users.ParticipantAction;
+import cams.dashboards.enquiry_menus.EnquirerUI;
 import cams.users.User;
 import cams.util.InputScanner;
 import cams.util.UserInput;
@@ -15,11 +12,11 @@ import java.util.Scanner;
 /**
  Represents the state of the dashboard when a student is logged in.
  **/
-public class StudentMenuState extends UserMenuState implements DashboardState{
-    protected final Participant participant;
+public class StudentUI extends UserUI implements DashboardState{
+    protected final ParticipationController participationController;
 
-    public StudentMenuState(){
-        this.participant = new ParticipantAction();
+    public StudentUI(){
+        this.participationController = new StudentParticipationController();
     }
     /**
      * Displays the student menu to the user and handles user input for various operations.
@@ -105,11 +102,11 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
     protected void registerCamp(Dashboard dashboard){
         User user = dashboard.getAuthenticatedUser();
         Scanner sc = InputScanner.getInstance();
-        user.viewAllCamps();
+        participationController.viewAllCamps(user);
         System.out.println("\nEnter name of camp to register for: ");
         String registerInput = sc.nextLine();
 
-        participant.register(user, registerInput);
+        participationController.register(user, registerInput);
         dashboard.loggedIn(); // Refresh dashboard state
     }
 
@@ -126,7 +123,7 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
         User user = dashboard.getAuthenticatedUser();
         System.out.println("\nEnter name of camp to withdraw from: ");
         String deregisterInput = sc.nextLine();
-        participant.deregister(user, deregisterInput);
+        participationController.deregister(user, deregisterInput);
     }
 
     /**
@@ -137,6 +134,6 @@ public class StudentMenuState extends UserMenuState implements DashboardState{
      * @param dashboard The dashboard context.
      */
     protected void goToEnquiries(Dashboard dashboard){
-        dashboard.setState(new Enquirer(UnifiedCampRepository.getInstance()));
+        dashboard.setState(new EnquirerUI());
     }
 }

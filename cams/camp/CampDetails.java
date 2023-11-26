@@ -1,4 +1,4 @@
-package cams.users;
+package cams.camp;
 
 import cams.util.Faculty;
 
@@ -102,7 +102,7 @@ public class CampDetails {
     /**
      * Gets the number of slots available to attendees
      *
-     * @return The total number of participant slots
+     * @return The total number of participationController slots
      */
     public int getAttendeeSlots() {
         return attendeeSlots;
@@ -111,7 +111,7 @@ public class CampDetails {
     /**
      * Sets the number of slots available to attendees
      *
-     * @param attendeeSlots The total number of participant slots
+     * @param attendeeSlots The total number of participationController slots
      */
     public void setAttendeeSlots(int attendeeSlots) {
         this.attendeeSlots = attendeeSlots;

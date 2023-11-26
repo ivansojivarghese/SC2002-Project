@@ -1,6 +1,6 @@
 package cams.reports;
 
-import cams.Camp;
+import cams.camp.Camp;
 import cams.database.UnifiedUserRepository;
 import cams.filters.Filter;
 import cams.users.User;
@@ -138,7 +138,7 @@ public class PerformanceReport implements ReportGenerator {
 
             System.out.println("Camp Attendance Report generated successfully. File saved at: " + outputPath);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
         }
     }
 
