@@ -47,6 +47,8 @@ public class LogoutState implements DashboardState{
                 dashboard.setAuthenticatedUser(authenticatedUser);
                 dashboard.loggedIn();
             }
+            else
+                return;
         } catch (Exception e)
         {
             System.out.println("Error: " + e);

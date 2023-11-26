@@ -52,6 +52,8 @@ class LoginAttempt { //Class is package-private
         if (password.equalsIgnoreCase("password")) {
             System.out.println("You are using the default password.");
             changeDefaultPassword(user, sc);
+            System.out.println("Please log in again.");
+            return null;
         }
 
         return user;

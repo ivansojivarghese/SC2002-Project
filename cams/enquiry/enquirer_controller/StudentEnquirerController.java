@@ -61,6 +61,11 @@ public class StudentEnquirerController implements EnquirerController, Serializab
             return false;
         }
         Post currentPost = user.getEnquiries().get(postIndex);
+
+        if(currentPost.isReplied()){
+            System.out.println("Unable to edit posts with replies.");
+            return false;
+        }
         currentPost.getFirstMessage().setContent(content);
         CampRepository campRepository = UnifiedCampRepository.getInstance();
         Camp camp = campRepository.retrieveCamp(currentPost.getCampName());
