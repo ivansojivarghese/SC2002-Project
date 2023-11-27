@@ -1,4 +1,6 @@
-package cams.camp;
+package cams.util;
+
+import cams.camp.Camp;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
