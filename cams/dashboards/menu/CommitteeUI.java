@@ -8,7 +8,6 @@ import cams.replier.ReplierUI;
 import cams.reports.ParticipationReport;
 import cams.suggestion.SuggesterUI;
 import cams.database.UnifiedCampRepository;
-import cams.reports.PerformanceReport;
 import cams.reports.ReportGenerator;
 import cams.users.Committable;
 import cams.users.User;
