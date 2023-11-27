@@ -143,7 +143,7 @@ public class PerformanceReport implements ReportGenerator {
             String fileName = scanner.nextLine().trim();
 
             // Modify the outputPath to use a relative path to the "outputs" folder
-            String outputPath = "outputs/" + fileName + ".xlsx";
+            String outputPath = "outputs/" + fileName + ".csv";
 
             // Write to file
             try (FileOutputStream fileOut = new FileOutputStream(outputPath)) {
