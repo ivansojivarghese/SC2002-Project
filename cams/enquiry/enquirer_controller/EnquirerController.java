@@ -37,4 +37,13 @@ public interface EnquirerController {
      * @return {@code true} if the deletion is successful, {@code false} otherwise.
      */
     boolean delete(User user, int postIndex);
+
+    /**
+     * Interface to display the enquiries of the user and returns the count of those enquiries.
+     * Each enquiry is displayed with its index and content.
+     *
+     * @param user The user whose enquiries are to be displayed.
+     * @return The number of enquiries displayed. 0 = no enquiries by user. -1 = no camps.
+     */
+    int view(User user);
 }

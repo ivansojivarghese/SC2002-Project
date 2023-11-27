@@ -35,6 +35,13 @@ public class EnquirerUI implements PosterUI {
             int numEnquiries = view(dashboard.getAuthenticatedUser());
             System.out.println();
 
+            // If attempt to view enquiries returns -1 meaning no camps available
+            if(numEnquiries == -1) {
+                System.out.println("No camps available to enquire about.");
+                dashboard.loggedIn();
+                return;
+            }
+
             // Initialise and display hash map of menu options storing methods
             Map<Integer, MenuAction> options = initializeActions(dashboard, numEnquiries);
             describeOptions(options);
@@ -203,30 +210,6 @@ public class EnquirerUI implements PosterUI {
      */
     @Override
     public int view(User user){
-        Post currentPost;
-        System.out.println("My Camp Enquiries: ");
-
-        // Catch null pointers
-        if(user.getEnquiries() == null)
-        {
-            System.out.println("No enquiries to display.");
-            return 0;
-        }
-        List<Post> myEnquiries = new ArrayList<>(user.getEnquiries());
-
-        // Check if the user has no enquiries
-        if(myEnquiries.isEmpty()){
-            System.out.println("No enquiries to display.");
-            return 0;
-        }
-
-        // Display each enquiry with its index and content
-        for (int i = 0; i < myEnquiries.size(); i++) {
-            currentPost = myEnquiries.get(i);
-            System.out.println("Index " + i + ": ");
-            currentPost.displayContent();
-            System.out.println("__________________________");
-        }
-        return myEnquiries.size();
+        return enquirerController.view(user);
     }
 }

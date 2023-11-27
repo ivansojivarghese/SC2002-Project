@@ -155,12 +155,13 @@ public class OrganiserUI implements DashboardState {
      */
     protected void changeCampName(Dashboard dashboard, CampDetails details) {
         String updatedName;
-        System.out.println("Camp's current name is: " + details.getCampName());
+        String oldCampName = details.getCampName();
+        System.out.println("Camp's current name is: " + oldCampName);
         System.out.println("Set a new name for the Camp: ");
         updatedName = UserInput.getStringInput();
         details.setCampName(updatedName);
 
-        organiserController.editCamp(details.getCampName(), details);
+        organiserController.editCamp(oldCampName, details);
         System.out.println("New Camp name: " + details.getCampName());
         dashboard.loggedIn();
     }
