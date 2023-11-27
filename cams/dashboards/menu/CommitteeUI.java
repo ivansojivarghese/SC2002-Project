@@ -140,10 +140,4 @@ public class CommitteeUI extends StudentUI {
             System.out.println("Reports generated successfully.");
         }
     }
-
-
-
-
-
-
 }

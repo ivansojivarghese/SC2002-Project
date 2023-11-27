@@ -117,7 +117,7 @@ public class StudentUI extends UserUI{
         }
         if(index == 0)
             System.out.println("No camps registered.");
-        return campDisplay.displayMyCamps(user);
+        return index;
     }
 
     /**

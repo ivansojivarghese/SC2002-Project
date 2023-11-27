@@ -40,7 +40,7 @@ public class StudentParticipationController implements ParticipationController, 
             System.out.println("Camp does not exist.");
             return;
         }
-        if(!user.getMyCamps().contains(campName)) {
+        if(!user.getMyCamps().contains(campName.toUpperCase())) {
             System.out.println("Unable to withdraw from a camp you did not register for.");
             return;
         }
@@ -82,7 +82,7 @@ public class StudentParticipationController implements ParticipationController, 
             System.out.println("Camp does not exist.");
             return;
         }
-        boolean Registered = user.getMyCamps().contains(selectedCamp.getCampName()); // check if user has registered for camp already
+        boolean Registered = user.getMyCamps().contains(selectedCamp.getCampName().toUpperCase()); // check if user has registered for camp already
         boolean datesClash = Date.checkClashes(user, selectedCamp);
         // check for clashes in dates with other camps
         boolean availableSlot = selectedCamp.getRemainingAttendeeSlots() > 0;
