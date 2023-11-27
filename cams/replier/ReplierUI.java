@@ -105,6 +105,7 @@ public class ReplierUI implements PostReplierUI {
             content = sc.nextLine();
         }
         while (Objects.equals(content.strip(), ""));
+
         try {
             if (reply(user, option, content))
                 System.out.println("Success!");

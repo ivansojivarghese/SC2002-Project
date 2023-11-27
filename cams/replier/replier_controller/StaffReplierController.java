@@ -48,7 +48,7 @@ public class StaffReplierController implements ReplierController, Serializable {
             return false;
         }
 
-        Post post = user.getEnquiries().get(postIndex);
+        Post post = this.getEnquiries(user).get(postIndex);
 
         // Check if the post already has a reply
         if(post.isReplied()) {

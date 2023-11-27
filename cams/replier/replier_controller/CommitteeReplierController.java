@@ -49,7 +49,7 @@ public class CommitteeReplierController implements ReplierController, Serializab
             return false;
         }
 
-        Post post = user.getEnquiries().get(postIndex);
+        Post post = this.getEnquiries(user).get(postIndex);
 
         if(!((Committable)user).getCommittee().equalsIgnoreCase(post.getCampName()))
         {
