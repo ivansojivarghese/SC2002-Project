@@ -2,7 +2,7 @@ package cams.dashboards.organiser_controllers;
 
 import cams.camp.Camp;
 import cams.camp.CampRepository;
-import cams.camp.CampSorter;
+import cams.util.CampSorter;
 import cams.dashboards.participant_controllers.ParticipationController;
 import cams.dashboards.participant_controllers.StudentParticipationController;
 import cams.database.UnifiedCampRepository;
