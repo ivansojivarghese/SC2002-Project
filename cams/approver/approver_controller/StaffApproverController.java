@@ -4,10 +4,8 @@ import cams.camp.Camp;
 import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.database.UnifiedUserRepository;
-import cams.posts.post_entities.Approval;
-import cams.posts.post_entities.Message;
-import cams.posts.post_entities.Post;
 import cams.users.UserRepository;
+import cams.post_types.*;
 import cams.users.Committable;
 import cams.users.User;
 

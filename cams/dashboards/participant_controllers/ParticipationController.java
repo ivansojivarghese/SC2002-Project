@@ -26,5 +26,5 @@ public interface ParticipationController {
      * @param campName The name of the camp from which the user is deregistering.
      */
     void deregister(User user, String campName);
-    int viewAllCamps(User user, String attribute, boolean ascending);
+    int viewAllCamps(User user);
 }

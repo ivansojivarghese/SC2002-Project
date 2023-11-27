@@ -1,5 +1,4 @@
 package cams.post_menus;
-import cams.posts.post_entities.Post;
 import cams.users.User;
 
 /**
@@ -18,7 +17,7 @@ public interface PosterUI extends PostViewerUI {
     boolean submit(String campName, User user, String text);
 
     /**
-     * Edits an existing {@link Post post}.
+     * Edits an existing {@link cams.post_types.Post post}.
      *
      * @param user      The user who owns the post.
      * @param postIndex The index of the post in the user's list of posts.

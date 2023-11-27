@@ -2,7 +2,6 @@ package cams.dashboards.participant_controllers;
 
 import cams.camp.Camp;
 import cams.camp.CampRepository;
-import cams.camp.CampSorter;
 import cams.database.UnifiedCampRepository;
 import cams.users.Committable;
 import cams.users.User;
@@ -11,9 +10,7 @@ import cams.util.Faculty;
 import cams.util.UserInput;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -134,7 +131,7 @@ public class StudentParticipationController implements ParticipationController, 
      *
      * @return The number of camps displayed.
      */
-    public int viewAllCamps(User user, String attribute, boolean ascending) {
+    public int viewAllCamps(User user) {
         CampRepository repo = UnifiedCampRepository.getInstance();
 
         // Get camps from both categories in a hashset of unique values to avoid duplicates
@@ -147,15 +144,9 @@ public class StudentParticipationController implements ParticipationController, 
             return 0;
         }
 
-        List<Camp> campList = new ArrayList<>(allCamps);
-
-        CampSorter.sortCamps(campList, attribute, ascending);
-        System.out.println("Camps sorted by " + attribute + (ascending ? " (Ascending)" : " (Descending)"));
-
-        for (Camp c : campList) {
+        for (Camp c : allCamps) {
             //If camp is not visible, skip
             if (!c.getVisible()) {
-                campList.remove(c);
                 continue;
             }
             //Print divider
@@ -163,6 +154,6 @@ public class StudentParticipationController implements ParticipationController, 
             //Display camp
             c.display();
         }
-        return campList.size();
+        return allCamps.size();
     }
 }

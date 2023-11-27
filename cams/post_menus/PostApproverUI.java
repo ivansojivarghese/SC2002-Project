@@ -1,9 +1,8 @@
 package cams.post_menus;
-import cams.posts.post_entities.Post;
 import cams.users.User;
 
 /**
- * Interface defining the UI actions for approving or rejecting {@link Post posts}.
+ * Interface defining the UI actions for approving or rejecting {@link cams.post_types.Post posts}.
  * This interface extends {@link PostViewerUI} and adds functionalities specific to post approval.
  */
 public interface PostApproverUI extends PostViewerUI{

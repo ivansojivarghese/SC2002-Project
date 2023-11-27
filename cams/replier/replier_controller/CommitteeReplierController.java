@@ -3,11 +3,10 @@ package cams.replier.replier_controller;
 import cams.camp.Camp;
 import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
-import cams.posts.post_entities.Enquiry;
 import cams.replier.ReplierUI;
-import cams.posts.post_entities.Message;
-import cams.posts.post_entities.Post;
-import cams.posts.post_entities.Reply;
+import cams.post_types.Message;
+import cams.post_types.Post;
+import cams.post_types.Reply;
 import cams.users.Committable;
 import cams.users.User;
 
@@ -27,9 +26,9 @@ public class CommitteeReplierController implements ReplierController, Serializab
     }
 
     /**
-     * Replies to a specific {@link Enquiry enquiry} made by a user.
-     * This method checks if a reply already exists for the specified {@link Post post} and, if not,
-     * adds a {@link Message message} of the type {@link Reply reply} to the post. It then saves the changes to the associated camp.
+     * Replies to a specific {@link cams.post_types.Enquiry enquiry} made by a user.
+     * This method checks if a reply already exists for the specified {@link cams.post_types.Post post} and, if not,
+     * adds a {@link cams.post_types.Message message} of the type {@link cams.post_types.Reply reply} to the post. It then saves the changes to the associated camp.
      * It adds points if the user is a committee member.
      * The user may only reply to posts in the camp they are a committee member of.
      * @param user      The user who is replying.

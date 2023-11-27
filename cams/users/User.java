@@ -2,7 +2,7 @@ package cams.users;
 import cams.camp.Camp;
 import cams.dashboards.DashboardState;
 import cams.replier.replier_controller.ReplierController;
-import cams.posts.post_entities.Post;
+import cams.post_types.Post;
 import cams.util.Faculty;
 import cams.util.Savable;
 import cams.util.SavableObject;

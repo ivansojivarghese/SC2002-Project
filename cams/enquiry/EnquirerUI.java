@@ -5,7 +5,7 @@ import cams.enquiry.enquirer_controller.StudentEnquirerController;
 import cams.dashboards.Dashboard;
 import cams.dashboards.MenuAction;
 import cams.post_menus.PosterUI;
-import cams.posts.post_entities.Post;
+import cams.post_types.Post;
 import cams.users.Committable;
 import cams.users.User;
 import cams.util.InputScanner;

@@ -2,6 +2,7 @@ package cams.dashboards.menu;
 
 import cams.dashboards.Dashboard;
 import cams.dashboards.DashboardState;
+import cams.users.User;
 import cams.util.UserInput;
 /**
  * Represents the state of the dashboard when a user is not logged in.
@@ -20,7 +21,7 @@ public class LogoutState implements DashboardState{
     @Override
     public void display(Dashboard dashboard) {
         int option;
-        dashboard.setAuthenticatedUser(null);
+        User authenticatedUser = null;
 
         // START main menu
         System.out.println("Welcome to the Camp Application and Management System (CAMs).");
@@ -38,15 +39,18 @@ public class LogoutState implements DashboardState{
                 case 1 -> {
                     System.out.println("Attempting Login...");
                     System.out.println("______________________________________________________________");
-                    dashboard.setAuthenticatedUser(new LoginAttempt().loginAttempt());
+                    authenticatedUser = new LoginAttempt().loginAttempt();
                 }
             }
 
             // Check if login was successful and update dashboard state
             // Set the current user owning the dashboard
-            if (dashboard.getAuthenticatedUser() != null) {
+            if (authenticatedUser != null) {
+                dashboard.setAuthenticatedUser(authenticatedUser);
                 dashboard.loggedIn();
             }
+            else
+                return;
         } catch (Exception e)
         {
             System.out.println("Error: " + e);

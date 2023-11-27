@@ -5,7 +5,7 @@ import cams.approver.approver_controller.StaffApproverController;
 import cams.dashboards.Dashboard;
 import cams.dashboards.MenuAction;
 import cams.post_menus.PostApproverUI;
-import cams.posts.post_entities.Post;
+import cams.post_types.Post;
 import cams.users.User;
 import cams.util.UserInput;
 

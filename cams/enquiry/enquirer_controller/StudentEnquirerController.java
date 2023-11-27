@@ -4,9 +4,7 @@ import cams.camp.Camp;
 import cams.camp.CampRepository;
 import cams.database.UnifiedCampRepository;
 import cams.enquiry.EnquirerUI;
-import cams.posts.post_entities.Enquiry;
-import cams.posts.post_entities.Post;
-import cams.posts.*;
+import cams.post_types.*;
 import cams.users.Enquirer;
 import cams.users.User;
 

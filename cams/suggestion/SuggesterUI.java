@@ -1,6 +1,6 @@
 package cams.suggestion;
 
-import cams.posts.post_entities.Post;
+import cams.post_types.Post;
 import cams.suggestion.suggester_controllers.CommitteeSuggesterController;
 import cams.suggestion.suggester_controllers.SuggesterController;
 import cams.dashboards.Dashboard;

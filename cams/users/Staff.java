@@ -6,7 +6,7 @@ import cams.dashboards.menu.StaffUI;
 import cams.replier.replier_controller.ReplierController;
 import cams.replier.replier_controller.StaffReplierController;
 import cams.approver.approver_controller.StaffApproverController;
-import cams.posts.post_entities.Post;
+import cams.post_types.Post;
 import cams.util.Faculty;
 
 import java.io.Serial;

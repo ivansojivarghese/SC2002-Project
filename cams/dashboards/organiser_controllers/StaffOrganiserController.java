@@ -2,7 +2,6 @@ package cams.dashboards.organiser_controllers;
 
 import cams.camp.Camp;
 import cams.camp.CampRepository;
-import cams.camp.CampSorter;
 import cams.dashboards.participant_controllers.ParticipationController;
 import cams.dashboards.participant_controllers.StudentParticipationController;
 import cams.database.UnifiedCampRepository;
@@ -15,7 +14,6 @@ import cams.users.User;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -24,10 +22,12 @@ import java.util.Set;
  * such as creating camps, editing camps, assigning students and deleting camps
  */
 public class StaffOrganiserController implements OrganiserController, Serializable {
+    private final CampRepository campRepo;
     /**
      * Constructor instantiates the class
      */
     public StaffOrganiserController() {
+        this.campRepo = UnifiedCampRepository.getInstance();
     }
 
     /**
@@ -37,7 +37,6 @@ public class StaffOrganiserController implements OrganiserController, Serializab
      */
     public CampDetails getCampDetails(String campName){
         CampDetails details = new CampDetails();
-        CampRepository campRepo = UnifiedCampRepository.getInstance();
         Camp camp = campRepo.retrieveCamp(campName);
 
         details.setCampName(campName);
@@ -61,7 +60,7 @@ public class StaffOrganiserController implements OrganiserController, Serializab
      */
     @Override
     public void createCamp(CampDetails details) {
-        UserRepository userRepo = UnifiedUserRepository.getInstance();
+        UnifiedUserRepository userRepo = UnifiedUserRepository.getInstance();
 
         User creator = userRepo.retrieveUser(details.getInCharge());
 
@@ -80,7 +79,6 @@ public class StaffOrganiserController implements OrganiserController, Serializab
                 .visible(details.isVisible())
                 .build();
 
-        CampRepository campRepo = UnifiedCampRepository.getInstance();
         campRepo.addCamp(newCamp);
         creator.addCamp(newCamp);
     }
@@ -92,7 +90,6 @@ public class StaffOrganiserController implements OrganiserController, Serializab
      */
     @Override
     public void editCamp(String campName, CampDetails details) {
-        CampRepository campRepo = UnifiedCampRepository.getInstance();
         Camp camp = campRepo.retrieveCamp(campName);
         if (camp == null) {
             // Handle the case where camp is not found
@@ -119,7 +116,7 @@ public class StaffOrganiserController implements OrganiserController, Serializab
     @Override
     public void deleteCamp(String campName) {
         UserRepository userRepo = UnifiedUserRepository.getInstance();
-        CampRepository campRepo = UnifiedCampRepository.getInstance();
+
         Camp camp = campRepo.retrieveCamp(campName);
         User creator = userRepo.retrieveUser(camp.getInCharge());
 
@@ -168,8 +165,8 @@ public class StaffOrganiserController implements OrganiserController, Serializab
      *
      * @return The number of camps displayed.
      */
-
-    public int viewAllCamps(User user, String attribute, boolean ascending) {
+    /*
+    public int viewAllCamps(User user) {
         CampRepository repo = UnifiedCampRepository.getInstance();
         Set<Camp> allCamps = new HashSet<>(repo.allCamps());
 
@@ -177,22 +174,14 @@ public class StaffOrganiserController implements OrganiserController, Serializab
             System.out.println("No camps available.");
             return 0;
         }
-
-        List<Camp> campList = new ArrayList<>(allCamps);
-
-        CampSorter.sortCamps(campList, attribute, ascending);
-        System.out.println("Sorted camps: ");
-
-        // Display the sorted list
-        for(Camp c : campList){
+        for(Camp c : allCamps){
             System.out.println("_________________________________");
             c.display();
         }
-
-        return campList.size();
-    }
+        return allCamps.size();
+    }*/
     
-/*
+
 	public int viewAllCamps(User user) {
 	    	int option;
 	    	
@@ -288,5 +277,5 @@ public class StaffOrganiserController implements OrganiserController, Serializab
 	  
 	    
 	    return allCamps.size();
-	}*/
+	}
 }

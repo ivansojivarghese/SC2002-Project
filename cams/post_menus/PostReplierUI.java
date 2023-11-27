@@ -1,9 +1,8 @@
 package cams.post_menus;
-import cams.posts.post_entities.Post;
 import cams.users.User;
 
 /**
- * Interface defining the UI actions for replying to {@link Post posts}.
+ * Interface defining the UI actions for replying to {@link cams.post_types.Post posts}.
  * This interface extends {@link PostViewerUI} to include functionalities for replying to posts.
  */
 public interface PostReplierUI extends PostViewerUI{

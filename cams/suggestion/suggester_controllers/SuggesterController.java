@@ -1,6 +1,6 @@
 package cams.suggestion.suggester_controllers;
 
-import cams.posts.post_entities.Post;
+import cams.post_types.Post;
 import cams.users.User;
 
 import java.util.List;

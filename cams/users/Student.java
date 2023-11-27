@@ -7,11 +7,11 @@ import java.util.*;
 import cams.dashboards.menu.CommitteeUI;
 import cams.dashboards.DashboardState;
 import cams.dashboards.menu.StudentUI;
-import cams.posts.post_entities.Post;
 import cams.replier.replier_controller.CommitteeReplierController;
 import cams.replier.replier_controller.ReplierController;
 import cams.suggestion.suggester_controllers.SuggesterController;
 import cams.suggestion.suggester_controllers.CommitteeSuggesterController;
+import cams.post_types.*;
 import cams.util.Faculty;
 
 /**
