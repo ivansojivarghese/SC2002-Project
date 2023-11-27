@@ -299,12 +299,53 @@ public class StaffUI extends UserUI {
     }
 
     /**
-     * Views all camps associated with a user.
+     * Views all camps available to the user.
      *
-     * @param user The user whose camps are to be viewed.
+     * @param user The user viewing the camps.
      */
     protected void viewAllCamps(User user){
-        organiserController.viewAllCamps(user);
+        String attribute;
+        boolean ascending;
+
+        if(UnifiedCampRepository.getInstance().isEmpty()) {
+            System.out.println("No camps available.");
+        }
+        System.out.println();
+        System.out.println("Select an attribute to sort by:");
+        System.out.println("0. Camp Name");
+        System.out.println("1. Start Date");
+        System.out.println("2. End Date");
+        System.out.println("3. Camp size");
+        System.out.println("4. Location");
+        System.out.println("5. Description");
+        System.out.println("6. Staff in-charge");
+        System.out.println("7. Remaining Attendee Slots");
+
+        int choice = UserInput.getIntegerInput(0, 7, "Enter your choice: ");
+
+        switch (choice) {
+            case 0 -> attribute = "campName";
+            case 1 -> attribute = "startDate";
+            case 2 -> attribute = "endDate";
+            case 3 -> attribute = "attendeeSlots";
+            case 4 -> attribute = "Location";
+            case 5 -> attribute = "Description";
+            case 6 -> attribute = "InCharge";
+            case 7 -> attribute = "RemainingAttendeeSlots";
+            default -> {
+                System.out.println("Invalid choice. Defaulting to Camp Name.");
+                attribute = "campName";
+            }
+        }
+
+        System.out.println("Select order:");
+        System.out.println("0. Ascending");
+        System.out.println("1. Descending");
+
+        choice = UserInput.getIntegerInput(0, 1, "Enter your choice: ");
+
+        ascending = choice == 0;
+        organiserController.viewAllCamps(user, attribute, ascending);
     }
 
     /**

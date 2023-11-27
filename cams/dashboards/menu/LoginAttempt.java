@@ -2,6 +2,7 @@ package cams.dashboards.menu;
 
 import cams.users.User;
 import cams.database.UnifiedUserRepository;
+import cams.users.UserRepository;
 import cams.util.InputScanner;
 
 import java.util.Scanner;
@@ -32,7 +33,8 @@ class LoginAttempt { //Class is package-private
         System.out.print("Enter your User ID: ");
         LoginID = sc.nextLine(); // get USER ID
 
-        user = UnifiedUserRepository.getInstance().retrieveUser(LoginID); // check on USER ID
+        UserRepository repo = UnifiedUserRepository.getInstance();
+        user = repo.retrieveUser(LoginID); // check on USER ID
         if(user == null){
             System.out.println("This User ID does not exist, login failed.");
             return null;
@@ -83,6 +85,5 @@ class LoginAttempt { //Class is package-private
         user.setPassword(password);
         System.out.println("Password successfully changed!");
     }
-
 }
 
