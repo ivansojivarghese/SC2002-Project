@@ -4,13 +4,9 @@ import cams.camp.Camp;
 import cams.database.UnifiedUserRepository;
 import cams.util.Filter;
 import cams.users.User;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -71,90 +67,89 @@ public class PerformanceReport implements ReportGenerator {
      * @param camp The camp for which the attendance report is generated.
      */
     private void generateCampAttendanceReport(Camp camp) {
-        try (Workbook workbook = new XSSFWorkbook()) {
+        try {
             Scanner scanner = new Scanner(System.in);
-            Sheet sheet = workbook.createSheet("Camp Committee Member Performance Report");
-
-            // Add camp details at the top of the Excel file
-            Row detailsRow = sheet.createRow(0);
-            detailsRow.createCell(0).setCellValue("Camp Name: " + camp.getCampName());
-            detailsRow = sheet.createRow(1);
-            detailsRow.createCell(0).setCellValue("Dates: " + camp.getStartDate() + " to " + camp.getEndDate());
-            detailsRow = sheet.createRow(2);
-            detailsRow.createCell(0).setCellValue("Registration closes on: " + camp.getClosingDate());
-            detailsRow = sheet.createRow(3);
-            detailsRow.createCell(0).setCellValue("Open to: " + camp.getFacultyRestriction());
-            detailsRow = sheet.createRow(4);
-            detailsRow.createCell(0).setCellValue("Location: " + camp.getLocation());
-            detailsRow = sheet.createRow(5);
-            detailsRow.createCell(0).setCellValue("Available Attendee Slots: " +
-                    camp.getRemainingAttendeeSlots() + " / " + camp.getAttendeeSlots());
-            detailsRow = sheet.createRow(6);
-            detailsRow.createCell(0).setCellValue("Committee Size: " +
-                    camp.getCommittee().size() + " / " + camp.getCommitteeSlots());
-            detailsRow = sheet.createRow(7);
-            detailsRow.createCell(0).setCellValue("Description: " + camp.getDescription());
-            detailsRow = sheet.createRow(8);
-            detailsRow.createCell(0).setCellValue("Staff-in-Charge: " + camp.getInCharge());
-
-            // Create header row for attendance details
-            Row headerRow = sheet.createRow(10);
-            headerRow.createCell(0).setCellValue("UserID");
-            headerRow.createCell(1).setCellValue("Name");
-            headerRow.createCell(2).setCellValue("Faculty");
-            headerRow.createCell(3).setCellValue("Points");
-
-            // Access committee directly from the camp instance
-            HashMap<String, Integer> committee = camp.getCommittee();
-
-            // Retrieve committee members from the camp instance
-            List<User> committeeMembers = committee.keySet().stream()
-                    .map(userId -> UnifiedUserRepository.getInstance().retrieveUser(userId))
-                    .collect(Collectors.toList());
-
-            // Get user input for sorting method
-            int sortingOption = getSortingOption(scanner);
-
-            // Consume the newline character
-            scanner.nextLine();
-
-            // After retrieving committee members, apply sorting methods based on user's choice
-            List<String> sortedCommittee = applySortingMethod(sortingOption, committeeMembers, committee);
-
-            // Populate data rows for sorted committee members
-            int rowNum = 11;
-            for (String userName : sortedCommittee) {
-                User user = committeeMembers.stream()
-                        .filter(u -> u.getName().equals(userName))
-                        .findFirst()
-                        .orElse(null);
-
-                if (user != null) {
-                    Row row = sheet.createRow(rowNum++);
-                    row.createCell(0).setCellValue(user.getUserID());
-                    row.createCell(1).setCellValue(user.getName());
-                    row.createCell(2).setCellValue(user.getFaculty().toString());
-                    row.createCell(3).setCellValue(committee.getOrDefault(user.getUserID(), 0));
-                }
-            }
 
             // Allow the user to input the file name
             System.out.print("Enter the file name (without extension): ");
             String fileName = scanner.nextLine().trim();
 
             // Modify the outputPath to use a relative path to the "outputs" folder
-            String outputPath = "outputs/" + fileName + ".csv";
+            String outputPath = "outputs/" + fileName + ".txt";
 
-            // Write to file
-            try (FileOutputStream fileOut = new FileOutputStream(outputPath)) {
-                workbook.write(fileOut);
+            // Write to text file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath))) {
+                // Write camp details at the top of the file
+                writer.write("==================== PERFORMANCE REPORT ====================");
+                writer.newLine();
+                writer.write("Camp Name: " + camp.getCampName());
+                writer.newLine();
+                writer.write("Dates: " + camp.getStartDate() + " to " + camp.getEndDate());
+                writer.newLine();
+                writer.write("Registration closes on: " + camp.getClosingDate());
+                writer.newLine();
+                writer.write("Open to: " + camp.getFacultyRestriction());
+                writer.newLine();
+                writer.write("Location: " + camp.getLocation());
+                writer.newLine();
+                writer.write("Available Attendee Slots: " + camp.getRemainingAttendeeSlots() + " / " + camp.getAttendeeSlots());
+                writer.newLine();
+                writer.write("Committee Size: " + camp.getCommittee().size() + " / " + camp.getCommitteeSlots());
+                writer.newLine();
+                writer.write("Description: " + camp.getDescription());
+                writer.newLine();
+                writer.write("Staff-in-Charge: " + camp.getInCharge());
+                writer.newLine();
+                writer.newLine();  // Add an extra line for separation
+
+                // Create header row for attendance details
+                writer.write(String.format("%-15s%-20s%-15s%-10s", "UserID", "Name", "Faculty", "Points"));
+                writer.newLine();
+
+                // Access committee directly from the camp instance
+                HashMap<String, Integer> committee = camp.getCommittee();
+
+                // Retrieve committee members from the camp instance
+                List<User> committeeMembers = committee.keySet().stream()
+                        .map(userId -> UnifiedUserRepository.getInstance().retrieveUser(userId))
+                        .collect(Collectors.toList());
+
+                // Get user input for sorting method
+                int sortingOption = getSortingOption(scanner);
+
+                // Consume the newline character
+                scanner.nextLine();
+
+                // After retrieving committee members, apply sorting methods based on user's choice
+                List<String> sortedCommittee = applySortingMethod(sortingOption, committeeMembers, committee);
+
+                // Populate data rows for sorted committee members
+                for (String userName : sortedCommittee) {
+                    User user = committeeMembers.stream()
+                            .filter(u -> u.getName().equals(userName))
+                            .findFirst()
+                            .orElse(null);
+
+                    if (user != null) {
+                        // Write data with improved spacing
+                        writer.write(String.format("%-15s%-20s%-15s%-10d",
+                                user.getUserID(),
+                                user.getName(),
+                                user.getFaculty().toString(),
+                                committee.getOrDefault(user.getUserID(), 0)));
+                        writer.newLine();
+                    }
+                }
+
+                System.out.println("Camp Performance Report generated successfully. File saved at: " + outputPath);
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
             }
-
-            System.out.println("Camp Performance Report generated successfully. File saved at: " + outputPath);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
     /**
      * Gets the user's choice for the sorting method.
      *

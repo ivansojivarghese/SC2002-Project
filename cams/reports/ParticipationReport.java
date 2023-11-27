@@ -5,15 +5,10 @@ import cams.database.UnifiedUserRepository;
 import cams.util.Filter;
 import cams.users.User;
 
-import cams.util.InputScanner;
 import cams.util.UserInput;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
@@ -41,105 +36,102 @@ public class ParticipationReport implements ReportGenerator {
      */
     @Override
     public void generateReport(Camp camp) {
-        try (Workbook workbook = new XSSFWorkbook()) {
-            scanner = InputScanner.getInstance(); // Initialize the scanner
-
-            Sheet sheet = workbook.createSheet("Participation Report");
-
-            // Add camp details at the top of the Excel file
-            Row detailsRow = sheet.createRow(0);
-            detailsRow.createCell(0).setCellValue("Camp Name: " + camp.getCampName());
-            detailsRow = sheet.createRow(1);
-            detailsRow.createCell(0).setCellValue("Dates: " + camp.getStartDate() + " to " + camp.getEndDate());
-            detailsRow = sheet.createRow(2);
-            detailsRow.createCell(0).setCellValue("Registration closes on: " + camp.getClosingDate());
-            detailsRow = sheet.createRow(3);
-            detailsRow.createCell(0).setCellValue("Open to: " + camp.getFacultyRestriction());
-            detailsRow = sheet.createRow(4);
-            detailsRow.createCell(0).setCellValue("Location: " + camp.getLocation());
-            detailsRow = sheet.createRow(5);
-            detailsRow.createCell(0).setCellValue("Available Attendee Slots: " +
-                    camp.getRemainingAttendeeSlots() + " / " + camp.getAttendeeSlots());
-            detailsRow = sheet.createRow(6);
-            detailsRow.createCell(0).setCellValue("Committee Size: " +
-                    camp.getCommittee().size() + " / " + camp.getCommitteeSlots());
-            detailsRow = sheet.createRow(7);
-            detailsRow.createCell(0).setCellValue("Description: " + camp.getDescription());
-            detailsRow = sheet.createRow(8);
-            detailsRow.createCell(0).setCellValue("Staff-in-Charge: " + camp.getInCharge());
-
-            // Create header row for participation details
-            Row headerRow = sheet.createRow(10);
-            headerRow.createCell(0).setCellValue("UserID");
-            headerRow.createCell(1).setCellValue("Name");
-            headerRow.createCell(2).setCellValue("Faculty");
-            headerRow.createCell(3).setCellValue("Role");
-            headerRow.createCell(4).setCellValue("Points");
-
-            // Access committee directly from the camp instance
-            HashMap<String, Integer> committee = camp.getCommittee();
-
-            // Retrieve attendees and committee members from the camp instance
-            List<User> attendees = camp.getAttendees().stream()
-                    .map(userId -> UnifiedUserRepository.getInstance().retrieveUser(userId))
-                    .collect(Collectors.toList());
-
-            List<User> committeeMembers = committee.keySet().stream()
-                    .map(committeeMemberId -> UnifiedUserRepository.getInstance().retrieveUser(committeeMemberId))
-                    .collect(Collectors.toList());
-
-            // Combine attendees and committee members, avoiding duplications
-            List<User> attendeesAndCommittee = Stream.concat(attendees.stream(), committeeMembers.stream())
-                    .distinct()
-                    .collect(Collectors.toList());
-
-            // After retrieving attendees and committee members, apply sorting methods based on user's choice
-            // Get user input for sorting method
-            int sortingOption = getSortingOption();
-
-            List<String> sortedAttendeesAndCommitteeNames = applySortingMethod(sortingOption, attendeesAndCommittee, committee);
-
-            // Populate data rows for sorted attendees and committee members
-            int rowNum = 11;
-            for (String userName : sortedAttendeesAndCommitteeNames) {
-                User user = attendeesAndCommittee.stream()
-                        .filter(u -> u.getName().equals(userName))
-                        .findFirst()
-                        .orElse(null);
-
-                if (user != null) {
-                    Row row = sheet.createRow(rowNum++);
-                    row.createCell(0).setCellValue(user.getUserID());
-                    row.createCell(1).setCellValue(user.getName());
-                    row.createCell(2).setCellValue(user.getFaculty().toString());
-                    row.createCell(3).setCellValue(committee.containsKey(user.getUserID()) ? "Committee Member" : "Attendee");
-                    row.createCell(4).setCellValue(committee.getOrDefault(user.getUserID(), 0));
-                }
-            }
+        try {
+            Scanner scanner = new Scanner(System.in);
 
             // Allow the user to input the file name
             System.out.print("Enter the file name (without extension): ");
             String fileName = scanner.nextLine().trim();
 
             // Modify the outputPath to use a relative path to the "outputs" folder
-            String outputPath = "outputs" + File.separator + fileName + ".csv";
+            String outputPath = "outputs/" + fileName + ".txt";
 
-            // Write to file
-            try (FileOutputStream fileOut = new FileOutputStream(outputPath)) {
-                workbook.write(fileOut);
+            // Write to text file
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath))) {
+                // Write camp details at the top of the file
+                writer.write("==================== PARTICIPATION REPORT ====================");
+                writer.newLine();
+                writer.write("Camp Name: " + camp.getCampName());
+                writer.newLine();
+                writer.write("Dates: " + camp.getStartDate() + " to " + camp.getEndDate());
+                writer.newLine();
+                writer.write("Registration closes on: " + camp.getClosingDate());
+                writer.newLine();
+                writer.write("Open to: " + camp.getFacultyRestriction());
+                writer.newLine();
+                writer.write("Location: " + camp.getLocation());
+                writer.newLine();
+                writer.write("Available Attendee Slots: " + camp.getRemainingAttendeeSlots() + " / " + camp.getAttendeeSlots());
+                writer.newLine();
+                writer.write("Committee Size: " + camp.getCommittee().size() + " / " + camp.getCommitteeSlots());
+                writer.newLine();
+                writer.write("Description: " + camp.getDescription());
+                writer.newLine();
+                writer.write("Staff-in-Charge: " + camp.getInCharge());
+                writer.newLine();
+                writer.newLine();  // Add an extra line for separation
+
+                // Create header row for participation details with improved spacing
+                writer.write(String.format("%-15s%-20s%-15s%-20s%-10s", "UserID", "Name", "Faculty", "Role", "Points"));
+                writer.newLine();
+
+                // Access committee directly from the camp instance
+                HashMap<String, Integer> committee = camp.getCommittee();
+
+                // Retrieve attendees and committee members from the camp instance
+                List<User> attendees = camp.getAttendees().stream()
+                        .map(userId -> UnifiedUserRepository.getInstance().retrieveUser(userId))
+                        .collect(Collectors.toList());
+
+                List<User> committeeMembers = committee.keySet().stream()
+                        .map(committeeMemberId -> UnifiedUserRepository.getInstance().retrieveUser(committeeMemberId))
+                        .collect(Collectors.toList());
+
+                // Combine attendees and committee members, avoiding duplications
+                List<User> attendeesAndCommittee = Stream.concat(attendees.stream(), committeeMembers.stream())
+                        .distinct()
+                        .collect(Collectors.toList());
+
+                // After retrieving attendees and committee members, apply sorting methods based on user's choice
+                // Get user input for sorting method
+                int sortingOption = getSortingOption(scanner);
+
+                List<String> sortedAttendeesAndCommitteeNames = applySortingMethod(sortingOption, attendeesAndCommittee, committee);
+
+                // Populate data rows for sorted attendees and committee members with improved spacing
+                for (String userName : sortedAttendeesAndCommitteeNames) {
+                    User user = attendeesAndCommittee.stream()
+                            .filter(u -> u.getName().equals(userName))
+                            .findFirst()
+                            .orElse(null);
+
+                    if (user != null) {
+                        writer.write(String.format("%-15s%-20s%-15s%-20s%-10d",
+                                user.getUserID(),
+                                user.getName(),
+                                user.getFaculty().toString(),
+                                committee.containsKey(user.getUserID()) ? "Committee Member" : "Attendee",
+                                committee.getOrDefault(user.getUserID(), 0)));
+                        writer.newLine();
+                    }
+                }
+
+                System.out.println("Camp Participation Report generated successfully. File saved at: " + outputPath);
+            } catch (Exception e) {
+                System.out.println("Error: " + e.getMessage());
             }
-
-            System.out.println("Camp Participation Report generated successfully. File saved at: " + outputPath);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
     }
+
+
     /**
      * Gets the user's choice for the sorting method.
      *
      * @return The user's choice for the sorting method.
      */
-    private int getSortingOption() {
+    private int getSortingOption(Scanner scanner) {
         // Display sorting options
         System.out.println("Select Sorting Method:");
         System.out.println("1. Ascending Sort");
