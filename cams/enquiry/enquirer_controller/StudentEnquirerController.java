@@ -9,6 +9,8 @@ import cams.users.Enquirer;
 import cams.users.User;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents an enquirer in the dashboard system, extending the functionality of {@link EnquirerUI}.
@@ -101,5 +103,48 @@ public class StudentEnquirerController implements EnquirerController, Serializab
         //Save changes
         camp.save();
         return true;
+    }
+
+    /**
+     * Displays the enquiries of the user and returns the count of those enquiries.
+     * Each enquiry is displayed with its index and content.
+     *
+     * @param user The user whose enquiries are to be displayed.
+     * @return The number of enquiries displayed.
+     */
+    @Override
+    public int view(User user){
+        Post currentPost;
+        System.out.println("My Camp Enquiries: ");
+
+        // Catch null pointers
+        if(user.getEnquiries() == null)
+        {
+            System.out.println("No enquiries to display.");
+            return 0;
+        }
+
+
+        if(UnifiedCampRepository.getInstance().allCamps().isEmpty()){
+            System.out.println("No camps to enquire about.");
+            return -1;
+        }
+
+        List<Post> myEnquiries = new ArrayList<>(user.getEnquiries());
+
+        // Check if the user has no enquiries
+        if(myEnquiries.isEmpty()){
+            System.out.println("No enquiries to display.");
+            return 0;
+        }
+
+        // Display each enquiry with its index and content
+        for (int i = 0; i < myEnquiries.size(); i++) {
+            currentPost = myEnquiries.get(i);
+            System.out.println("Index " + i + ": ");
+            currentPost.displayContent();
+            System.out.println("__________________________");
+        }
+        return myEnquiries.size();
     }
 }
