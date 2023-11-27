@@ -1,10 +1,11 @@
 package cams.replier;
 
+import cams.posts.post_entities.Enquiry;
 import cams.replier.replier_controller.ReplierController;
 import cams.dashboards.Dashboard;
 import cams.dashboards.MenuAction;
 import cams.post_menus.PostReplierUI;
-import cams.post_types.Post;
+import cams.posts.post_entities.Post;
 import cams.users.User;
 import cams.util.InputScanner;
 import cams.util.UserInput;
@@ -12,7 +13,7 @@ import cams.util.UserInput;
 import java.util.*;
 
 /**
- * Abstract class representing the user interface for replying to {@link cams.post_types.Enquiry enquiries}, a specific type of {@link cams.post_types.Post post}.
+ * Abstract class representing the user interface for replying to {@link Enquiry enquiries}, a specific type of {@link Post post}.
  * This class provides a UI with abstracted logic for the action of replying to enquiries,
  * including displaying a menu to choose an enquiry to reply to, and handling the user interaction.
  * It implements {@link PostReplierUI}

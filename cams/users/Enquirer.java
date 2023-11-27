@@ -1,6 +1,6 @@
 package cams.users;
 
-import cams.post_types.Post;
+import cams.posts.post_entities.Post;
 
 import java.util.List;
 

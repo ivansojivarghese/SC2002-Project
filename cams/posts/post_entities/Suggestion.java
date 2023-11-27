@@ -1,4 +1,4 @@
-package cams.post_types;
+package cams.posts.post_entities;
 
 import java.io.Serializable;
 

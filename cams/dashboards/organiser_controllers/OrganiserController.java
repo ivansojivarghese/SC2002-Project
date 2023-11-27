@@ -67,5 +67,5 @@ public interface OrganiserController {
      * @param user The current user
      * @return Number of camps created.
      */
-    int viewAllCamps(User user);
+    int viewAllCamps(User user, String attribute, boolean ascending);
 }

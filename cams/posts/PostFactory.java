@@ -1,4 +1,9 @@
-package cams.post_types;
+package cams.posts;
+
+import cams.posts.post_entities.Enquiry;
+import cams.posts.post_entities.Message;
+import cams.posts.post_entities.Post;
+import cams.posts.post_entities.Suggestion;
 
 /**
  * A factory class for creating {@link Post} objects.
