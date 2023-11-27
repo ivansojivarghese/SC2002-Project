@@ -150,6 +150,10 @@ public class StudentUI extends UserUI{
     protected void deregisterCamp(Dashboard dashboard){
         Scanner sc = InputScanner.getInstance();
         User user = dashboard.getAuthenticatedUser();
+        if(user.getMyCamps().isEmpty()){
+            System.out.println("\nYou have not registered for any camps.");
+            return;
+        }
         System.out.println("\nEnter name of camp to withdraw from: ");
         String deregisterInput = sc.nextLine();
         participationController.deregister(user, deregisterInput);

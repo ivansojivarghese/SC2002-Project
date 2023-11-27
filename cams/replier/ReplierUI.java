@@ -125,6 +125,7 @@ public class ReplierUI implements PostReplierUI {
     public boolean reply(User user, int postIndex, String reply){
         return replierController.reply(user, postIndex, reply);
     }
+
     /**
      * Displays the enquiries of the user to reply to and returns the count of those enquiries.
      * Each enquiry is displayed with its index and content.

@@ -19,8 +19,9 @@ public class Approval extends Message implements Serializable {
      *
      * @param isApproved The approval status (true for approved, false for rejected).
      */
-    public Approval(Boolean isApproved) {
+    public Approval(String userID, Boolean isApproved) {
         this.content = isApproved;
+        this.setPostedBy(userID);
     }
 
     /**

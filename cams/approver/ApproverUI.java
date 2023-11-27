@@ -138,7 +138,7 @@ public class ApproverUI implements PostApproverUI {
         }
         for (int i = 0; i < mySuggestions.size(); i++) {
             Post currentPost = mySuggestions.get(i);
-            System.out.println(i + ": ");
+            System.out.println("Index " + i + ": ");
             currentPost.displayContent();
             System.out.println("__________________________");
         }

@@ -79,6 +79,12 @@ public class CommitteeSuggesterController implements SuggesterController, Serial
         }
 
         Post currentPost = user.getSuggestions().get(postIndex);
+
+        if(currentPost.isReplied()) {
+            System.out.println("Unable to delete suggestions that have been responded to.");
+            return false; //reply exists
+        }
+
         currentPost.getFirstMessage().setContent(content);
 
         CampRepository repo = UnifiedCampRepository.getInstance();

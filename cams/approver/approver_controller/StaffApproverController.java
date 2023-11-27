@@ -39,7 +39,15 @@ public class StaffApproverController implements ApproverController, Serializable
         }
 
         Post currentPost = user.getSuggestions().get(postIndex);
-        Message approval = new Approval(isApproved);
+
+        // Check if the post already has a response
+        if(currentPost.isReplied()) {
+            System.out.println("Response already exist, unable to respond again!");
+            return false;
+        }
+
+        // Create and add the reply to the post
+        Message approval = new Approval(user.getUserID(), isApproved);
         currentPost.addContent(approval);
 
         CampRepository campRepo = UnifiedCampRepository.getInstance();
@@ -52,6 +60,11 @@ public class StaffApproverController implements ApproverController, Serializable
         UserRepository userRepo = UnifiedUserRepository.getInstance();
         String suggesterID = currentPost.getFirstMessage().getPostedBy();
         User suggester = userRepo.retrieveUser(suggesterID);
+
+        if (suggester == null) {
+            System.out.println("Associated suggester not found.");
+            return false;
+        }
 
         // Adds point if suggester is a committee member and the suggestion is approved
         if(suggester instanceof Committable && isApproved){

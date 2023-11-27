@@ -161,7 +161,7 @@ public class UnifiedCampRepository implements CampRepository {
         //If there are serializable objects to load
         //Iterate through each file in the folder and load it into the repository
         for (File file : listOfFiles) {
-            if (file.isFile()) {
+            if (file.isFile() && file.getName().endsWith(".ser")) {
                 Serializable object = loader.loadObject(file.getAbsolutePath());
                 if(!(object instanceof Camp)){
                     System.out.println("Serializable found is not of type Camp, skipping object.");

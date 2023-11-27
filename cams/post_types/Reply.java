@@ -16,7 +16,7 @@ public class Reply extends Message implements Serializable {
      * @param content The content of the reply as a {@link String}.
      */
     public Reply(String userID, String content) {
-        this.setContent(content);
+        this.content = content;
         this.setPostedBy(userID);
     }
 

@@ -41,6 +41,8 @@ public class CommitteeUI extends StudentUI {
 
         // Initialise and display hash map of menu options storing methods
         Map<Integer, MenuAction> options = initializeActions(dashboard);
+        System.out.println("______________________________________________________________");
+        System.out.println("                             MENU                              ");
         describeOptions(options);
 
         // Get user's choice
