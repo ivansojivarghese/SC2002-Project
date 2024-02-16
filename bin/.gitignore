@@ -2,8 +2,11 @@
 .classpath
 .project
 /.metadata/
+/.gitignore
+/.idea/
 /SC2002-Project.iml
 /cams/
+/javadocs/
 /out/
 /outputs/
 /resources/
